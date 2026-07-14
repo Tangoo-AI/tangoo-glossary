@@ -294,8 +294,36 @@
     color:var(--orange);display:grid;place-items:center;margin:0 auto 18px}
   .lock-card h3{font-size:21px;font-weight:800;letter-spacing:-.4px;margin-bottom:8px}
   .lock-card p{color:var(--muted);font-size:15px;max-width:430px;margin:0 auto 22px;line-height:1.55}
-  .lock-card .btn{padding:12px 26px}
+  .lock-card .btn{padding:12px 28px}
   @media (max-width:640px){body.locked .lock-notice{padding-left:18px;padding-right:18px}}
+
+  /* ----- full-page ember stage (signed-out only) ----- */
+  body.locked{background:radial-gradient(135% 100% at 10% 0%,
+    #8c3e25 0%, #5c2a17 22%, #3a1a0f 40%, #1d130d 62%, #120f0b 90%)}
+  body.locked #glossaryView{position:relative;z-index:1}
+  body.locked header{background:transparent}
+  body.locked header::before,body.locked header::after{display:none}
+  body.locked::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  /* cards read as glowing panels on the dark stage */
+  body.locked .totd-card{box-shadow:0 24px 64px rgba(0,0,0,.5)}
+  body.locked .lock-card{box-shadow:0 24px 64px rgba(0,0,0,.5)}
+  body.locked footer{color:rgba(255,255,255,.55);border-top-color:rgba(255,255,255,.12)}
+  body.locked footer b{color:var(--orange)}
+
+  /* ----- sign-in teaser (fanned frosted preview cards) ----- */
+  .teaser{position:relative;height:104px;max-width:300px;margin:0 auto 26px}
+  .teaser-card{position:absolute;top:20px;background:var(--white);border:1px solid var(--line);
+    border-radius:12px;padding:11px 16px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.18)}
+  .teaser-card .tc-acr{font-weight:800;font-size:15px;color:var(--ink);letter-spacing:-.2px;display:block}
+  .teaser-card .tc-sub{font-size:10px;color:var(--muted);white-space:nowrap}
+  .tc-l{left:2%;transform:rotate(-11deg);opacity:.45;filter:blur(1.3px)}
+  .tc-r{right:2%;transform:rotate(11deg);opacity:.45;filter:blur(1.3px)}
+  .tc-m{left:50%;top:8px;transform:translateX(-50%);z-index:2}
+  /* mono stat row */
+  .stat-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12.5px;letter-spacing:.2px;color:var(--muted);margin-bottom:24px}
+  .stat-mono b{color:var(--ink);font-weight:700}
 
   @media (prefers-reduced-motion:reduce){
     header::before{animation:none}
@@ -1429,10 +1457,18 @@ const DATA = [{"acronym": "ADX", "term": "Ad Exchange", "quote": "The invisible 
     document.body.classList.toggle('locked',!authed);
     const ln=$('#lockNotice');if(!ln)return;
     if(authed){ln.innerHTML='';return;}
+    const list=fullList();
+    const terms=list.length;
+    const cats=new Set(list.map(d=>d.category).filter(Boolean)).size;
     ln.innerHTML=`<div class="lock-card">
-      <div class="lock-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-      <h3>Sign in to explore the full glossary</h3>
-      <p>You're viewing today's Term of the Day. Sign in to search all ${fullList().length} terms, browse A–Z, and see every definition.</p>
+      <div class="teaser" aria-hidden="true">
+        <div class="teaser-card tc-l"><span class="tc-acr">ADX</span></div>
+        <div class="teaser-card tc-r"><span class="tc-acr">KPI</span></div>
+        <div class="teaser-card tc-m"><span class="tc-acr">DSP</span><span class="tc-sub">Demand-Side Platform</span></div>
+      </div>
+      <h3>Every term, fully searchable — updated daily</h3>
+      <p>Unlock the complete Tangoo glossary: search across every acronym, browse A–Z, and open every definition.</p>
+      <div class="stat-mono"><b>${terms}</b> terms · <b>${cats}</b> categories · updated daily</div>
       <button class="btn btn-primary" id="lockSignIn">Sign in</button>
     </div>`;
     const b=$('#lockSignIn');if(b){b.onclick=()=>openAuthModal(()=>route());makeMagnetic(b);}
