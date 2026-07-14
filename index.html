@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tangoo Glossary</title>
+<style>
+  :root{
+    --orange:#FF5321;
+    --white:#FFFFFF;
+    --gray:#F4F4F4;
+    --ink:#1f1f1f;
+    --muted:#6b6b6b;
+    --line:#e7e7e7;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(31,31,31,.04),0 6px 24px rgba(31,31,31,.06);
+    --shadow-hover:0 4px 12px rgba(255,83,33,.12),0 12px 40px rgba(31,31,31,.10);
+    --green:#1a9d5a;--red:#d9412f;--amber:#c98a00;
+    font-synthesis:none;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--gray);color:var(--ink);line-height:1.55;
+    -webkit-font-smoothing:antialiased;padding-bottom:80px;
+  }
+  a{color:inherit}
+  button{font-family:inherit}
+
+  /* ===== Header ===== */
+  header{background:var(--ink);color:var(--white);padding:26px 24px 34px;position:relative;overflow:hidden}
+  .header-inner{max-width:1080px;margin:0 auto;position:relative;z-index:2}
+  header::before{content:"";position:absolute;inset:-35%;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(38% 48% at 22% 32%, rgba(255,83,33,.48), transparent 62%),
+      radial-gradient(44% 52% at 82% 16%, rgba(12,120,120,.52), transparent 62%),
+      radial-gradient(48% 55% at 66% 90%, rgba(255,83,33,.30), transparent 60%),
+      radial-gradient(42% 50% at 6% 82%, rgba(9,92,98,.42), transparent 60%);
+    filter:blur(26px);opacity:.9;
+    animation:meshDrift 18s ease-in-out infinite alternate}
+  header::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.055;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  @keyframes meshDrift{
+    0%{transform:translate3d(-4%,-2%,0) scale(1.05) rotate(0deg)}
+    50%{transform:translate3d(4%,3%,0) scale(1.18) rotate(5deg)}
+    100%{transform:translate3d(-2%,2%,0) scale(1.09) rotate(-4deg)}}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}
+  .brand{display:flex;align-items:center;gap:12px;cursor:pointer}
+  .logo{width:34px;height:34px;border-radius:9px;background:var(--orange);
+    display:grid;place-items:center;font-weight:800;color:var(--white);font-size:19px;
+    letter-spacing:-1px;flex:none}
+  .brand-name{font-weight:700;font-size:16px;letter-spacing:.3px}
+  .brand-name span{color:var(--orange)}
+  .top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+  h1{font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-1.4px;line-height:1.05}
+  h1 em{color:var(--orange);font-style:normal}
+  .tagline{color:#b9b9b9;margin-top:10px;font-size:16px;max-width:560px}
+
+  /* buttons */
+  .btn{border:0;border-radius:10px;padding:9px 16px;font-size:14px;font-weight:700;
+    cursor:pointer;transition:all .14s;white-space:nowrap;display:inline-flex;
+    align-items:center;gap:7px;line-height:1}
+  .btn-primary{background:var(--orange);color:var(--white)}
+  .btn-primary:hover{background:#e8431a}
+  .btn-ghost-light{background:rgba(255,255,255,.10);color:var(--white);border:1px solid rgba(255,255,255,.14)}
+  .btn-ghost-light:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.28)}
+  .btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn-outline:hover{border-color:var(--ink)}
+  .btn-dark{background:var(--ink);color:var(--white)}
+  .btn-dark:hover{background:#000}
+  .btn-sm{padding:6px 12px;font-size:12.5px;border-radius:8px}
+  .btn-block{width:100%;justify-content:center;padding:12px}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .user-pill{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.10);
+    padding:5px 6px 5px 14px;border-radius:100px;font-size:13.5px;font-weight:600}
+  .user-pill .avatar{width:26px;height:26px;border-radius:50%;background:var(--orange);
+    display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff}
+  .role-tag{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+    background:var(--orange);color:#fff;padding:2px 7px;border-radius:100px}
+
+  /* ===== User cluster (identity + actions grouped) ===== */
+  .user-cluster{display:inline-flex;align-items:center;gap:2px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);
+    border-radius:100px;padding:4px 5px 4px 5px}
+  .user-cluster .avatar{width:28px;height:28px;border-radius:50%;background:var(--orange);
+    display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;flex:none}
+  .user-cluster .u-meta{display:inline-flex;align-items:center;gap:7px;margin:0 9px 0 8px}
+  .user-cluster .u-first{font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap}
+  .cluster-div{width:1px;height:22px;background:rgba(255,255,255,.16);margin:0 3px}
+  .cluster-btn{border:0;background:transparent;color:#fff;font-family:inherit;font-weight:700;
+    font-size:13px;cursor:pointer;border-radius:100px;padding:7px 13px;display:inline-flex;
+    align-items:center;gap:6px;transition:background .14s;white-space:nowrap}
+  .cluster-btn:hover{background:rgba(255,255,255,.15)}
+  .cluster-btn.icon-only{padding:8px}
+  .cluster-btn svg{opacity:.9}
+
+  /* ===== Search ===== */
+  .search-wrap{max-width:1080px;margin:-26px auto 0;padding:0 24px;position:relative;z-index:5}
+  .search-box{background:var(--white);border-radius:14px;box-shadow:var(--shadow);
+    display:flex;align-items:center;gap:12px;padding:0 18px;height:60px;
+    border:1.5px solid transparent;transition:border-color .15s,box-shadow .15s}
+  .search-box:focus-within{border-color:var(--orange);
+    box-shadow:0 0 0 4px rgba(255,83,33,.15),0 10px 34px rgba(255,83,33,.18),var(--shadow)}
+  .search-box svg{flex:none;color:var(--muted)}
+  #search{border:0;outline:0;font-size:18px;flex:1;background:transparent;color:var(--ink);font-family:inherit}
+  #search::placeholder{color:#a5a5a5}
+  .clear-btn{border:0;background:var(--gray);color:var(--muted);width:26px;height:26px;
+    border-radius:50%;cursor:pointer;font-size:15px;line-height:1;display:none;place-items:center;flex:none}
+  .clear-btn:hover{background:#e7e7e7;color:var(--ink)}
+  .clear-btn.show{display:grid}
+
+  /* ===== Controls ===== */
+  .controls{max-width:1080px;margin:22px auto 0;padding:0 24px;
+    display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .filter-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+    color:var(--muted);margin-bottom:8px;display:block}
+  .select-wrap{position:relative;display:inline-block}
+  .select-wrap svg{position:absolute;right:14px;top:50%;transform:translateY(-50%);
+    pointer-events:none;color:var(--muted)}
+  select#catFilter{
+    appearance:none;-webkit-appearance:none;background:var(--white);
+    border:1.5px solid var(--line);border-radius:12px;padding:12px 42px 12px 16px;
+    font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;font-family:inherit;
+    min-width:230px;transition:border-color .14s,box-shadow .14s}
+  select#catFilter:hover{border-color:var(--ink)}
+  select#catFilter:focus{outline:0;border-color:var(--orange);box-shadow:0 0 0 4px rgba(255,83,33,.10)}
+  select#catFilter.filtered{border-color:var(--orange);color:var(--orange)}
+
+  /* ===== Content ===== */
+  main{max-width:1080px;margin:0 auto;padding:26px 24px 0}
+  .letter-group{margin-bottom:14px;scroll-margin-top:16px}
+  .letter-head{font-size:22px;font-weight:800;color:var(--orange);margin:26px 0 14px;
+    display:flex;align-items:center;gap:12px;letter-spacing:-.5px}
+  .letter-head::after{content:"";flex:1;height:2px;background:var(--line);border-radius:2px}
+  .cards{display:grid;grid-template-columns:1fr;gap:16px}
+
+  .card{background:var(--white);border-radius:var(--radius);padding:22px 22px 20px;
+    box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.03);
+    display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s;
+    cursor:pointer;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--orange);
+    transform:scaleY(0);transform-origin:top;transition:transform .18s}
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+  .card:hover::before{transform:scaleY(1)}
+  .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .acronym{font-size:21px;font-weight:800;letter-spacing:-.5px;line-height:1.15}
+  .badges{display:flex;flex-direction:column;gap:5px;align-items:flex-end;flex:none}
+  .badge{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;
+    padding:3px 9px;border-radius:100px;white-space:nowrap}
+  .badge.cat{background:rgba(255,83,33,.10);color:var(--orange)}
+  .badge.dept{background:var(--gray);color:var(--muted)}
+  .badge.community{background:rgba(26,157,90,.12);color:var(--green)}
+  .term{font-size:14px;color:var(--muted);font-weight:600;margin-top:2px}
+  .term.same{display:none}
+  .quote{font-style:italic;color:var(--ink);font-size:14px;margin:14px 0 0;
+    padding-left:13px;border-left:2.5px solid var(--orange);line-height:1.5;opacity:.85}
+  .definition{font-size:14.5px;color:#333;margin-top:14px;line-height:1.6}
+  .definition.tbd{color:#b0b0b0;font-style:italic}
+  mark{background:rgba(255,83,33,.22);color:inherit;border-radius:3px;padding:0 1px}
+
+  /* ===== Cross-links in definitions ===== */
+  a.xref{color:var(--orange);text-decoration:underline;text-decoration-color:rgba(255,83,33,.45);
+    text-underline-offset:2px;cursor:pointer;font-weight:600;transition:background .12s,text-decoration-color .12s}
+  a.xref:hover{text-decoration-color:var(--orange);background:rgba(255,83,33,.10);border-radius:3px}
+  .card.flash{animation:flashcard 1.6s ease}
+  @keyframes flashcard{0%,100%{box-shadow:var(--shadow)}
+    12%{box-shadow:0 0 0 3px var(--orange),var(--shadow-hover)}
+    65%{box-shadow:0 0 0 3px rgba(255,83,33,.35),var(--shadow-hover)}}
+
+  /* ===== A–Z index (sticky side rail) ===== */
+  .az-nav{position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:40;
+    display:flex;flex-direction:column;gap:1px;align-items:center;
+    background:rgba(255,255,255,.72);backdrop-filter:saturate(1.4) blur(8px);
+    padding:8px 4px;border-radius:100px;box-shadow:var(--shadow)}
+  .az-nav a{position:relative;z-index:1;font-size:11px;font-weight:700;color:var(--muted);width:20px;height:18px;
+    line-height:18px;text-align:center;border-radius:6px;text-decoration:none;cursor:pointer;
+    transition:color .18s}
+  .az-nav a:hover{color:var(--ink)}
+  .az-nav a.active{color:#fff}
+  .az-nav a.disabled{color:#d2d2d2;pointer-events:none;cursor:default}
+  .az-pill{position:absolute;z-index:0;left:4px;top:0;width:20px;height:18px;border-radius:6px;
+    background:var(--orange);opacity:0;pointer-events:none;
+    transition:transform .3s cubic-bezier(.34,1.25,.5,1),width .2s ease,height .2s ease,opacity .2s ease}
+  .az-pill.show{opacity:1}
+
+  /* ===== Homepage features ===== */
+  #homeFeatures{margin-bottom:8px}
+  .feature-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;
+    color:var(--orange);margin:6px 0 12px;display:flex;align-items:center;gap:8px}
+  .totd-wrap{margin-bottom:30px}
+  .totd-card{background:linear-gradient(135deg,#fff 0%,#fff7f4 100%);border:1.5px solid rgba(255,83,33,.22);
+    border-radius:var(--radius);padding:26px 26px 24px;box-shadow:var(--shadow);position:relative;
+    overflow:hidden;cursor:pointer;transition:box-shadow .15s,transform .15s}
+  .totd-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+  .totd-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--orange)}
+  .totd-card .acronym{font-size:27px;font-weight:800;letter-spacing:-.6px}
+  .totd-card .term{font-size:15px;color:var(--muted);font-weight:600;margin-top:3px}
+  .totd-card .term.same{display:none}
+  .totd-card .quote{font-style:italic;color:var(--ink);font-size:15.5px;margin:16px 0 0;
+    padding-left:14px;border-left:2.5px solid var(--orange);line-height:1.5;opacity:.9}
+  .totd-card .definition{font-size:15px;color:#333;margin-top:15px;line-height:1.6}
+  .totd-card .badges{flex-direction:row;flex-wrap:wrap;gap:6px}
+
+  .trending{margin-bottom:30px}
+  .trend-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+  .trend-item{background:var(--white);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:all .13s}
+  .trend-item:hover{border-color:var(--orange);box-shadow:var(--shadow)}
+  .trend-rank{font-size:16px;font-weight:800;color:var(--orange);width:26px;height:26px;flex:none;
+    display:grid;place-items:center;background:rgba(255,83,33,.10);border-radius:8px}
+  .trend-body{min-width:0}
+  .trend-acr{font-weight:800;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .trend-meta{font-size:11.5px;color:var(--muted);margin-top:1px}
+
+  /* ===== Analytics ===== */
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px}
+  .stat-card{background:var(--white);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px}
+  .stat-num{font-size:30px;font-weight:800;letter-spacing:-1px;color:var(--ink)}
+  .stat-lbl{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px}
+  .an-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media (max-width:760px){.an-grid{grid-template-columns:1fr}}
+  .an-panel h3{font-size:15px;font-weight:800;padding:16px 18px 0}
+  .an-panel .sub{font-size:12.5px;color:var(--muted);padding:2px 18px 10px}
+  .rank-row{display:flex;align-items:center;gap:12px;padding:10px 18px;border-top:1px solid var(--line);font-size:14px}
+  .rank-row .n{color:var(--muted);font-weight:700;width:22px;flex:none}
+  .rank-row .q{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;cursor:pointer}
+  .rank-row .q:hover{color:var(--orange)}
+  .rank-row .bar{height:6px;background:var(--orange);border-radius:4px;flex:none}
+  .rank-row .ct{font-weight:800;font-size:13px;width:36px;text-align:right;flex:none}
+  .rank-row.zero .q{color:var(--red)}
+  .zero-q{background:rgba(217,65,47,.06)}
+
+  /* ===== Term management ===== */
+  .tm-toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+  .tm-toolbar input{flex:1;min-width:180px;border:1.5px solid var(--line);border-radius:10px;
+    padding:10px 13px;font-size:14px;font-family:inherit}
+  .tm-toolbar input:focus{outline:0;border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,83,33,.10)}
+  .tm-count{font-size:13px;color:var(--muted)}
+  td .tm-acr{font-weight:800}
+  td .tm-term{color:var(--muted);font-size:12.5px}
+  .src-badge{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;
+    padding:2px 7px;border-radius:100px;background:var(--gray);color:var(--muted)}
+  .src-badge.custom{background:rgba(26,157,90,.12);color:var(--green)}
+  .src-badge.edited{background:rgba(201,138,0,.14);color:var(--amber)}
+  .totd-list-row{display:flex;align-items:center;gap:14px;padding:12px 18px;border-top:1px solid var(--line)}
+  .totd-list-row:first-of-type{border-top:0}
+  .totd-date{font-weight:700;font-size:13.5px;width:150px;flex:none}
+  .totd-date .dow{color:var(--muted);font-weight:500}
+  .totd-pick{flex:1;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .totd-pick .auto{color:var(--muted);font-weight:500;font-size:12px;margin-left:6px}
+  .totd-ovr{font-size:9.5px;font-weight:800;text-transform:uppercase;color:var(--orange);
+    background:rgba(255,83,33,.12);padding:2px 7px;border-radius:100px}
+
+  /* ===== Search autocomplete ===== */
+  .search-suggest{position:absolute;left:24px;right:24px;top:64px;background:var(--white);
+    border-radius:14px;box-shadow:0 12px 40px rgba(31,31,31,.16);overflow:hidden;
+    display:none;z-index:20;border:1px solid var(--line)}
+  .search-suggest.show{display:block}
+  .ss-item{display:flex;align-items:baseline;gap:11px;padding:11px 18px;cursor:pointer;border-bottom:1px solid var(--line)}
+  .ss-item:last-of-type{border-bottom:0}
+  .ss-item:hover,.ss-item.active{background:var(--gray)}
+  .ss-acr{font-weight:800;font-size:14.5px;color:var(--ink);flex:none}
+  .ss-term{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ss-item mark{background:rgba(255,83,33,.22)}
+  .ss-hint{padding:8px 18px;font-size:11.5px;color:var(--muted);background:var(--gray);
+    display:flex;justify-content:space-between;gap:12px}
+
+  /* ===== Term of the Day reveal motion ===== */
+  .totd-cursor{display:inline-block;width:3px;height:.82em;background:var(--orange);margin-left:6px;
+    border-radius:1px;transform:translateY(2px);animation:blink 1.05s steps(1,end) infinite}
+  @keyframes blink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+  .totd-seq{opacity:0;transform:translateY(9px);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
+  .totd-seq.in{opacity:1;transform:none}
+
+  /* ===== Card scroll-reveal ===== */
+  .reveal-card{opacity:0;transform:translateY(16px);
+    transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+  .reveal-card.in{opacity:1;transform:none}
+
+  @media (prefers-reduced-motion:reduce){
+    header::before{animation:none}
+    .totd-cursor{animation:none;opacity:1}
+    .totd-seq{opacity:1;transform:none;transition:none}
+    .reveal-card{opacity:1;transform:none;transition:none}
+    .az-pill{transition:opacity .2s ease}
+  }
+
+  /* ===== Empty ===== */
+  .empty{text-align:center;padding:80px 24px;color:var(--muted);display:none}
+  .empty.show{display:block}
+  .empty .big{font-size:48px;margin-bottom:12px}
+  .empty h3{color:var(--ink);font-size:20px;margin-bottom:6px}
+
+  /* ===== Modal ===== */
+  .modal-overlay{position:fixed;inset:0;background:rgba(31,31,31,.55);backdrop-filter:blur(3px);
+    z-index:100;display:none;align-items:center;justify-content:center;padding:24px;
+    opacity:0;transition:opacity .18s}
+  .modal-overlay.show{display:flex;opacity:1}
+  .modal{background:var(--white);border-radius:20px;max-width:560px;width:100%;
+    max-height:88vh;overflow-y:auto;padding:32px;position:relative;
+    box-shadow:0 24px 80px rgba(0,0,0,.35);transform:translateY(12px);transition:transform .18s}
+  .modal-overlay.show .modal{transform:translateY(0)}
+  .modal-close{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;
+    border:0;background:var(--gray);color:var(--ink);font-size:18px;cursor:pointer;
+    display:grid;place-items:center;transition:background .12s;z-index:2}
+  .modal-close:hover{background:#e7e7e7}
+  .modal .acronym{font-size:30px}
+  .modal .badges{flex-direction:row;align-items:center;margin:14px 0 0}
+  .modal .term{font-size:16px;margin-top:6px}
+  .modal .quote{font-size:16px;margin-top:20px}
+  .modal .definition{font-size:16px;margin-top:18px}
+  .modal .def-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+    color:var(--muted);margin-top:22px}
+
+  /* forms */
+  .modal h2{font-size:24px;font-weight:800;letter-spacing:-.6px}
+  .modal .sub{color:var(--muted);font-size:14.5px;margin-top:6px;margin-bottom:22px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:12.5px;font-weight:700;margin-bottom:7px;color:var(--ink)}
+  .field label .opt{color:var(--muted);font-weight:500}
+  .field input,.field textarea,.field select{
+    width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;
+    font-size:15px;font-family:inherit;color:var(--ink);background:var(--white);transition:border-color .14s,box-shadow .14s}
+  .field textarea{resize:vertical;min-height:96px;line-height:1.5}
+  .field input:focus,.field textarea:focus,.field select:focus{
+    outline:0;border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,83,33,.10)}
+  .field select{appearance:none;-webkit-appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b6b6b' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 13px center;padding-right:38px}
+  .form-error{color:var(--red);font-size:13px;margin-top:-6px;margin-bottom:12px;min-height:0}
+  .success-box{text-align:center;padding:14px 0 6px}
+  .success-box .check{width:64px;height:64px;border-radius:50%;background:rgba(26,157,90,.12);
+    color:var(--green);display:grid;place-items:center;margin:0 auto 18px;font-size:32px}
+  .success-box h2{margin-bottom:8px}
+  .auth-tabs{display:flex;gap:6px;background:var(--gray);padding:4px;border-radius:12px;margin-bottom:22px}
+  .auth-tabs button{flex:1;border:0;background:transparent;padding:9px;border-radius:9px;
+    font-weight:700;font-size:14px;color:var(--muted);cursor:pointer;transition:all .13s}
+  .auth-tabs button.active{background:var(--white);color:var(--ink);box-shadow:var(--shadow)}
+
+  /* ===== Admin view ===== */
+  #adminView{display:none}
+  .admin-head{background:var(--ink);color:#fff;padding:22px 24px}
+  .admin-head-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;
+    justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .admin-head h1{font-size:26px;display:flex;align-items:center;gap:12px}
+  .admin-body{max-width:1080px;margin:0 auto;padding:28px 24px}
+  .admin-tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:2px solid var(--line)}
+  .admin-tabs button{border:0;background:transparent;padding:12px 4px;margin-bottom:-2px;
+    font-size:15px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
+  .admin-tabs button.active{color:var(--ink);border-bottom-color:var(--orange)}
+  .admin-tabs button .badge-num{background:var(--orange);color:#fff;font-size:11px;
+    padding:1px 7px;border-radius:100px;margin-left:6px;font-weight:800}
+  .panel{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .panel-section{display:none}.panel-section.active{display:block}
+  .table-scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);
+    padding:14px 18px;border-bottom:1px solid var(--line);font-weight:700;white-space:nowrap}
+  td{padding:14px 18px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle;white-space:nowrap}
+  td .u-email{white-space:normal}
+  tr:last-child td{border-bottom:0}
+  .u-name{font-weight:700}.u-email{color:var(--muted);font-size:13px}
+  .status-dot{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700}
+  .status-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green)}
+  .status-dot.off{color:var(--muted)}.status-dot.off::before{background:#c9c9c9}
+  .pill-role{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;
+    padding:3px 9px;border-radius:100px;background:var(--gray);color:var(--muted)}
+  .pill-role.admin{background:rgba(255,83,33,.12);color:var(--orange)}
+  .row-actions{display:flex;gap:6px;justify-content:flex-end}
+  .icon-btn{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:6px 11px;
+    font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink);transition:all .13s;white-space:nowrap}
+  .icon-btn:hover{border-color:var(--ink)}
+  .icon-btn.danger:hover{border-color:var(--red);color:var(--red);background:rgba(217,65,47,.05)}
+  .icon-btn.ok:hover{border-color:var(--green);color:var(--green);background:rgba(26,157,90,.05)}
+  .sugg-card{padding:18px 20px;border-bottom:1px solid var(--line)}
+  .sugg-card:last-child{border-bottom:0}
+  .sugg-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+  .sugg-term{font-size:17px;font-weight:800}
+  .sugg-meta{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .sugg-def{font-size:14px;color:#333;margin-top:10px;line-height:1.55}
+  .st-badge{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;
+    padding:3px 10px;border-radius:100px}
+  .st-badge.pending{background:rgba(201,138,0,.14);color:var(--amber)}
+  .st-badge.approved{background:rgba(26,157,90,.14);color:var(--green)}
+  .st-badge.rejected{background:rgba(217,65,47,.12);color:var(--red)}
+  .panel-empty{padding:56px 24px;text-align:center;color:var(--muted)}
+  .panel-empty .big{font-size:40px;margin-bottom:10px}
+  .seg{display:flex;gap:6px;margin:0 0 18px}
+  .seg button{border:1.5px solid var(--line);background:#fff;border-radius:100px;padding:7px 15px;
+    font-size:13px;font-weight:700;color:var(--muted);cursor:pointer}
+  .seg button.active{background:var(--ink);border-color:var(--ink);color:#fff}
+  .admin-gate{max-width:420px;margin:70px auto;padding:0 24px;text-align:center}
+  .admin-gate .lock{font-size:44px;margin-bottom:16px}
+  .admin-gate h2{font-size:24px;font-weight:800;margin-bottom:8px}
+  .admin-gate p{color:var(--muted);margin-bottom:24px}
+  .hint{background:var(--gray);border-radius:10px;padding:11px 14px;font-size:12.5px;
+    color:var(--muted);margin-top:18px;text-align:left;line-height:1.5}
+  .hint b{color:var(--ink)}
+
+  footer{max-width:1080px;margin:60px auto 0;padding:24px;text-align:center;
+    color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+  footer b{color:var(--orange)}
+  footer a{color:var(--muted);text-decoration:underline;cursor:pointer}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:#fff;padding:13px 22px;border-radius:100px;font-size:14px;
+    font-weight:600;box-shadow:0 12px 40px rgba(0,0,0,.3);opacity:0;pointer-events:none;
+    transition:all .25s;z-index:200}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:640px){
+    header{padding:22px 18px 30px}
+    .search-wrap,.controls,main,.admin-body,.admin-head{padding-left:18px;padding-right:18px}
+    .cards{grid-template-columns:1fr}
+    .controls{flex-direction:column;align-items:stretch}
+    select#catFilter{width:100%}
+    .modal{padding:26px 22px}
+    .tagline{font-size:15px}
+    table thead{display:none}
+    table,tbody,tr,td{display:block;width:100%}
+    tr{border-bottom:8px solid var(--gray);padding:6px 0}
+    td{border:0;padding:5px 18px}
+    .row-actions{justify-content:flex-start;padding:10px 18px 14px}
+    main{padding-right:26px}
+    .az-nav{right:3px;padding:6px 2px;gap:0;background:rgba(255,255,255,.9)}
+    .az-nav a{font-size:9px;width:14px;height:14px;line-height:14px;border-radius:4px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ GLOSSARY VIEW ============ -->
+<div id="glossaryView">
+  <header>
+    <div class="header-inner">
+      <div class="topbar">
+        <div class="brand" onclick="location.hash=''">
+          <div class="logo">T</div>
+          <div class="brand-name">tang<span>oo</span></div>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-primary" id="suggestBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            Suggest a term
+          </button>
+          <span id="authArea"></span>
+        </div>
+      </div>
+      <h1>The <em>Glossary</em></h1>
+      <p class="tagline">Every acronym, term and bit of jargon at Tangoo — decoded. Search it, browse it A–Z, and finally know what everyone's talking about.</p>
+    </div>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="text" placeholder="Search terms, acronyms or definitions…" autocomplete="off" spellcheck="false">
+      <button class="clear-btn" id="clearBtn" aria-label="Clear search">✕</button>
+    </div>
+    <div class="search-suggest" id="searchSuggest"></div>
+  </div>
+
+  <div class="controls">
+    <div>
+      <span class="filter-label">Filter by category</span>
+      <div class="select-wrap">
+        <select id="catFilter"></select>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div id="homeFeatures"></div>
+    <div id="results"></div>
+    <div class="empty" id="empty">
+      <div class="big">🔍</div>
+      <h3>No matches found</h3>
+      <p>Try a different word, or reset the category filter.</p>
+    </div>
+  </main>
+
+  <nav class="az-nav" id="azNav" aria-label="Jump to letter"></nav>
+
+  <footer>
+    <p>Built for <b>Tangoo</b> · <span id="footTotal"></span> terms and counting</p>
+  </footer>
+</div>
+
+<!-- ============ ADMIN VIEW ============ -->
+<div id="adminView">
+  <div class="admin-head">
+    <div class="admin-head-inner">
+      <h1><div class="logo">T</div> Admin Panel</h1>
+      <div class="top-actions" id="adminTopActions"></div>
+    </div>
+  </div>
+  <div id="adminContent"></div>
+</div>
+
+<!-- ============ Shared modal + toast ============ -->
+<div class="modal-overlay" id="modalOverlay"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA = [{"acronym": "ADX", "term": "Ad Exchange", "quote": "The invisible hand of the internet, bidding in the dark.", "definition": "A digital marketplace that connects DSPs and SSPs through real-time auctions. It handles the auction mechanics, fraud filtering, and clearing of billions of ad transactions per day — all in under 100ms.", "category": "Technology", "department": "DELIVER"}, {"acronym": "AFC", "term": "Accounting, Finance and Controlling", "quote": "The team that turns financial complexity into business clarity. And approves your budget.", "definition": "To transform financial complexity into business clarity, building trusted partnerships externally and internally SO THAT together we can scale faster with precision and certainty", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "Affiliate", "term": "Affiliate Marketing", "quote": "We'll pay you when the sale happens. Don't hold your breath.", "definition": "A performance-based channel where third-party publishers promote a brand's products in exchange for a commission on each resulting sale or lead. Particularly effective for e-commerce.", "category": "Channel", "department": "CONVERT"}, {"acronym": "AI", "term": "Artificial Intelligence", "quote": "The technology rewriting every job description. Including yours.", "definition": "The capability of computational systems to perform tasks associated with human intelligence — learning, reasoning, decision-making. In programmatic, AI powers bid optimisation algorithms, audience modelling, creative personalisation, and fraud detection.", "category": "Technology", "department": "DELIVER"}, {"acronym": "API", "term": "Application Programming Interface", "quote": "The thing the developer says you need before you know what you need.", "definition": "A set of protocols allowing different software systems to communicate and exchange data. In ad tech, APIs connect DSPs with DMPs, dashboards with reporting tools, and creative platforms with ad servers. The invisible plumbing of the entire programmatic stack.", "category": "Technology", "department": "DELIVER"}, {"acronym": "Attract", "term": "Attract Department", "quote": "The department that makes the world aware Tangoo exists. And want to work with us.", "definition": "Tangoo's commercial growth engine — transforming market signals into measurable momentum through strategic storytelling and data-driven frameworks. Attracts high-potential customers through knowledge, reputation, and engineered connections.", "category": "Tangoo", "department": "ATTRACT"}, {"acronym": "Audio", "term": "Programmatic Audio", "quote": "The only ad format that follows you into the shower.", "definition": "Automated buying and selling of audio ad inventory across streaming music platforms, podcasts, and digital radio. Reaches listeners in screen-free environments — commuting, exercising, cooking — with no option to scroll past.", "category": "Channel", "department": "DELIVER"}, {"acronym": "AWIN", "term": "AWIN Network", "quote": "The world's largest affiliate network. Someone has to manage the chaos.", "definition": "A global affiliate and partner marketing platform connecting over 25,000 advertisers with 1 million+ publishers worldwide. Provides the technology infrastructure for tracking, reporting, and paying affiliate commissions.", "category": "Vendor", "department": "CONVERT"}, {"acronym": "B2B", "term": "Business-to-Business", "quote": "Selling to companies instead of people. The lunch is excellent.", "definition": "A commercial model where a company sells to other businesses rather than consumers. In programmatic, B2B campaigns target professional audiences via LinkedIn and trade publications — with longer consideration cycles but significantly higher deal values.", "category": "Business", "department": "ATTRACT"}, {"acronym": "BET", "term": "Business Effectiveness Team", "quote": "The team that makes sure the internal engine runs as well as the external one.", "definition": "A specialist team within Tangoo's Elevate Department focused on business efficiency and process improvement — identifying operational bottlenecks, designing better workflows, and ensuring company systems are scalable.", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "Bid Manager", "term": "Bid Manager", "quote": "The tool that places your bids. Whether you understand them or not.", "definition": "TBD", "category": "Platform", "department": "DELIVER"}, {"acronym": "BPT", "term": "Business Platforms Team", "quote": "The team behind the tools behind the work.", "definition": "The Elevate team responsible for managing and optimising the internal technology platforms Tangoo uses to operate — from CRM and project management to financial systems. Ensures every team has the right tools, configured correctly.", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "Brand Equity", "term": "Brand Equity", "quote": "The reason people pay more for the logo. Apparently.", "definition": "The commercial value derived from consumer perception of a brand beyond functional product value. Strong brand equity drives premium pricing, loyalty, and resilience during market disruption. Brand awareness programmatic campaigns are the primary lever for building it at scale.", "category": "Business", "department": "ATTRACT"}, {"acronym": "ClickUp", "term": "ClickUp", "quote": "Project management software. Because spreadsheets were too honest about deadlines.", "definition": "A cloud-based productivity platform centralising tasks, documents, goals, and communication into a single workspace. Used at Tangoo to manage cross-team workflows, campaign processes, and strategic initiatives.", "category": "Platform", "department": "ELEVATE"}, {"acronym": "Convert", "term": "Convert Department", "quote": "Attract opens the door. Convert walks through it.", "definition": "The purpose of departement is  - To develop strategic partnerships with brands, agencies and networks SO THAT we can grow Tangoo's client portofolio, revenue, and international presence and strenghten Tangoo's position as a multichannel programmatic partner", "category": "Tangoo", "department": "CONVERT"}, {"acronym": "CPA", "term": "Cost Per Acquisition", "quote": "We don't pay for views. We pay for results. Allegedly.", "definition": "A performance pricing model where the advertiser only pays when a specific action is completed (a purchase, a sign-up, a download). The holy grail of performance marketing: you only pay when it works.", "category": "Metric", "department": "DELIVER"}, {"acronym": "CPI", "term": "Cost Per Install", "quote": "You paid how much to get someone to download that app?", "definition": "The cost to acquire one app installation through paid advertising, calculated as total spend divided by installs. The primary KPI for mobile user acquisition campaigns. Varies widely by vertical — gaming installs cost far less than fintech ones.", "category": "Metric", "department": "DELIVER"}, {"acronym": "CPM", "term": "Cost Per Mille", "quote": "A thousand eyeballs for the price of one coffee. Maybe.", "definition": "The cost an advertiser pays for one thousand ad impressions, regardless of whether anyone clicks. The standard pricing model for brand awareness campaigns in display and video advertising.", "category": "Metric", "department": "DELIVER"}, {"acronym": "CPO", "term": "Cost Per Order", "quote": "How much does it cost to make someone buy? More than yesterday.", "definition": "The total advertising cost divided by the number of orders generated. Similar to CPA but specific to e-commerce transactions, making it the go-to KPI for online retail campaigns.", "category": "Metric", "department": "DELIVER"}, {"acronym": "Creative", "term": "Deliver - Creative Team", "quote": "The team that makes people stop scrolling. For about 1.3 seconds.", "definition": "The purpose of departement is  - To build and cultivate a technically brilliant and data-centric visual assets development engine through relentless experimentation and the predicitve engineering of human attention, expectations and surprise, SO THAT we empower internal teams to achieve their full potential, from converting to delivering and delighting, and provide our clients with unmateched creative impact across every modern display advertising channel.", "category": "Tangoo", "department": "DELIVER"}, {"acronym": "CRM", "term": "Customer Relationship Management", "quote": "All your customer data in one place. Theoretically.", "definition": "A system for managing a company's interactions with existing and potential customers. As third-party cookies deprecate, first-party CRM data is becoming one of the most valuable targeting assets in programmatic.", "category": "Business", "department": "ATTRACT"}, {"acronym": "CSM", "term": "Customer Success Manager", "quote": "Not support. Not sales. The person between both who keeps everything from falling apart.", "definition": "The role dedicated to proactively ensuring clients achieve their desired outcomes. At Tangoo's Delight Department, CSMs build long-term partnerships, manage escalations, and identify growth opportunities — turning satisfied clients into proud advocates.", "category": "Role", "department": "DELIGHT"}, {"acronym": "CTA", "term": "Call To Action", "quote": "Buy Now. Two words. The copywriter's entire career.", "definition": "The instruction in an ad or landing page prompting a specific user response — Buy Now, Sign Up, Learn More, Download. The final conversion mechanism between exposure and action. Every word, colour, size, and placement has been A/B tested to death.", "category": "Business", "department": "ATTRACT"}, {"acronym": "CTV", "term": "Connected TV", "quote": "The living room is now a programmatic channel. Sorry, cable.", "definition": "Programmatic advertising delivered to internet-connected television screens — Smart TVs, streaming sticks, and set-top boxes. Combines TV's reach and brand impact with digital targeting and measurability.", "category": "Channel", "department": "DELIVER"}, {"acronym": "Curated", "term": "Curated Marketplace", "quote": "Someone already picked the best inventory. You just have to afford it.", "definition": "A private programmatic environment where a specialist curation company pre-selects premium publisher inventory, layers it with proprietary audience data, and packages it for DSP buyers. Combines the scale of programmatic with the quality controls of direct buying.", "category": "Technology", "department": "DELIVER"}, {"acronym": "DCO", "term": "Dynamic Creative Optimization", "quote": "One brief, a thousand versions. The designer's nightmare, the algorithm's dream.", "definition": "Technology that automatically generates and serves personalised ad creatives by assembling different elements (headline, image, CTA, offer) based on real-time signals such as audience segment, location, or time of day.", "category": "Technology", "department": "DELIVER"}, {"acronym": "Decisioning", "term": "Decisioning", "quote": "The science of choosing which ad to show, to whom, for how much, right now.", "definition": "The real-time logic within ad servers and DSPs that determines which creative to serve to which user at any given moment. Advanced decisioning incorporates audience data, frequency capping, sequential messaging rules, and predictive models.", "category": "Technology", "department": "DELIVER"}, {"acronym": "Delight", "term": "Delight Department", "quote": "The campaign is live. Now the real work begins.", "definition": "The purpose of departement is - To build trusful and growth - centric partnerships by providing expert guidance that proactively drives client success SO THAT we turn our partners into proud advocates who are confident to scale with Tangoo, as we spread a customer-centric across our company", "category": "Tangoo", "department": "DELIGHT"}, {"acronym": "Deliver", "term": "Deliver Department", "quote": "Where strategy meets execution. And execution meets the DSP.", "definition": "Tangoo's operational core — executing programmatic campaigns, developing creative assets, building proprietary technology, and driving measurement innovation. Encompasses Media, Creative, Tech, and Measurement teams.", "category": "Tangoo", "department": "DELIVER"}, {"acronym": "Department", "term": "Tangoo Department", "quote": "Five teams. One company. One very contested shared kitchen.", "definition": "An aggregation of Tangoo teams working toward a shared business function. The five departments are Attract, Convert, Deliver, Delight, and Elevate — each with a defined purpose, sub-teams, and a roadmap aligned to company strategy.", "category": "Tangoo", "department": "TANGOO"}, {"acronym": "Digital Growth", "term": "Digital Growth", "quote": "Attract's engine room. Feeds the funnel so Convert has something to work with.", "definition": "The specialist team within Tangoo's Attract Department responsible for digital demand generation — managing paid media, SEO, content marketing, and inbound lead generation to build brand awareness and fill the commercial pipeline.", "category": "Tangoo", "department": "ATTRACT"}, {"acronym": "Direct", "term": "Direct Marketing", "quote": "No auction. No algorithm. Just you and their inbox.", "definition": "A marketing approach delivering targeted messages directly to individuals via email, direct mail, SMS, or push notifications. Complements programmatic by retaining existing customers and reactivating lapsed ones without relying on third-party ad inventory.", "category": "Channel", "department": "ATTRACT"}, {"acronym": "Display", "term": "Display Advertising", "quote": "Banners. The cockroaches of the internet. Always there, rarely clicked.", "definition": "The oldest and most widespread programmatic channel: visual ads served across websites and apps via DSPs. The foundation of programmatic inventory and the starting point for most campaigns.", "category": "Channel", "department": "DELIVER"}, {"acronym": "DMP", "term": "Data Management Platform", "quote": "Where audiences go to become segments. And segments go to be targeted.", "definition": "A centralised platform for collecting, organising, and activating first-, second-, and third-party audience data. DMPs feed DSPs with audience segments that make programmatic targeting more precise — though increasingly being replaced by CDPs as cookies deprecate.", "category": "Technology", "department": "DELIVER"}, {"acronym": "DOOH", "term": "Digital Out-of-Home", "quote": "A billboard that knows what time it is and who's walking past.", "definition": "Out-of-home advertising served on digital screens (billboards, transport hubs, retail venues) that can be bought programmatically, enabling dynamic creative, dayparting, and audience-triggered campaigns in the physical world.", "category": "Channel", "department": "DELIVER"}, {"acronym": "DSP", "term": "Demand-Side Platform", "quote": "We don't buy sites. We buy audiences.", "definition": "A platform that allows advertisers to automatically purchase ad inventory across multiple exchanges through real-time bidding (RTB) auctions, applying targeting and bid strategies at scale.", "category": "Technology", "department": "DELIVER"}, {"acronym": "DV360", "term": "Display & Video 360", "quote": "Google's DSP. You've heard of Google, right?", "definition": "Google's enterprise-level demand-side platform, part of the Google Marketing Platform. Provides access to premium inventory, advanced audience data, and deep integration with the Google ecosystem for large-scale programmatic campaigns.", "category": "Platform", "department": "DELIVER"}, {"acronym": "DVO", "term": "Dynamic Video Optimization", "quote": "Same budget. Different video for every viewer. Automatically.", "definition": "Technology that dynamically assembles and personalises video ad content in real time based on audience signals or data triggers. Enables advertisers to serve tailored video messages at scale without producing individual edits for every segment.", "category": "Technology", "department": "DELIVER"}, {"acronym": "eCPM", "term": "Effective Cost Per Mille", "quote": "CPM's smarter sibling who actually accounts for performance.", "definition": "The actual revenue or cost per thousand impressions once performance metrics are factored in. Calculated as (Total Earnings ÷ Total Impressions) × 1000. Publishers use it to compare the true value of different ad formats and deal types.", "category": "Metric", "department": "DELIVER"}, {"acronym": "Elevate", "term": "Elevate Department", "quote": "The internal infrastructure team. Without them, nothing else works.", "definition": "The purpose of Elevate is - To continuously design, implement and optimise the internal engine of Tangoo to bring the best out of our people, our processes and our platforms SO THAT cillactively we are fully enabled to achieve ambitious and sustainable success", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "Feedforward", "term": "Feedforward", "quote": "Not a review of what happened. Guidance for what's coming.", "definition": "A forward-looking communication practice where participants share anticipatory observations to help someone prepare for an upcoming challenge — rather than reviewing past performance. At Tangoo, Feedforward reflects a growth mindset culture: less autopsy, more acceleration.", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "GA", "term": "Google Ads", "quote": "So ubiquitous it's just called 'search.' You know the one.", "definition": "Google's advertising platform covering paid search, display (via GDN), YouTube video, and app campaigns. The dominant global paid media channel with unmatched reach and intent-based targeting. Usually the first platform any digital advertiser ever touches.", "category": "Platform", "department": "ATTRACT"}, {"acronym": "Hubspot", "term": "HubSpot", "quote": "CRM, marketing automation, and email sequences in one. Mostly used for the email sequences.", "definition": "An all-in-one inbound marketing, CRM, and sales platform. In Tangoo's Attract Department, HubSpot manages lead nurturing, commercial outreach workflows, pipeline visibility, and marketing-to-sales handoffs.", "category": "Platform", "department": "ATTRACT"}, {"acronym": "IAB", "term": "Interactive Advertising Bureau", "quote": "The trade body that sets the rules. And the rules everyone bends.", "definition": "The global industry organisation developing technical standards, research, and best practices for digital advertising. IAB standards govern ad formats (VAST, MRAID), viewability measurement, and supply chain transparency (ads.txt, sellers.json).", "category": "Business", "department": "DELIVER"}, {"acronym": "ICP", "term": "Ideal Customer Profile", "quote": "The client you wish you had more of. Turns out you can target them programmatically.", "definition": "A detailed description of the company or individual that would derive the most value from your product. In programmatic, the ICP informs audience targeting parameters — firmographics for B2B, demographics and behaviours for B2C.", "category": "Business", "department": "ATTRACT"}, {"acronym": "KPI", "term": "Key Performance Indicator", "quote": "The metric everyone agrees on during briefing, then disagrees on after.", "definition": "A measurable value used to evaluate campaign success against defined objectives. In programmatic, KPIs range from CTR and viewability for awareness campaigns to CPA and ROAS for performance-driven ones.", "category": "Metric", "department": "DELIVER"}, {"acronym": "Layer", "term": "Tangoo Layer", "quote": "Performance. Product. People. Everything at Tangoo lives in one of these three.", "definition": "The foundational categories > Performance, Product, and People > used to structure the company's work and roadmaps.", "category": "Tangoo", "department": "TANGOO"}, {"acronym": "Lead Generation", "term": "Lead Generation", "quote": "We promised 50 qualified leads. We delivered 50 email addresses. Close enough.", "definition": "The process of attracting and capturing potential customer contact information to nurture toward a purchase. In programmatic, lead gen campaigns drive users to landing pages and forms, with cost-per-lead as the primary success metric.", "category": "Business", "department": "ATTRACT"}, {"acronym": "Linkedin Sales Navigator", "term": "LinkedIn Sales Navigator", "quote": "LinkedIn with superpowers and a monthly cost that requires justification.", "definition": "LinkedIn's advanced B2B sales intelligence tool offering enhanced prospecting filters, real-time lead recommendations, and CRM integration. Used to identify, research, and engage decision-makers at target accounts with precision.", "category": "Platform", "department": "ATTRACT"}, {"acronym": "LTV", "term": "Lifetime Value", "quote": "The metric that makes acquisition costs seem reasonable. Almost.", "definition": "The total revenue a business can expect from a single customer over the entire relationship. In programmatic, LTV-based bidding strategies allow advertisers to spend more on acquiring customers predicted to generate higher long-term value.", "category": "Metric", "department": "CONVERT"}, {"acronym": "Marketing Event & PR", "term": "Marketing Event & PR", "quote": "The team that makes Tangoo visible in the rooms where decisions get made.", "definition": "The Attract team managing Tangoo's presence at industry events and trade fairs, alongside earned media and PR activities. Builds market positioning and brand authority through strategic visibility in the ad tech ecosystem.", "category": "Tangoo", "department": "ATTRACT"}, {"acronym": "Marketing Outreach", "term": "Marketing Outreach", "quote": "Cold to warm. Warm to meeting. Meeting to pipeline.", "definition": "The Attract team responsible for proactive commercial outreach — crafting and executing targeted communications to reach potential clients. Bridges the gap between brand awareness and the first commercial conversation.", "category": "Tangoo", "department": "ATTRACT"}, {"acronym": "Media", "term": "Deliver - Media Team", "quote": "Where client briefs become live campaigns and results become client trust.", "definition": "The departmet purpose - To design, implement, and constantly evolve Tangoo's speacialist media expertise, SO THAT programmatic media strategy, execution and measurement consistently translate into reliable and scable growth, strong performance, and long-term value for Clients, Partners and the Company", "category": "Tangoo", "department": "DELIVER"}, {"acronym": "Ml", "term": "Machine Learning", "quote": "The algorithm learned from your data. Now it outperforms your intuition.", "definition": "A subset of AI that trains statistical models on historical data to identify patterns and make predictions without explicit programming. In ad tech, ML drives DSP bidding models, lookalike audience expansion, and conversion probability scoring.", "category": "Technology", "department": "DELIVER"}, {"acronym": "Monetization", "term": "Monetization", "quote": "You built the audience. Now figure out what to charge for it.", "definition": "The strategy of generating revenue from an existing asset — website traffic, app users, content, or data. For publishers it means maximising ad inventory revenue via SSPs. For advertisers, it means converting campaign investment into measurable returns.", "category": "Business", "department": "DELIVER"}, {"acronym": "MTA", "term": "Multi-Touch Attribution", "quote": "Every touchpoint thinks it closed the deal. MTA is the referee.", "definition": "An attribution methodology that assigns credit to multiple ad interactions across the customer journey — not just the last click. Models range from linear and time decay to sophisticated data-driven approaches.", "category": "Technology", "department": "DELIVER"}, {"acronym": "MVP", "term": "Minimum Viable Product", "quote": "It ships Friday. 'Minimum viable' is doing a lot of work in that sentence.", "definition": "The simplest version of a product that can be released to gather real user feedback and validate core assumptions with minimal resources. The MVP principle prevents over-engineering and accelerates iteration — build just enough to learn, then improve.", "category": "Business", "department": "ELEVATE"}, {"acronym": "Myndo", "term": "Myndo", "quote": "Tangoo's own. Built here. Optimised here. Understood here.", "definition": "TBD", "category": "Platform", "department": "DELIVER"}, {"acronym": "Native", "term": "Native Advertising", "quote": "It doesn't look like an ad. That's the entire point.", "definition": "Ad formats designed to blend seamlessly with the editorial style of the platform — in-feed articles, sponsored content, recommendation widgets. Typically outperform standard display in engagement but require more creative effort.", "category": "Channel", "department": "DELIVER"}, {"acronym": "NPS", "term": "Net Promoter Score", "quote": "How likely are you to recommend us? Scale of 0-10. No pressure.", "definition": "A customer loyalty metric: Promoters (9-10) minus Detractors (0-6) equals NPS, ranging from -100 to +100. Simple to measure, brutally honest to interpret, and surprisingly difficult to sustain above 50.", "category": "Metric", "department": "DELIGHT"}, {"acronym": "OOH", "term": "Out-of-Home", "quote": "Finally, an ad format you can't install an ad blocker for.", "definition": "Traditional outdoor advertising — billboards, transit posters, street furniture — now increasingly bought programmatically through DOOH inventory. Reaches audiences in the physical world when digital screens can't.", "category": "Channel", "department": "DELIVER"}, {"acronym": "Open Auction", "term": "Open Auction", "quote": "Everyone's invited. The highest bidder wins. May the budget be with you.", "definition": "The default programmatic buying model where any DSP can bid on any available impression in real time. Maximum reach, maximum competition, and typically lower CPMs than reserved or private deal environments.", "category": "Technology", "department": "DELIVER"}, {"acronym": "Open ID", "term": "Open Identity", "quote": "The cookie is dead. Long live the identifier.", "definition": "An industry framework creating privacy-safe, interoperable user identity solutions that function without third-party cookies. Solutions like UID2.0 use hashed and encrypted identifiers to enable audience targeting and measurement in a post-cookie ecosystem.", "category": "Technology", "department": "DELIVER"}, {"acronym": "Open Path", "term": "Open Path", "quote": "Direct access to publisher inventory. No middlemen. Fewer mysteries.", "definition": "A programmatic framework enabling DSPs to connect directly with publisher supply, reducing intermediary hops. Improves transparency, bid density, and cost efficiency for buyers while ensuring publishers capture more of the advertiser's spend.", "category": "Technology", "department": "DELIVER"}, {"acronym": "Outcome", "term": "Business Outcome", "quote": "The result that tells the story, whether we like it or not.", "definition": "The measurable result or change in business performance that follows as a consequence of specific strategies or internal actions. These outcomes represent the achieved end state of a business direction—such as increased revenue, improved customer retention, or reduced operating costs—and serve as the foundational \"why\" behind organizational initiatives.", "category": "Business", "department": "ELEVATE"}, {"acronym": "P1", "term": "Period 1", "quote": "Not Q1. We're Tangoo. We do things our way.", "definition": "Tangoo's internal planning calendar divides the year into three business Periods rather than standard quarters. Period 1 opens the annual roadmap cycle with fresh strategic priorities, reviewed against the Picture of Success defined at year start.", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "P2", "term": "Period 2", "quote": "The middle child of the business year. Underrated. Crucial.", "definition": "The second of Tangoo's three planning Periods. Mid-year check-in against strategic goals, recalibration of roadmaps, and the point where the year's ambitions meet the reality of what's actually achievable.", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "P3", "term": "Period 3", "quote": "Finish strong. Or at least finish.", "definition": "The final planning Period of the Tangoo business year. Sprint to year-end targets, retrospective review of all three Periods, and the starting point for the next year's strategic planning cycle.", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "PD", "term": "Preferred Deal", "quote": "I'll save you the good seat, but I can't promise you'll get it.", "definition": "A one-to-one agreement giving a buyer first right of refusal on specific inventory at a fixed CPM — without a guaranteed volume commitment. The middle ground between open auction and programmatic guaranteed.", "category": "Technology", "department": "DELIVER"}, {"acronym": "People", "term": "People Layer", "quote": "Everything about who we are, how we grow, and how we work together.", "definition": "The Tangoo Layer encompassing all human workforce initiatives — recruitment, development, wellbeing, culture, and capability building. Without the right people, no amount of product or performance investment matters.", "category": "Tangoo", "department": "TANGOO"}, {"acronym": "Performance", "term": "Performance Layer", "quote": "The results we aim for. The ones we can influence but never fully control.", "definition": "The Tangoo Layer covering quantitative outcomes — revenue, client retention, NPS, campaign KPIs. Performance metrics are the indirect consequence of Product and People work: teams cannot mandate them, but the right inputs make them inevitable.", "category": "Tangoo", "department": "TANGOO"}, {"acronym": "Period", "term": "Period", "quote": "A unit of time for planning, because standard quarters are too mainstream.", "definition": "One of the three distinct four-month business cycles at Tangoo used for strategic planning, roadmap calibration, and performance review. Each period serves as a milestone to align team efforts with the company's annual goals and Picture of Success.", "category": "Business", "department": "ELEVATE"}, {"acronym": "PG", "term": "Programmatic Guaranteed", "quote": "The comfort of a direct buy, with a programmatic invoice.", "definition": "A deal type where advertiser and publisher agree upfront on a fixed volume of impressions at a fixed price — guaranteed. Combines the targeting precision of programmatic with the certainty of a traditional reservation buy.", "category": "Technology", "department": "DELIVER"}, {"acronym": "Planner", "term": "Media Planner", "quote": "We planned for everything. Except what actually happened.", "definition": "Defines the strategic approach to media buying: channels, budgets, audiences, and KPIs. Translates campaign objectives into a structured media plan that the Trader then executes programmatically.", "category": "Role", "department": "DELIVER"}, {"acronym": "PMP", "term": "Private Marketplace", "quote": "Like an open auction, but with a velvet rope and an invite list.", "definition": "An invitation-only programmatic auction where a publisher offers premium inventory to a select group of advertisers before it goes to the open market. Better brand safety and higher quality than open auction, at a premium price.", "category": "Technology", "department": "DELIVER"}, {"acronym": "PO / CID", "term": "Purchase Order / Campaign ID", "quote": "Before the campaign starts, the number exists. After it ends, only the number remains.", "definition": "The administrative pairing of a Purchase Order (authorising financial commitment) and a Campaign ID (the technical identifier inside the DSP or ad server). Every programmatic campaign requires both before a single impression is bought.", "category": "Technology", "department": "DELIVER"}, {"acronym": "POC", "term": "Point of Contact", "quote": "The person everyone emails when they're not sure who to email.", "definition": "The designated individual responsible for managing communication between two parties — client and agency, team and supplier. Having a clear POC eliminates duplication, speeds up decisions, and ensures accountability on both sides.", "category": "Role", "department": "ATTRACT"}, {"acronym": "PoS", "term": "Picture of Success", "quote": "The outcome we want to achieve togheter!", "definition": "A strategic alignment tool used at Tangoo to define what success looks, feels, and functions like for a given initiative before work begins. The PoS creates shared clarity by making the desired end state concrete and specific — preventing teams from building the wrong thing brilliantly.", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "PR", "term": "Public Relations", "quote": "We don't buy this coverage. We earn it. Slowly.", "definition": "The practice of managing communications between a brand and its public to build credibility and reputation. PR owns the conversation in moments advertising cannot — crises, cultural relevance, and brand-defining launches.", "category": "Business", "department": "ATTRACT"}, {"acronym": "Premium", "term": "Premium Inventory", "quote": "The best seats in the house. Available. For a price.", "definition": "High-quality ad inventory sold at above-market CPMs — directly from premium publishers, through PMPs, or programmatic guaranteed deals. Offers better viewability, stronger brand safety, and higher engagement than open auction.", "category": "Technology", "department": "DELIVER"}, {"acronym": "Principles", "term": "Principles", "quote": "The behaviours we hold ourselves to. Even on bad Mondays.", "definition": "The core behavioural standards and values that guide how Tangoo operates — defining what is and isn't acceptable, how teams treat each other and clients, and the professional standards expected at every level of the organisation.", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "Product", "term": "Product Layer", "quote": "Everything we build, do, and deliver. The 'what' behind the results.", "definition": "The Tangoo Layer representing all initiatives, projects, and standardised actions that teams directly control. Product is the only Layer teams can fully own and directly influence — where strategy becomes execution and ambition becomes deliverables.", "category": "Tangoo", "department": "TANGOO"}, {"acronym": "Programmatic Advertising", "term": "Programmatic Advertising", "quote": "Buying ads without picking up the phone. Revolutionary, apparently.", "definition": "The automated buying and selling of digital advertising inventory using technology, data, and algorithms — replacing manual insertion orders with real-time auctions and data-driven targeting at scale.", "category": "Technology", "department": "DELIVER"}, {"acronym": "PST", "term": "People Success Team", "quote": "The team that makes sure Tangoo's people can do their best work. Including the paperwork.", "definition": "The Elevate team managing human resources, people operations, and employee experience at Tangoo — covering hiring, onboarding, learning and development, performance frameworks, and cultural programmes.", "category": "Tangoo", "department": "ELEVATE"}, {"acronym": "Purpose", "term": "Purpose", "quote": "The 'why' behind everything. Including this glossary.", "definition": "Tangoo's foundational reason for existing beyond commercial objectives — the deeper mission that guides strategic decisions, shapes culture, and attracts people who want to build something meaningful. The compass against which every significant decision is measured.", "category": "Tangoo", "department": "TANGOO"}, {"acronym": "Roadmap", "term": "Roadmap", "quote": "A plan. Comprehensive. Ambitious. Updated weekly.", "definition": "A strategic document outlining goals, initiatives, and timelines over a defined planning horizon. At Tangoo, Roadmaps are structured around the Performance, Product, and People Layers and reviewed each Period. A living document — not a promise.", "category": "Business", "department": "ELEVATE"}, {"acronym": "ROAS", "term": "Return on Ad Spend", "quote": "Divide revenue by spend. Try not to cry.", "definition": "The revenue generated for every euro spent on advertising. A ROAS of 4x means €4 earned for every €1 spent. The most direct measure of campaign profitability; and the number every client asks about first.", "category": "Metric", "department": "DELIVER"}, {"acronym": "ROI", "term": "Return on Investment", "quote": "Divide net profit by total cost. Try not to check it too often.", "definition": "The ratio between net profit and total investment — the fundamental measure of financial efficiency. Underpins every budget decision, post-campaign report, and client renewal conversation. Deceptively simple to calculate, surprisingly difficult to improve.", "category": "Metric", "department": "DELIVER"}, {"acronym": "RTB", "term": "Real Time Bidding", "quote": "Milliseconds. That's all we get. Use them wisely.", "definition": "The automated auction process in which ad impressions are bought and sold in the time it takes a webpage to load, typically under 100 milliseconds. Every page view triggers a bidding war between advertisers competing for the right to show their ad.", "category": "Technology", "department": "DELIVER"}, {"acronym": "RTG", "term": "Retargeting", "quote": "That shoe you looked at once will follow you to your grave.", "definition": "A targeting strategy that re-engages users who have previously visited a website or interacted with a brand. Uses cookies or pixels to identify past visitors and serve them relevant ads across the open web.", "category": "Technology", "department": "DELIVER"}, {"acronym": "SAP", "term": "SAP", "quote": "Enterprise software that runs the world. Including the invoice pending since March.", "definition": "A leading enterprise resource planning (ERP) platform managing financial, procurement, HR, and operational processes at scale. At Tangoo, SAP supports internal financial operations via the AFC team.", "category": "Platform", "department": "ELEVATE"}, {"acronym": "SEA", "term": "Search Engine Advertising", "quote": "The only channel where people are actively looking for you. Don't blow it.", "definition": "Paid advertising on search engine results pages triggered by user queries, primarily via Google Ads. Unlike programmatic display which creates demand, SEA captures it — reaching users at the precise moment of intent.", "category": "Channel", "department": "ATTRACT"}, {"acronym": "SLA", "term": "Service Level Agreement", "quote": "In writing. Signed. Witnessed. And somehow still contested.", "definition": "A formal contract defining expected service levels — response times, deliverables, and performance thresholds. In agency life, the SLA is the document everyone quotes when something goes wrong and no one reads when it doesn't.", "category": "Business", "department": "ATTRACT"}, {"acronym": "SPO", "term": "Supply Path Optimization", "quote": "Because not every road to the publisher is equally honest.", "definition": "The practice of identifying the most direct, transparent, and cost-efficient routes to publisher inventory. By cutting out unnecessary intermediaries, SPO reduces fee leakage and improves the quality of impressions bought.", "category": "Technology", "department": "DELIVER"}, {"acronym": "SSP", "term": "Supply-Side Platform", "quote": "Every impression is an auction waiting to happen.", "definition": "A platform used by publishers to manage and sell their ad inventory programmatically. It connects to multiple DSPs simultaneously, running auctions to maximise revenue on each available impression.", "category": "Technology", "department": "DELIVER"}, {"acronym": "TDH", "term": "Terre des Hommes", "quote": "Some clients change campaigns. This one changes lives.", "definition": "An international humanitarian NGO fighting for children's rights and dignity worldwide, operating in over 40 countries. As a Tangoo partner, TDH represents programmatic expertise put to work for causes that matter — connecting mission-driven organisations with the audiences that can amplify their impact.", "category": "Vendor", "department": "CONVERT"}, {"acronym": "Team", "term": "Team", "quote": "The smallest unit of Tangoo with a shared purpose and a separate group chat.", "definition": "A specific functional unit within a Tangoo Department. Each team operates with its own defined purpose contributing to the broader departmental mission. Example: the Creative Team sits within the Deliver Department.", "category": "Tangoo", "department": "TANGOO"}, {"acronym": "Tech", "term": "Deliver - Tech Team", "quote": "They built the tools. They maintain the tools. Be kind to them.", "definition": "The specialist engineering team within Tangoo's Deliver Department — building and maintaining Tangoo's proprietary infrastructure, automated optimisation tools, ML models, and technical integrations.", "category": "Tangoo", "department": "DELIVER"}, {"acronym": "Trade-Off", "term": "Trade-Off", "quote": "Fast, cheap, or good. You know the rest.", "definition": "A decision where optimising for one variable means accepting a worse outcome in another. In media planning: reach vs. precision, brand safety vs. scale, CPM efficiency vs. inventory quality. Recognising trade-offs is the mark of strategic thinking.", "category": "Business", "department": "ELEVATE"}, {"acronym": "Trader", "term": "Programmatic Trader", "quote": "Give me a DSP and a deadline, I'll figure out the rest.", "definition": "The specialist responsible for executing and optimising programmatic campaigns. Manages bid strategies, audience segments, and real-time performance across DSP platforms to meet campaign KPIs.", "category": "Role", "department": "DELIVER"}, {"acronym": "UI / UX", "term": "User Interface / User Experience", "quote": "UI is what it looks like. UX is how it feels. Both matter when the client opens the report.", "definition": "UI is the visual and interactive design of a digital product. UX is the holistic quality of using it. In ad tech, strong UI/UX in dashboards and campaign tools directly impacts how efficiently teams operate every day.", "category": "Business", "department": "ELEVATE"}, {"acronym": "VAT", "term": "Value Added Tax", "quote": "It's on the invoice. No, the other invoice. Yes, that one.", "definition": "A consumption tax applied at each stage of production and distribution. In media buying, VAT affects how agency fees, media costs, and supplier invoices are structured — particularly in cross-border EU campaigns where rates vary by country.", "category": "Business", "department": "ELEVATE"}, {"acronym": "Webinar", "term": "Webinar", "quote": "A presentation you can't leave without feeling guilty.", "definition": "An online seminar conducted live via video conferencing. A staple of B2B demand generation for thought leadership, product demos, and lead capture. Programmatic advertising drives registrations at scale, and attendance data is a powerful retargeting signal.", "category": "Business", "department": "ATTRACT"}, {"acronym": "WFH", "term": "Work From Home", "quote": "The meeting that could have been an email, now from your kitchen.", "definition": "A working arrangement where employees work from home rather than a central office. Normalised post-pandemic, WFH reshaped digital team collaboration, accelerated tool adoption, and permanently blurred the boundary between work and everything else.", "category": "Business", "department": "ELEVATE"}, {"acronym": "AdCP", "term": "", "quote": "The roadmap for your budget, before the first impression is bought.", "definition": "An open standard built on the Model Context Protocol (MCP) that enables AI agents to discover inventory, negotiate terms, and execute campaigns through a common language. It standardizes agentic workflows across the advertising ecosystem, bridging the gap between strategic intent and automated execution.", "category": "Business", "department": "ELEVATE"}];
+</script>
+<script>
+(function(){
+  "use strict";
+  const $=s=>document.querySelector(s);
+  const KEYS={users:'tangoo_users',sugg:'tangoo_suggestions',session:'tangoo_session',
+    terms:'tangoo_terms_patch',events:'tangoo_events',totd:'tangoo_totd'};
+
+  /* ---------- storage ---------- */
+  const store={
+    get(k,def){try{const v=JSON.parse(localStorage.getItem(k));return v==null?def:v}catch(e){return def}},
+    set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){/* storage blocked/full — ignore */}}
+  };
+  const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+
+  /* ---------- crypto helpers ---------- */
+  function simpleHash(s){let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)}return(h>>>0).toString(16)}
+  function genSalt(){const a=new Uint8Array(16);
+    if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(a);
+    else for(let i=0;i<a.length;i++)a[i]=(i*37+11)&255;
+    return[...a].map(b=>b.toString(16).padStart(2,'0')).join('')}
+  async function hashPw(pw,salt){const data=salt+':'+pw;
+    if(window.crypto&&crypto.subtle){try{
+      const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(data));
+      return'sha256:'+[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+    }catch(e){}}
+    return'simple:'+simpleHash(data)}
+
+  /* ---------- users / auth ---------- */
+  async function makeUser(name,email,pw,role){
+    const salt=genSalt();
+    return{id:uid(),name:name.trim(),email:email.trim().toLowerCase(),
+      pass:await hashPw(pw,salt),salt,role,active:true,
+      createdAt:new Date().toISOString(),lastVisit:new Date().toISOString()}
+  }
+  async function seed(){
+    let users=store.get(KEYS.users,null);
+    if(!users){
+      const admin=await makeUser('Engji Goga','engji.goga@tangoo.com','tangoo-admin','admin');
+      store.set(KEYS.users,[admin]);
+    }
+    if(store.get(KEYS.sugg,null)==null)store.set(KEYS.sugg,[]);
+    if(store.get(KEYS.terms,null)==null)store.set(KEYS.terms,{edits:{},deletes:[],adds:[]});
+    if(store.get(KEYS.events,null)==null)store.set(KEYS.events,[]);
+    if(store.get(KEYS.totd,null)==null)store.set(KEYS.totd,{});
+  }
+  const getUsers=()=>store.get(KEYS.users,[]);
+  const saveUsers=u=>store.set(KEYS.users,u);
+  const findUser=email=>getUsers().find(u=>u.email===(email||'').trim().toLowerCase());
+  function currentUser(){const s=store.get(KEYS.session,null);return s?findUser(s.email):null}
+  function setSession(email){store.set(KEYS.session,{email});}
+  function signOut(){localStorage.removeItem(KEYS.session);renderAuthArea();route();toast('Signed out');}
+
+  async function login(email,pw){
+    const u=findUser(email);
+    if(!u)throw new Error('No account found for that email.');
+    if(!u.active)throw new Error('This account has been deactivated.');
+    const h=await hashPw(pw,u.salt);
+    if(h!==u.pass)throw new Error('Incorrect password.');
+    u.lastVisit=new Date().toISOString();
+    saveUsers(getUsers().map(x=>x.id===u.id?u:x));
+    setSession(u.email);
+    return u;
+  }
+  async function register(name,email,pw){
+    if(!name.trim())throw new Error('Please enter your name.');
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))throw new Error('Please enter a valid email.');
+    if(pw.length<6)throw new Error('Password must be at least 6 characters.');
+    if(findUser(email))throw new Error('An account with that email already exists.');
+    const u=await makeUser(name,email,pw,'user');
+    saveUsers([...getUsers(),u]);
+    setSession(u.email);
+    return u;
+  }
+
+  /* ---------- suggestions ---------- */
+  const getSugg=()=>store.get(KEYS.sugg,[]);
+  const saveSugg=s=>store.set(KEYS.sugg,s);
+  function addSuggestion(o){
+    const s=getSugg();
+    s.unshift({id:uid(),term:o.term,definition:o.definition,category:o.category||'',
+      submitterName:o.submitterName||'',submitterEmail:o.submitterEmail||'',
+      status:'pending',createdAt:new Date().toISOString()});
+    saveSugg(s);
+  }
+  function setSuggStatus(id,status){
+    saveSugg(getSugg().map(s=>s.id===id?{...s,status,decidedAt:new Date().toISOString()}:s));
+  }
+  function updateSuggestion(id,fields){
+    saveSugg(getSugg().map(s=>s.id===id?{...s,...fields}:s));
+  }
+
+  /* ---------- glossary terms store (base DATA + admin patch) ---------- */
+  const getPatch=()=>store.get(KEYS.terms,{edits:{},deletes:[],adds:[]});
+  const savePatch=p=>store.set(KEYS.terms,p);
+  function createTerm(f){
+    const p=getPatch();p.adds=p.adds||[];const id='custom:'+uid();
+    p.adds.push({id,acronym:f.acronym.trim(),term:(f.term||f.acronym).trim(),quote:(f.quote||'').trim(),
+      definition:(f.definition||'').trim(),category:(f.category||'').trim(),department:(f.department||'').trim(),
+      community:!!f.community});
+    savePatch(p);return id;
+  }
+  function updateTerm(id,f){
+    const p=getPatch();
+    if(id.indexOf('custom:')===0){p.adds=(p.adds||[]).map(a=>a.id===id?{...a,...f}:a);}
+    else{p.edits=p.edits||{};p.edits[id]={...p.edits[id],...f};}
+    savePatch(p);
+  }
+  function removeTerm(id){
+    const p=getPatch();
+    if(id.indexOf('custom:')===0){p.adds=(p.adds||[]).filter(a=>a.id!==id);}
+    else{p.deletes=p.deletes||[];if(!p.deletes.includes(id))p.deletes.push(id);}
+    savePatch(p);
+  }
+  function isEdited(id){const p=getPatch();return!!(p.edits&&p.edits[id]);}
+
+  /* ---------- analytics events (anonymised) ---------- */
+  const getEvents=()=>store.get(KEYS.events,[]);
+  function logEvent(e){const evs=getEvents();evs.push({ts:Date.now(),...e});
+    if(evs.length>6000)evs.splice(0,evs.length-6000);store.set(KEYS.events,evs);}
+  let lastSearchLogged='';
+  function logSearch(q,n){q=(q||'').trim();if(q.length<2)return;
+    if(q.toLowerCase()===lastSearchLogged)return;lastSearchLogged=q.toLowerCase();
+    logEvent({type:'search',q,n});}
+  function logView(acr){if(acr)logEvent({type:'view',acr});}
+  function evInRange(days){const cut=Date.now()-days*86400000;return getEvents().filter(e=>e.ts>=cut);}
+  function topSearches(days,onlyZero){
+    const m={};evInRange(days).filter(e=>e.type==='search'&&(onlyZero?e.n===0:true)).forEach(e=>{
+      const k=e.q.toLowerCase();(m[k]||(m[k]={q:e.q,count:0})).count++;});
+    return Object.values(m).sort((a,b)=>b.count-a.count);
+  }
+  function topViews(days){const m={};
+    evInRange(days).filter(e=>e.type==='view').forEach(e=>{(m[e.acr]||(m[e.acr]={acr:e.acr,count:0})).count++;});
+    return Object.values(m).sort((a,b)=>b.count-a.count);
+  }
+  function analyticsSummary(days){
+    const evs=evInRange(days);
+    const totalSearches=evs.filter(e=>e.type==='search').length;
+    const views=evs.filter(e=>e.type==='view');
+    const uniqTerms=new Set(views.map(e=>e.acr)).size;
+    const byAcr={};fullList().forEach(d=>byAcr[d.acronym.toLowerCase()]=d);
+    const catCount={};
+    views.forEach(e=>{const d=byAcr[(e.acr||'').toLowerCase()];
+      if(d&&d.category)catCount[d.category]=(catCount[d.category]||0)+1;});
+    const top=Object.entries(catCount).sort((a,b)=>b[1]-a[1])[0];
+    return{totalSearches,uniqTerms,topCat:top?top[0]:'—',zeroCount:evs.filter(e=>e.type==='search'&&e.n===0).length};
+  }
+
+  /* ---------- Term of the Day (no-repeat daily rotation + admin override) ---------- */
+  function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  function dayNumFromStr(s){const p=s.split('-').map(Number);
+    return Math.floor(new Date(p[0],p[1]-1,p[2]).getTime()/86400000);}
+  function seededOrder(n,seed){const a=[...Array(n).keys()];let s=(seed>>>0)||1;
+    const rnd=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};
+    for(let i=n-1;i>0;i--){const j=Math.floor(rnd()*(i+1));const tmp=a[i];a[i]=a[j];a[j]=tmp;}return a;}
+  const getTotdOverrides=()=>store.get(KEYS.totd,{});
+  function setTotdOverride(dateStr,id){const o=getTotdOverrides();
+    if(id)o[dateStr]=id;else delete o[dateStr];store.set(KEYS.totd,o);}
+  function totdForDate(dateStr){
+    const list=fullList();if(!list.length)return null;
+    const ov=getTotdOverrides()[dateStr];
+    if(ov){const f=list.find(d=>d.id===ov)||list.find(d=>d.acronym===ov);if(f)return f;}
+    const N=list.length,dn=dayNumFromStr(dateStr),cycle=Math.floor(dn/N),pos=((dn%N)+N)%N;
+    return list[seededOrder(N,cycle*2654435761+7)[pos]];
+  }
+  const todayTotd=()=>totdForDate(ymd(new Date()));
+
+  /* ---------- helpers ---------- */
+  function esc(s){return(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+  function hl(text,q){text=esc(text);if(!q)return text;
+    const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');
+    return text.replace(re,'<mark>$1</mark>')}
+  function initials(name){return(name||'?').trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase()}
+  function fmtDate(iso){if(!iso)return'—';const d=new Date(iso);
+    return d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})+
+      ', '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}
+  let toastT;
+  function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');
+    clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600)}
+
+  /* ---------- motion helpers (all respect prefers-reduced-motion) ---------- */
+  const reduceMotion=()=>window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* cipher-decode: scramble random chars, then resolve to finalText (<1s) */
+  let decodeTimer;
+  function cipherDecode(el,finalText,done){
+    clearInterval(decodeTimer);
+    if(!el)return;
+    if(reduceMotion()){el.textContent=finalText;if(done)done();return;}
+    const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@%&*';
+    const len=finalText.length;
+    const total=Math.min(28,Math.max(10,len*2)),perChar=total/len;
+    let frame=0;
+    decodeTimer=setInterval(()=>{
+      frame++;let out='';
+      for(let i=0;i<len;i++){
+        const c=finalText[i];
+        if(c===' '){out+=' ';continue;}
+        out+=frame>=perChar*(i+1)?c:chars[Math.floor(Math.random()*chars.length)];
+      }
+      el.textContent=out;
+      if(frame>=total){clearInterval(decodeTimer);el.textContent=finalText;if(done)done();}
+    },28);
+  }
+
+  /* magnetic hover: nudge a button toward the cursor, snap back on leave */
+  function makeMagnetic(el){
+    if(!el||reduceMotion()||el._mag)return;el._mag=1;
+    el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();
+      const dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
+      el.style.transform=`translate(${(dx*0.28).toFixed(1)}px,${(dy*0.4).toFixed(1)}px)`;});
+    el.addEventListener('mouseleave',()=>{el.style.transform='';});
+  }
+
+  /* one-time scroll reveal for term cards */
+  const cardIO=('IntersectionObserver'in window)?new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{if(en.isIntersecting){const c=en.target;c.classList.add('in');
+      cardIO.unobserve(c);setTimeout(()=>c.classList.remove('reveal-card','in'),650);}});
+  },{rootMargin:'0px 0px -8% 0px',threshold:0.06}):null;
+
+  /* ---------- cross-linking (auto-detect glossary terms in definitions) ---------- */
+  let XMAP={},XRE=null;
+  function acronymLike(a){
+    if(a.length<2||/\s/.test(a))return false;
+    const uppers=(a.match(/[A-Z]/g)||[]).length;
+    return uppers>=2||a===a.toUpperCase();
+  }
+  function buildXref(list){
+    XMAP={};const keys=[],seen=new Set();
+    const add=(text,ref,acrLike,canonAcr)=>{
+      const low=text.toLowerCase();if(seen.has(low))return;seen.add(low);
+      XMAP[low]={ref,acrLike,key:text,canonAcr};keys.push(text);
+    };
+    list.forEach(d=>{
+      const acr=(d.acronym||'').trim(),term=(d.term||'').trim(),ref=acr.toLowerCase();
+      if(acr&&acronymLike(acr))add(acr,ref,true,acr);
+      if(term&&/\s/.test(term)&&term.length>=6)add(term,ref,false,acr);
+    });
+    if(!keys.length){XRE=null;return;}
+    keys.sort((a,b)=>b.length-a.length);
+    const alt=keys.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|');
+    XRE=new RegExp('(?<![A-Za-z0-9])('+alt+')(s)?(?![A-Za-z0-9])','gi');
+  }
+  /* render a definition: escapes, applies search highlight, and wraps matched terms in links */
+  function linkify(text,q,selfSet){
+    if(!XRE||!text)return hl(text,q);
+    let out='',last=0,m;XRE.lastIndex=0;
+    while((m=XRE.exec(text))){
+      const whole=m[0],core=m[1],entry=XMAP[core.toLowerCase()];
+      let link=false;
+      if(entry&&!selfSet.has(entry.ref)){
+        link=entry.acrLike?(core===entry.key):true;
+      }
+      out+=hl(text.slice(last,m.index),q);
+      out+=link
+        ?`<a class="xref" data-ref="${esc(entry.ref)}" title="${esc(entry.canonAcr)}">${hl(whole,q)}</a>`
+        :hl(whole,q);
+      last=m.index+whole.length;
+      if(XRE.lastIndex===m.index)XRE.lastIndex++;
+    }
+    out+=hl(text.slice(last),q);
+    return out;
+  }
+  function selfSetFor(d){return new Set([d.acronym.toLowerCase(),(d.term||'').toLowerCase()]);}
+
+  /* jump to a term's card (scroll + highlight) or open its detail if not in the current list */
+  function jumpToTerm(refLower){
+    const idx=current.findIndex(d=>d.acronym.toLowerCase()===refLower);
+    if(idx>=0){
+      if(overlay.classList.contains('show'))closeModal();
+      const el=document.querySelector('.card[data-i="'+idx+'"]');
+      if(el){el.scrollIntoView({behavior:'smooth',block:'center'});flashCard(el);return;}
+    }
+    const d=fullList().find(x=>x.acronym.toLowerCase()===refLower);
+    if(d){if(overlay.classList.contains('show'))closeModal();openDetail(d);}
+  }
+  function flashCard(el){el.classList.remove('flash');void el.offsetWidth;
+    el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600);}
+
+  /* ---------- A–Z side index + scrollspy ---------- */
+  function buildAZ(present){
+    const nav=$('#azNav');if(!nav)return;
+    if(!present.size){nav.style.display='none';nav.innerHTML='';return;}
+    nav.style.display='flex';
+    const all='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const letters=(present.has('#')?['#']:[]).concat(all);
+    nav.innerHTML='<span class="az-pill"></span>'+letters.map(L=>{const on=present.has(L);
+      return`<a data-letter="${L}"${on?'':' class="disabled"'}>${L}</a>`;}).join('');
+    nav.querySelectorAll('a:not(.disabled)').forEach(a=>a.onclick=()=>{
+      const el=document.getElementById('grp-'+a.dataset.letter);
+      if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});
+    updateSpy();
+  }
+  function updateSpy(){
+    const nav=$('#azNav');if(!nav||nav.style.display==='none')return;
+    const groups=[...document.querySelectorAll('.letter-group')];if(!groups.length)return;
+    let active=groups[0].dataset.letter;
+    for(const g of groups){if(g.getBoundingClientRect().top<=140)active=g.dataset.letter;else break;}
+    let activeA=null;
+    nav.querySelectorAll('a').forEach(a=>{const on=a.dataset.letter===active;
+      a.classList.toggle('active',on);if(on)activeA=a;});
+    const pill=nav.querySelector('.az-pill');
+    if(pill&&activeA){pill.style.width=activeA.offsetWidth+'px';pill.style.height=activeA.offsetHeight+'px';
+      pill.style.left=activeA.offsetLeft+'px';pill.style.transform='translateY('+activeA.offsetTop+'px)';
+      pill.classList.add('show');}
+    else if(pill)pill.classList.remove('show');
+  }
+  let spyRAF;
+  window.addEventListener('scroll',()=>{cancelAnimationFrame(spyRAF);
+    spyRAF=requestAnimationFrame(updateSpy);},{passive:true});
+
+
+  /* effective glossary = base DATA + admin edits/deletes/adds (approved suggestions become adds) */
+  function fullList(){
+    const p=getPatch();
+    let list=DATA.map(d=>{const id='base:'+d.acronym;const e=(p.edits||{})[id];
+      return Object.assign({},d,e||{},{id,_src:'base'});});
+    const del=p.deletes||[];
+    list=list.filter(d=>!del.includes(d.id));
+    (p.adds||[]).forEach(a=>{if(!del.includes(a.id))list.push(Object.assign({},a,{_src:'custom'}));});
+    return list;
+  }
+
+  /* ---------- category dropdown ---------- */
+  function buildCatFilter(){
+    const list=fullList();
+    const cats=[...new Set(list.map(d=>d.category).filter(Boolean))].sort();
+    const sel=$('#catFilter');
+    const cur=sel.value||'All';
+    sel.innerHTML=`<option value="All">All categories (${list.length})</option>`+
+      cats.map(c=>`<option value="${esc(c)}">${esc(c)} (${list.filter(d=>d.category===c).length})</option>`).join('');
+    sel.value=[...sel.options].some(o=>o.value===cur)?cur:'All';
+    sel.classList.toggle('filtered',sel.value!=='All');
+  }
+
+  /* ---------- glossary render ---------- */
+  let state={q:'',cat:'All'};
+  function firstLetter(d){const c=(d.acronym||d.term||'#').trim().charAt(0).toUpperCase();
+    return/[A-Z]/.test(c)?c:'#'}
+  function matches(d,q){if(!q)return true;
+    return(d.acronym+' '+d.term+' '+d.definition+' '+d.quote+' '+d.category+' '+d.department)
+      .toLowerCase().includes(q)}
+  function isTBD(d){return!d.definition||d.definition.trim().toUpperCase()==='TBD'}
+
+  function cardHTML(d,idx){
+    const q=state.q,same=d.term.trim().toLowerCase()===d.acronym.trim().toLowerCase(),tbd=isTBD(d);
+    const self=selfSetFor(d);
+    const rc=(cardIO&&!reduceMotion())?' reveal-card':'';
+    return`<article class="card${rc}" data-i="${idx}">
+      <div class="card-top">
+        <div>
+          <div class="acronym">${hl(d.acronym,q)}</div>
+          <div class="term${same?' same':''}">${hl(d.term,q)}</div>
+        </div>
+        <div class="badges">
+          ${d.community?`<span class="badge community">Community</span>`:''}
+          ${d.category?`<span class="badge cat">${esc(d.category)}</span>`:''}
+          ${d.department?`<span class="badge dept">${esc(d.department)}</span>`:''}
+        </div>
+      </div>
+      ${d.quote?`<p class="quote">${hl(d.quote,q)}</p>`:''}
+      <p class="definition${tbd?' tbd':''}">${tbd?'Definition coming soon.':linkify(d.definition,q,self)}</p>
+    </article>`;
+  }
+
+  let current=[];
+  function renderGlossary(){
+    buildCatFilter();
+    const q=state.q.trim().toLowerCase();
+    const list=fullList();
+    buildXref(list);
+    current=list.filter(d=>(state.cat==='All'||d.category===state.cat)&&matches(d,q))
+      .sort((a,b)=>a.acronym.toLowerCase().localeCompare(b.acronym.toLowerCase()));
+    const groups={};
+    current.forEach(d=>{const L=firstLetter(d);(groups[L]=groups[L]||[]).push(d)});
+    const letters=Object.keys(groups).sort();
+    $('#results').innerHTML=letters.map(L=>
+      `<section class="letter-group" id="grp-${L}" data-letter="${L}"><h2 class="letter-head">${L}</h2>
+        <div class="cards">${groups[L].map(d=>cardHTML(d,current.indexOf(d))).join('')}</div>
+      </section>`).join('');
+    $('#empty').classList.toggle('show',current.length===0);
+    $('#footTotal').textContent=list.length;
+    buildAZ(new Set(letters));
+    if(cardIO&&!reduceMotion())$('#results').querySelectorAll('.card.reveal-card').forEach(c=>cardIO.observe(c));
+    renderHomeFeatures();
+  }
+
+  /* ---------- homepage: Term of the Day + Trending ---------- */
+  function renderHomeFeatures(){
+    const host=$('#homeFeatures');if(!host)return;
+    if(state.q.trim()||state.cat!=='All'){host.style.display='none';host.innerHTML='';return;}
+    host.style.display='block';
+    let html='';
+    const totd=todayTotd();
+    if(totd){
+      const same=totd.term.trim().toLowerCase()===totd.acronym.trim().toLowerCase(),tbd=isTBD(totd),self=selfSetFor(totd);
+      html+=`<div class="totd-wrap">
+        <div class="feature-label">★ Term of the Day</div>
+        <article class="totd-card" data-acr="${esc(totd.acronym)}">
+          <div class="card-top">
+            <div><div class="acronym"><span class="dc">${esc(totd.acronym)}</span></div>
+              <div class="term totd-seq${same?' same':''}">${esc(totd.term)}</div></div>
+            <div class="badges totd-seq">
+              ${totd.community?`<span class="badge community">Community</span>`:''}
+              ${totd.category?`<span class="badge cat">${esc(totd.category)}</span>`:''}
+              ${totd.department?`<span class="badge dept">${esc(totd.department)}</span>`:''}
+            </div>
+          </div>
+          ${totd.quote?`<p class="quote totd-seq">${esc(totd.quote)}</p>`:''}
+          <p class="definition totd-seq${tbd?' tbd':''}">${tbd?'Definition coming soon.':linkify(totd.definition,'',self)}</p>
+        </article></div>`;
+    }
+    host.innerHTML=html;
+    if(totd){
+      const dcEl=host.querySelector('.totd-card .dc');
+      const seq=[...host.querySelectorAll('.totd-seq')];
+      const revealSeq=()=>seq.forEach((el,i)=>setTimeout(()=>el.classList.add('in'),reduceMotion()?0:70+i*90));
+      cipherDecode(dcEl,totd.acronym,revealSeq);
+    }
+  }
+  $('#homeFeatures').addEventListener('click',e=>{
+    const x=e.target.closest('a.xref');
+    if(x){e.preventDefault();jumpToTerm(x.dataset.ref);return;}
+    const it=e.target.closest('[data-acr]');if(!it)return;
+    const d=fullList().find(t=>t.acronym===it.dataset.acr);if(d)openDetail(d);
+  });
+
+  /* ---------- auth area (header) ---------- */
+  function renderAuthArea(){
+    const el=$('#authArea');if(!el)return;
+    const u=currentUser();
+    if(u){
+      el.innerHTML=`<span class="user-cluster">
+        <span class="avatar">${initials(u.name)}</span>
+        <span class="u-meta">
+          <span class="u-first">${esc(u.name.split(' ')[0])}</span>
+          ${u.role==='admin'?'<span class="role-tag">Admin</span>':''}
+        </span>
+        <span class="cluster-div"></span>
+        ${u.role==='admin'?`<button class="cluster-btn" id="adminLink" title="Admin panel">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          Admin</button>`:''}
+        <button class="cluster-btn icon-only" id="signOutBtn" title="Sign out" aria-label="Sign out">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        </button>
+      </span>`;
+      const al=$('#adminLink');if(al)al.onclick=()=>location.hash='admin';
+      $('#signOutBtn').onclick=signOut;
+    }else{
+      el.innerHTML=`<button class="btn btn-ghost-light" id="signInBtn">Sign in</button>`;
+      $('#signInBtn').onclick=()=>openAuthModal();makeMagnetic($('#signInBtn'));
+    }
+  }
+
+  /* ================= MODALS ================= */
+  const overlay=$('#modalOverlay'),modalEl=$('#modal');
+  function openModal(html){modalEl.innerHTML=html;overlay.classList.add('show');
+    document.body.style.overflow='hidden';
+    const c=modalEl.querySelector('.modal-close');if(c)c.onclick=closeModal;}
+  function closeModal(){overlay.classList.remove('show');document.body.style.overflow='';}
+  overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+  /* term detail */
+  function openDetail(d){
+    logView(d.acronym);
+    const same=d.term.trim().toLowerCase()===d.acronym.trim().toLowerCase(),tbd=isTBD(d);
+    const self=selfSetFor(d);
+    openModal(`<button class="modal-close">✕</button>
+      <div class="acronym">${esc(d.acronym)}</div>
+      ${!same?`<div class="term">${esc(d.term)}</div>`:''}
+      <div class="badges">
+        ${d.community?`<span class="badge community">Community</span>`:''}
+        ${d.category?`<span class="badge cat">${esc(d.category)}</span>`:''}
+        ${d.department?`<span class="badge dept">${esc(d.department)}</span>`:''}
+      </div>
+      ${d.quote?`<p class="quote">${esc(d.quote)}</p>`:''}
+      <div class="def-label">Definition</div>
+      <p class="definition${tbd?' tbd':''}">${tbd?'Definition coming soon.':linkify(d.definition,'',self)}</p>`);
+  }
+  $('#results').addEventListener('click',e=>{
+    const x=e.target.closest('a.xref');
+    if(x){e.preventDefault();jumpToTerm(x.dataset.ref);return;}
+    const c=e.target.closest('.card');if(!c)return;openDetail(current[+c.dataset.i]);});
+  modalEl.addEventListener('click',e=>{
+    const x=e.target.closest('a.xref');
+    if(x){e.preventDefault();e.stopPropagation();jumpToTerm(x.dataset.ref);}});
+
+  /* suggest a term */
+  function openSuggestModal(){
+    const u=currentUser();
+    const cats=[...new Set(fullList().map(d=>d.category).filter(Boolean))].sort();
+    const attrib=u
+      ?`<div class="hint">Submitting as <b>${esc(u.name)}</b> — your suggestion will be credited to you.</div>`
+      :`<div class="hint">Submitting anonymously. <a id="suggSignIn" style="color:var(--orange);cursor:pointer;text-decoration:underline">Sign in</a> to attach your name.</div>`;
+    openModal(`<button class="modal-close">✕</button>
+      <h2>Suggest a term</h2>
+      <p class="sub">Spotted a missing acronym or bit of jargon? Send it our way — an admin will review it.</p>
+      <form id="suggestForm" novalidate>
+        <div class="field"><label>Term or acronym *</label>
+          <input name="term" placeholder="e.g. CTV" maxlength="80" required></div>
+        <div class="field"><label>Suggested definition *</label>
+          <textarea name="definition" placeholder="What does it mean?" maxlength="1000" required></textarea></div>
+        <div class="field"><label>Category <span class="opt">(optional)</span></label>
+          <select name="category"><option value="">— Select —</option>
+            ${cats.map(c=>`<option>${esc(c)}</option>`).join('')}</select></div>
+        <div class="form-error" id="suggErr"></div>
+        <button type="submit" class="btn btn-primary btn-block">Submit suggestion</button>
+        ${attrib}
+      </form>`);
+    const si=$('#suggSignIn');if(si)si.onclick=()=>openAuthModal(()=>openSuggestModal());
+    $('#suggestForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const f=e.target,term=f.term.value.trim(),def=f.definition.value.trim();
+      const err=$('#suggErr');err.textContent='';
+      if(!term||!def){err.textContent='Please fill in the term and its definition.';return;}
+      addSuggestion({term,definition:def,category:f.category.value,
+        submitterName:u?u.name:'',submitterEmail:u?u.email:''});
+      openModal(`<button class="modal-close">✕</button>
+        <div class="success-box">
+          <div class="check">✓</div>
+          <h2>Thanks — got it!</h2>
+          <p class="sub" style="margin-bottom:20px">Your suggestion for <b>${esc(term)}</b> is now pending review. An admin will approve or decline it soon.</p>
+          <button class="btn btn-outline btn-block" onclick="document.querySelector('.modal-close').click()">Close</button>
+        </div>`);
+      if(adminIsOpen())renderAdmin();
+    });
+  }
+  $('#suggestBtn').onclick=openSuggestModal;
+
+  /* auth modal (login / register) */
+  function openAuthModal(afterLogin){
+    let mode='login';
+    const draw=()=>{
+      openModal(`<button class="modal-close">✕</button>
+        <h2>${mode==='login'?'Welcome back':'Create an account'}</h2>
+        <p class="sub">${mode==='login'?'Sign in to your Tangoo Glossary account.':'Join so we can credit your suggestions.'}</p>
+        <div class="auth-tabs">
+          <button type="button" data-m="login" class="${mode==='login'?'active':''}">Sign in</button>
+          <button type="button" data-m="register" class="${mode==='register'?'active':''}">Register</button>
+        </div>
+        <form id="authForm" novalidate>
+          ${mode==='register'?`<div class="field"><label>Name *</label><input name="name" required></div>`:''}
+          <div class="field"><label>Email *</label><input name="email" type="email" required></div>
+          <div class="field"><label>Password *</label><input name="password" type="password" required></div>
+          <div class="form-error" id="authErr"></div>
+          <button type="submit" class="btn btn-primary btn-block">${mode==='login'?'Sign in':'Create account'}</button>
+        </form>
+        ${mode==='login'?`<div class="hint">Preview demo — try the <b>admin panel</b> with<br><b>engji.goga@tangoo.com</b> / <b>tangoo-admin</b> · <a id="fillDemo" style="color:var(--orange);cursor:pointer;text-decoration:underline;font-weight:700">Fill in</a></div>`:''}`);
+      modalEl.querySelectorAll('.auth-tabs button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;draw();});
+      const fd=$('#fillDemo');if(fd)fd.onclick=()=>{const f=$('#authForm');
+        f.email.value='engji.goga@tangoo.com';f.password.value='tangoo-admin';f.email.focus();};
+      $('#authForm').addEventListener('submit',async e=>{
+        e.preventDefault();const f=e.target,err=$('#authErr');err.textContent='';
+        const btn=f.querySelector('button[type=submit]');btn.disabled=true;
+        try{
+          if(mode==='login')await login(f.email.value,f.password.value);
+          else await register(f.name.value,f.email.value,f.password.value);
+          closeModal();renderAuthArea();toast('Signed in');
+          if(afterLogin)afterLogin();else route();
+        }catch(ex){err.textContent=ex.message;btn.disabled=false;}
+      });
+    };
+    draw();
+  }
+
+  /* ================= ADMIN ================= */
+  function adminIsOpen(){return location.hash.replace(/^#\/?/,'')==='admin'}
+  let adminTab='suggestions',suggFilter='pending',anRange=7,tmQuery='',totdOffset=0;
+
+  function renderAdmin(){
+    const u=currentUser();
+    const top=$('#adminTopActions');
+    if(!u||u.role!=='admin'){
+      top.innerHTML=`<button class="btn btn-ghost-light" onclick="location.hash=''">← Back to glossary</button>`;
+      $('#adminContent').innerHTML=`<div class="admin-gate">
+        <div class="lock">🔒</div>
+        <h2>Admin access required</h2>
+        <p>${u?'Your account does not have admin permissions. Contact an existing admin to be upgraded.':'Please sign in with an admin account to continue.'}</p>
+        ${u?'':`<button class="btn btn-primary btn-block" id="gateSignIn">Sign in</button>`}
+        <button class="btn btn-outline btn-block" style="margin-top:10px" onclick="location.hash=''">Back to glossary</button>
+      </div>`;
+      const g=$('#gateSignIn');if(g)g.onclick=()=>openAuthModal(()=>route());
+      return;
+    }
+    top.innerHTML=`
+      <span class="user-pill"><span class="avatar">${initials(u.name)}</span>
+        <span>${esc(u.name.split(' ')[0])}</span><span class="role-tag">Admin</span></span>
+      <button class="btn btn-ghost-light btn-sm" onclick="location.hash=''">← Glossary</button>
+      <button class="btn btn-ghost-light btn-sm" id="adminSignOut">Sign out</button>`;
+    $('#adminSignOut').onclick=signOut;
+
+    const users=getUsers(),sugg=getSugg();
+    const pendingCount=sugg.filter(s=>s.status==='pending').length;
+    const tabs=[
+      ['totd','Term of the Day',''],
+      ['analytics','Analytics',''],
+      ['suggestions','Suggestions',pendingCount],
+      ['terms','Terms ('+fullList().length+')',''],
+      ['users','Users ('+users.length+')','']
+    ];
+    const body={
+      totd:totdAdminPanel(),analytics:analyticsPanel(),
+      suggestions:suggPanel(sugg),terms:termsPanel(),users:usersPanel(users,u)
+    };
+    $('#adminContent').innerHTML=`<div class="admin-body">
+      <div class="admin-tabs">
+        ${tabs.map(([t,label,badge])=>`<button data-t="${t}" class="${adminTab===t?'active':''}">
+          ${label}${badge?`<span class="badge-num">${badge}</span>`:''}</button>`).join('')}
+      </div>
+      ${tabs.map(([t])=>`<div class="panel-section ${adminTab===t?'active':''}">${body[t]}</div>`).join('')}
+    </div>`;
+
+    $('#adminContent').querySelectorAll('.admin-tabs button').forEach(b=>
+      b.onclick=()=>{adminTab=b.dataset.t;renderAdmin()});
+    wireAdminActions(u);
+  }
+
+  /* ---------- admin: Term of the Day ---------- */
+  function totdAdminPanel(){
+    const ov=getTotdOverrides();
+    const rows=[];
+    for(let i=0;i<14;i++){
+      const d=new Date();d.setDate(d.getDate()+totdOffset+i);
+      const s=ymd(d),t=totdForDate(s),isOv=!!ov[s];
+      const dow=d.toLocaleDateString(undefined,{weekday:'short'});
+      const dstr=d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+      rows.push(`<div class="totd-list-row">
+        <div class="totd-date">${i===0&&totdOffset===0?'Today':dstr} <span class="dow">${dow}</span></div>
+        <div class="totd-pick">${t?esc(t.acronym):'—'}${isOv?'':'<span class="auto">auto</span>'}</div>
+        ${isOv?`<span class="totd-ovr">Override</span>`:''}
+        <div class="row-actions">
+          <button class="icon-btn" data-totdset="${s}">Set…</button>
+          ${isOv?`<button class="icon-btn danger" data-totdclear="${s}">Clear</button>`:''}
+        </div>
+      </div>`);
+    }
+    return`<div class="tm-toolbar">
+        <button class="icon-btn" data-totdnav="-7">← Previous week</button>
+        <button class="icon-btn" data-totdnav="7">Next week →</button>
+        ${totdOffset!==0?`<button class="icon-btn" data-totdnav="reset">Back to today</button>`:''}
+        <span class="tm-count">Automatic picks rotate through all ${fullList().length} terms with no repeats, then reshuffle.</span>
+      </div>
+      <div class="panel">${rows.join('')}</div>`;
+  }
+
+  /* ---------- admin: Analytics ---------- */
+  function analyticsPanel(){
+    const sum=analyticsSummary(anRange);
+    const searches=topSearches(anRange,false).slice(0,15);
+    const zeros=topSearches(anRange,true).slice(0,15);
+    const views=topViews(anRange).slice(0,15);
+    const maxS=searches.length?searches[0].count:1;
+    const maxV=views.length?views[0].count:1;
+    const rangeBtns=`<div class="seg">${[7,30,90].map(r=>
+      `<button data-anr="${r}" class="${anRange===r?'active':''}">Last ${r} days</button>`).join('')}</div>`;
+    const searchRows=searches.length?searches.map((s,i)=>`<div class="rank-row">
+        <span class="n">${i+1}</span><span class="q" data-jump="${esc(s.q)}">${esc(s.q)}</span>
+        <span class="bar" style="width:${Math.round(s.count/maxS*90)+10}px"></span>
+        <span class="ct">${s.count}</span></div>`).join('')
+      :`<div class="panel-empty" style="padding:34px"><p>No searches recorded yet in this range.</p></div>`;
+    const zeroRows=zeros.length?zeros.map((s,i)=>`<div class="rank-row zero zero-q">
+        <span class="n">${i+1}</span><span class="q" data-jump="${esc(s.q)}">${esc(s.q)}</span>
+        <span class="ct">${s.count}</span></div>`).join('')
+      :`<div class="panel-empty" style="padding:34px"><div class="big">✅</div><p>No zero-result searches — great coverage!</p></div>`;
+    const viewRows=views.length?views.map((v,i)=>`<div class="rank-row">
+        <span class="n">${i+1}</span><span class="q" data-jump="${esc(v.acr)}">${esc(v.acr)}</span>
+        <span class="bar" style="width:${Math.round(v.count/maxV*90)+10}px"></span>
+        <span class="ct">${v.count}</span></div>`).join('')
+      :`<div class="panel-empty" style="padding:34px"><p>No term views recorded yet in this range.</p></div>`;
+    return`${rangeBtns}
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-num">${sum.totalSearches}</div><div class="stat-lbl">Total searches</div></div>
+        <div class="stat-card"><div class="stat-num">${sum.uniqTerms}</div><div class="stat-lbl">Unique terms viewed</div></div>
+        <div class="stat-card"><div class="stat-num">${sum.zeroCount}</div><div class="stat-lbl">Zero-result searches</div></div>
+        <div class="stat-card"><div class="stat-num" style="font-size:20px;padding-top:8px">${esc(sum.topCat)}</div><div class="stat-lbl">Most active category</div></div>
+      </div>
+      <div class="an-grid">
+        <div class="panel an-panel"><h3>Most-searched queries</h3><div class="sub">Top terms people are looking for.</div>${searchRows}</div>
+        <div class="panel an-panel"><h3>Zero-result searches</h3><div class="sub">Queries that found nothing — candidates for new terms.</div>${zeroRows}</div>
+      </div>
+      <div class="an-grid" style="margin-top:18px">
+        <div class="panel an-panel"><h3>Most-viewed terms</h3><div class="sub">Cards opened most often.</div>${viewRows}</div>
+      </div>`;
+  }
+
+  /* ---------- admin: Term management (CRUD) ---------- */
+  function termsPanel(){
+    const q=tmQuery.trim().toLowerCase();
+    let list=fullList().sort((a,b)=>a.acronym.toLowerCase().localeCompare(b.acronym.toLowerCase()));
+    if(q)list=list.filter(d=>(d.acronym+' '+d.term+' '+d.definition).toLowerCase().includes(q));
+    const rows=list.map(d=>{
+      const src=d._src==='custom'?'custom':(isEdited(d.id)?'edited':'base');
+      return`<tr>
+        <td><div class="tm-acr">${esc(d.acronym)}</div>
+          ${d.term&&d.term.toLowerCase()!==d.acronym.toLowerCase()?`<div class="tm-term">${esc(d.term)}</div>`:''}</td>
+        <td>${d.category?esc(d.category):'—'}</td>
+        <td>${d.department?esc(d.department):'—'}</td>
+        <td><span class="src-badge ${src}">${src}</span></td>
+        <td><div class="row-actions">
+          <button class="icon-btn" data-editterm="${esc(d.id)}">Edit</button>
+          <button class="icon-btn danger" data-delterm="${esc(d.id)}">Delete</button>
+        </div></td></tr>`;}).join('');
+    return`<div class="tm-toolbar">
+        <input id="tmSearch" placeholder="Filter terms…" value="${esc(tmQuery)}">
+        <button class="btn btn-primary btn-sm" id="tmAdd">+ Add term</button>
+        <span class="tm-count">${list.length} term${list.length!==1?'s':''}</span>
+      </div>
+      <div class="panel"><div class="table-scroll"><table>
+        <thead><tr><th>Term</th><th>Category</th><th>Department</th><th>Source</th><th></th></tr></thead>
+        <tbody>${rows||`<tr><td colspan="5"><div class="panel-empty" style="padding:40px"><p>No terms match “${esc(tmQuery)}”.</p></div></td></tr>`}</tbody>
+      </table></div></div>`;
+  }
+
+  /* term add/edit modal (shared by Term management + suggestion editing) */
+  function openTermModal(opts){
+    const t=opts.term||{},cats=[...new Set(fullList().map(d=>d.category).filter(Boolean))].sort();
+    const depts=[...new Set(fullList().map(d=>d.department).filter(Boolean))].sort();
+    openModal(`<button class="modal-close">✕</button>
+      <h2>${esc(opts.title)}</h2>
+      ${opts.sub?`<p class="sub">${esc(opts.sub)}</p>`:''}
+      <form id="termForm" novalidate>
+        <div class="field"><label>Acronym / short name *</label>
+          <input name="acronym" maxlength="80" value="${esc(t.acronym||'')}" required></div>
+        <div class="field"><label>Full term <span class="opt">(optional)</span></label>
+          <input name="term" maxlength="120" value="${esc(t.term||'')}"></div>
+        <div class="field"><label>Hook line / tagline <span class="opt">(optional)</span></label>
+          <input name="quote" maxlength="200" value="${esc(t.quote||'')}"></div>
+        <div class="field"><label>Definition *</label>
+          <textarea name="definition" maxlength="1500" required>${esc(t.definition||'')}</textarea></div>
+        <div class="field"><label>Category <span class="opt">(optional)</span></label>
+          <input name="category" list="catList" maxlength="40" value="${esc(t.category||'')}">
+          <datalist id="catList">${cats.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div>
+        <div class="field"><label>Department <span class="opt">(optional)</span></label>
+          <input name="department" list="deptList" maxlength="40" value="${esc(t.department||'')}">
+          <datalist id="deptList">${depts.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div>
+        <div class="form-error" id="termErr"></div>
+        <button type="submit" class="btn btn-primary btn-block">${esc(opts.submitLabel||'Save')}</button>
+      </form>`);
+    $('#termForm').addEventListener('submit',e=>{
+      e.preventDefault();const f=e.target,err=$('#termErr');err.textContent='';
+      const acronym=f.acronym.value.trim(),definition=f.definition.value.trim();
+      if(!acronym||!definition){err.textContent='Acronym and definition are required.';return;}
+      opts.onSubmit({acronym,term:f.term.value.trim(),quote:f.quote.value.trim(),
+        definition,category:f.category.value.trim(),department:f.department.value.trim()});
+    });
+  }
+
+  function suggPanel(sugg){
+    const counts={pending:0,approved:0,rejected:0};sugg.forEach(s=>counts[s.status]++);
+    const filtered=sugg.filter(s=>s.status===suggFilter);
+    const seg=`<div class="seg">
+      ${['pending','approved','rejected'].map(k=>
+        `<button data-f="${k}" class="${suggFilter===k?'active':''}">${k[0].toUpperCase()+k.slice(1)} (${counts[k]})</button>`).join('')}
+    </div>`;
+    if(!filtered.length)return seg+`<div class="panel"><div class="panel-empty">
+      <div class="big">📭</div><p>No ${suggFilter} suggestions.</p></div></div>`;
+    return seg+`<div class="panel">${filtered.map(s=>`
+      <div class="sugg-card">
+        <div class="sugg-top">
+          <div>
+            <div class="sugg-term">${esc(s.term)}</div>
+            <div class="sugg-meta">
+              ${s.category?esc(s.category)+' · ':''}${s.submitterName?esc(s.submitterName):'Anonymous'}${s.submitterEmail?' &lt;'+esc(s.submitterEmail)+'&gt;':''} · ${fmtDate(s.createdAt)}
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex:none">
+            <span class="st-badge ${s.status}">${s.status}</span>
+          </div>
+        </div>
+        <div class="sugg-def">${esc(s.definition)}</div>
+        ${s.status==='pending'?`<div class="row-actions" style="margin-top:14px;justify-content:flex-start">
+          <button class="icon-btn ok" data-approve="${s.id}">✓ Approve &amp; add</button>
+          <button class="icon-btn" data-editsugg="${s.id}">✎ Edit</button>
+          <button class="icon-btn danger" data-reject="${s.id}">✕ Reject</button>
+        </div>`:`<div class="row-actions" style="margin-top:12px;justify-content:flex-start">
+          <button class="icon-btn" data-repending="${s.id}">↩ Move to pending</button>
+        </div>`}
+      </div>`).join('')}</div>`;
+  }
+
+  function usersPanel(users,me){
+    return`<div class="panel"><div class="table-scroll"><table>
+      <thead><tr><th>User</th><th>Role</th><th>Last visit</th><th>Status</th><th></th></tr></thead>
+      <tbody>${users.map(u=>`
+        <tr>
+          <td><div class="u-name">${esc(u.name)}${u.id===me.id?' <span class="u-email">(you)</span>':''}</div>
+              <div class="u-email">${esc(u.email)}</div></td>
+          <td><span class="pill-role ${u.role}">${u.role}</span></td>
+          <td>${fmtDate(u.lastVisit)}</td>
+          <td><span class="status-dot ${u.active?'':'off'}">${u.active?'Active':'Deactivated'}</span></td>
+          <td><div class="row-actions">
+            ${u.role!=='admin'?`<button class="icon-btn ok" data-makeadmin="${u.id}">Make admin</button>`:
+              (u.id!==me.id?`<button class="icon-btn" data-demote="${u.id}">Remove admin</button>`:'')}
+            ${u.id!==me.id?`<button class="icon-btn" data-toggle="${u.id}">${u.active?'Deactivate':'Activate'}</button>
+              <button class="icon-btn danger" data-del="${u.id}">Remove</button>`:''}
+          </div></td>
+        </tr>`).join('')}</tbody>
+    </table></div></div>`;
+  }
+
+  function approveSuggestion(id){
+    const s=getSugg().find(x=>x.id===id);if(!s)return;
+    createTerm({acronym:s.term,term:s.term,definition:s.definition,category:s.category||'',community:true});
+    setSuggStatus(id,'approved');
+    toast('Approved — added to the glossary');
+  }
+  function wireAdminActions(me){
+    const root=$('#adminContent');
+    root.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{
+      if(b.dataset.f){suggFilter=b.dataset.f;}renderAdmin();});
+    const on=(attr,fn)=>root.querySelectorAll(`[${attr}]`).forEach(b=>b.onclick=()=>fn(b.getAttribute(attr)));
+    /* suggestions */
+    on('data-approve',id=>{approveSuggestion(id);renderAdmin()});
+    on('data-reject',id=>{setSuggStatus(id,'rejected');toast('Suggestion rejected');renderAdmin()});
+    on('data-repending',id=>{setSuggStatus(id,'pending');renderAdmin()});
+    on('data-editsugg',id=>{const s=getSugg().find(x=>x.id===id);if(!s)return;
+      openTermModal({title:'Edit suggestion',sub:'Refine before approving. Saving keeps it pending.',
+        submitLabel:'Save changes',term:{acronym:s.term,term:s.term,definition:s.definition,category:s.category},
+        onSubmit:f=>{updateSuggestion(id,{term:f.acronym,definition:f.definition,category:f.category});
+          closeModal();toast('Suggestion updated');renderAdmin();}});});
+    /* analytics */
+    root.querySelectorAll('[data-anr]').forEach(b=>b.onclick=()=>{anRange=+b.dataset.anr;renderAdmin()});
+    root.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>{
+      const key=b.dataset.jump.toLowerCase();
+      const d=fullList().find(x=>x.acronym.toLowerCase()===key);
+      if(d){location.hash='';setTimeout(()=>openDetail(d),60);}
+      else{location.hash='';setTimeout(()=>{const s=$('#search');s.value=b.dataset.jump;
+        s.dispatchEvent(new Event('input'));s.scrollIntoView({block:'center'});},60);}});
+    /* term of the day */
+    root.querySelectorAll('[data-totdnav]').forEach(b=>b.onclick=()=>{
+      const v=b.dataset.totdnav;totdOffset=(v==='reset')?0:totdOffset+(+v);renderAdmin();});
+    on('data-totdclear',s=>{setTotdOverride(s,null);toast('Override cleared');renderAdmin()});
+    on('data-totdset',dateStr=>openTotdPicker(dateStr));
+    /* term management */
+    const tmS=$('#tmSearch');if(tmS)tmS.oninput=()=>{tmQuery=tmS.value;renderAdminTermsOnly();};
+    const tmAdd=$('#tmAdd');if(tmAdd)tmAdd.onclick=()=>openTermModal({title:'Add a term',submitLabel:'Create term',
+      onSubmit:f=>{createTerm(f);closeModal();toast('Term created');renderAdmin();}});
+    on('data-editterm',id=>{const d=fullList().find(x=>x.id===id);if(!d)return;
+      openTermModal({title:'Edit term',submitLabel:'Save changes',term:d,
+        onSubmit:f=>{updateTerm(id,f);closeModal();toast('Term updated');renderAdmin();}});});
+    on('data-delterm',id=>{const d=fullList().find(x=>x.id===id);if(!d)return;
+      if(!confirm('Delete “'+d.acronym+'” from the glossary?'))return;
+      removeTerm(id);toast('Term deleted');renderAdmin();});
+    on('data-toggle',id=>{const us=getUsers();const u=us.find(x=>x.id===id);u.active=!u.active;
+      saveUsers(us);toast(u.active?'User activated':'User deactivated');renderAdmin()});
+    on('data-makeadmin',id=>{const us=getUsers();us.find(x=>x.id===id).role='admin';
+      saveUsers(us);toast('User promoted to admin');renderAdmin()});
+    on('data-demote',id=>{const us=getUsers();
+      if(us.filter(x=>x.role==='admin').length<=1){toast('Cannot remove the last admin');return;}
+      us.find(x=>x.id===id).role='user';saveUsers(us);toast('Admin rights removed');renderAdmin()});
+    on('data-del',id=>{
+      const us=getUsers();const u=us.find(x=>x.id===id);
+      if(!confirm('Remove '+u.name+'? This cannot be undone.'))return;
+      saveUsers(us.filter(x=>x.id!==id));toast('User removed');renderAdmin()});
+  }
+
+  /* re-render only the Terms panel (keeps filter-input focus while typing) */
+  function renderAdminTermsOnly(){
+    const sec=$('#adminContent .panel-section.active');if(!sec)return;
+    sec.innerHTML=termsPanel();
+    wireAdminActions(currentUser());
+    const s=$('#tmSearch');if(s){s.focus();s.setSelectionRange(s.value.length,s.value.length);}
+  }
+
+  /* pick a specific term to feature on a given date */
+  function openTotdPicker(dateStr){
+    const list=fullList().slice().sort((a,b)=>a.acronym.toLowerCase().localeCompare(b.acronym.toLowerCase()));
+    const cur=getTotdOverrides()[dateStr]||'';
+    openModal(`<button class="modal-close">✕</button>
+      <h2>Set Term of the Day</h2>
+      <p class="sub">Choose the term to feature on <b>${esc(dateStr)}</b>. This overrides the automatic pick.</p>
+      <div class="field"><label>Featured term</label>
+        <select id="totdSel">${list.map(d=>`<option value="${esc(d.id)}"${d.id===cur?' selected':''}>${esc(d.acronym)}${d.term&&d.term.toLowerCase()!==d.acronym.toLowerCase()?' — '+esc(d.term):''}</option>`).join('')}</select></div>
+      <button class="btn btn-primary btn-block" id="totdSave">Set featured term</button>
+      <button class="btn btn-outline btn-block" style="margin-top:10px" id="totdAuto">Use automatic pick instead</button>`);
+    $('#totdSave').onclick=()=>{setTotdOverride(dateStr,$('#totdSel').value);closeModal();toast('Term of the Day set');renderAdmin();};
+    $('#totdAuto').onclick=()=>{setTotdOverride(dateStr,null);closeModal();toast('Reverted to automatic');renderAdmin();};
+  }
+
+  /* ================= ROUTING ================= */
+  function route(){
+    if(adminIsOpen()){
+      $('#glossaryView').style.display='none';
+      $('#adminView').style.display='block';
+      window.scrollTo(0,0);
+      renderAdmin();
+    }else{
+      $('#adminView').style.display='none';
+      $('#glossaryView').style.display='block';
+      renderAuthArea();
+      renderGlossary();
+    }
+  }
+  window.addEventListener('hashchange',route);
+
+  /* ---------- glossary controls ---------- */
+  const searchEl=$('#search'),clearBtn=$('#clearBtn'),ssEl=$('#searchSuggest');
+  let t,logT,ssItems=[],ssSel=-1;
+  /* autocomplete: ranked top matches under the search bar */
+  function rankMatches(qq){qq=qq.toLowerCase();const out=[];
+    fullList().forEach(d=>{const a=d.acronym.toLowerCase(),tm=(d.term||'').toLowerCase();let s=-1;
+      if(a===qq||tm===qq)s=100;else if(a.startsWith(qq))s=80;else if(tm.startsWith(qq))s=70;
+      else if(a.includes(qq))s=50;else if(tm.includes(qq))s=40;
+      else if((d.definition||'').toLowerCase().includes(qq))s=12;
+      if(s>=0)out.push([s,d]);});
+    out.sort((x,y)=>y[0]-x[0]||x[1].acronym.toLowerCase().localeCompare(y[1].acronym.toLowerCase()));
+    return out.slice(0,6).map(x=>x[1]);}
+  function showSuggest(){const qq=searchEl.value.trim();if(!qq){hideSuggest();return;}
+    ssItems=rankMatches(qq);ssSel=-1;if(!ssItems.length){hideSuggest();return;}
+    ssEl.innerHTML=ssItems.map((d,i)=>{const sec=d.term&&d.term.toLowerCase()!==d.acronym.toLowerCase()?hl(d.term,qq):esc(d.category||'');
+      return`<div class="ss-item" data-i="${i}"><span class="ss-acr">${hl(d.acronym,qq)}</span><span class="ss-term">${sec}</span></div>`;}).join('')+
+      `<div class="ss-hint"><span>↑ ↓ to navigate · ↵ to jump</span><span>${ssItems.length} match${ssItems.length>1?'es':''}</span></div>`;
+    ssEl.classList.add('show');}
+  function hideSuggest(){ssEl.classList.remove('show');ssEl.innerHTML='';ssSel=-1;}
+  function selSuggest(n){const items=[...ssEl.querySelectorAll('.ss-item')];if(!items.length)return;
+    ssSel=(n+items.length)%items.length;items.forEach((el,i)=>el.classList.toggle('active',i===ssSel));
+    items[ssSel].scrollIntoView({block:'nearest'});}
+  ssEl.addEventListener('mousedown',e=>{const it=e.target.closest('.ss-item');if(!it)return;e.preventDefault();
+    const d=ssItems[+it.dataset.i];hideSuggest();jumpToTerm(d.acronym.toLowerCase());});
+  searchEl.addEventListener('input',()=>{
+    clearBtn.classList.toggle('show',searchEl.value.length>0);
+    showSuggest();
+    clearTimeout(t);t=setTimeout(()=>{state.q=searchEl.value;renderGlossary();},160);
+    clearTimeout(logT);logT=setTimeout(()=>{
+      if(state.q.trim().length>=2)logSearch(state.q,current.length);},900);
+  });
+  searchEl.addEventListener('keydown',e=>{
+    if(!ssEl.classList.contains('show'))return;
+    if(e.key==='ArrowDown'){e.preventDefault();selSuggest(ssSel+1);}
+    else if(e.key==='ArrowUp'){e.preventDefault();selSuggest(ssSel-1);}
+    else if(e.key==='Enter'&&ssSel>=0){e.preventDefault();const d=ssItems[ssSel];hideSuggest();jumpToTerm(d.acronym.toLowerCase());}
+    else if(e.key==='Escape'){hideSuggest();}});
+  searchEl.addEventListener('blur',()=>setTimeout(hideSuggest,140));
+  searchEl.addEventListener('focus',()=>{if(searchEl.value.trim())showSuggest();});
+  clearBtn.addEventListener('click',()=>{searchEl.value='';state.q='';
+    clearBtn.classList.remove('show');hideSuggest();renderGlossary();searchEl.focus();});
+  $('#catFilter').addEventListener('change',e=>{state.cat=e.target.value;renderGlossary();});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='/'&&document.activeElement!==searchEl&&!adminIsOpen()){e.preventDefault();searchEl.focus();}});
+  makeMagnetic($('#suggestBtn'));
+
+  /* ---------- init ---------- */
+  seed().then(route);
+})();
+</script>
+</body>
+</html>

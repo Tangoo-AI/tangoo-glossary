@@ -1,0 +1,13 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tangoo-glossary",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "$PORT"],
+      "cwd": "/Users/engji/Desktop/Claude/tangoo-glossary",
+      "port": 5180,
+      "autoPort": true
+    }
+  ]
+}

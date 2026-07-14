@@ -1,0 +1,7 @@
+# Generated artifact build (produced from index.html for the shareable preview link)
+tangoo-glossary-preview.html
+
+# OS / editor cruft
+.DS_Store
+*.log
+node_modules/
