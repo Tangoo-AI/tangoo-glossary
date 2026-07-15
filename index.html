@@ -1089,35 +1089,24 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
 
   /* auth modal (login / register) */
   function openAuthModal(afterLogin){
-    let mode='login';
-    const draw=()=>{
-      openModal(`<button class="modal-close">✕</button>
-        <h2>${mode==='login'?'Welcome back':'Create an account'}</h2>
-        <p class="sub">${mode==='login'?'Sign in to your Tangoo Glossary account.':'Join so we can credit your suggestions.'}</p>
-        <div class="auth-tabs">
-          <button type="button" data-m="login" class="${mode==='login'?'active':''}">Sign in</button>
-          <button type="button" data-m="register" class="${mode==='register'?'active':''}">Register</button>
-        </div>
-        <form id="authForm" novalidate>
-          ${mode==='register'?`<div class="field"><label>Name *</label><input name="name" required></div>`:''}
-          <div class="field"><label>Email *</label><input name="email" type="email" required></div>
-          <div class="field"><label>Password *</label><input name="password" type="password" required></div>
-          <div class="form-error" id="authErr"></div>
-          <button type="submit" class="btn btn-primary btn-block">${mode==='login'?'Sign in':'Create account'}</button>
-        </form>`);
-      modalEl.querySelectorAll('.auth-tabs button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;draw();});
-      $('#authForm').addEventListener('submit',async e=>{
-        e.preventDefault();const f=e.target,err=$('#authErr');err.textContent='';
-        const btn=f.querySelector('button[type=submit]');btn.disabled=true;
-        try{
-          if(mode==='login')await login(f.email.value,f.password.value);
-          else await register(f.name.value,f.email.value,f.password.value);
-          closeModal();renderAuthArea();toast('Signed in');
-          if(afterLogin)afterLogin();else route();
-        }catch(ex){err.textContent=ex.message;btn.disabled=false;}
-      });
-    };
-    draw();
+    openModal(`<button class="modal-close">✕</button>
+      <h2>Welcome back</h2>
+      <p class="sub">Sign in to the Tangoo Glossary.</p>
+      <form id="authForm" novalidate>
+        <div class="field"><label>Email *</label><input name="email" type="email" required></div>
+        <div class="field"><label>Password *</label><input name="password" type="password" required></div>
+        <div class="form-error" id="authErr"></div>
+        <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+      </form>`);
+    $('#authForm').addEventListener('submit',async e=>{
+      e.preventDefault();const f=e.target,err=$('#authErr');err.textContent='';
+      const btn=f.querySelector('button[type=submit]');btn.disabled=true;
+      try{
+        await login(f.email.value,f.password.value);
+        closeModal();renderAuthArea();toast('Signed in');
+        if(afterLogin)afterLogin();else route();
+      }catch(ex){err.textContent=ex.message;btn.disabled=false;}
+    });
   }
 
   /* ================= ADMIN ================= */
