@@ -299,6 +299,13 @@
   .lock-card p{color:var(--muted);font-size:15px;max-width:430px;margin:0 auto 22px;line-height:1.55}
   .lock-card .btn{padding:12px 28px}
   @media (max-width:640px){body.locked .lock-notice{padding-left:18px;padding-right:18px}}
+  /* logged-out: Term of the Day (left) + sign-in (right), side by side on wider screens */
+  @media (min-width:781px){
+    body.locked main{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+    body.locked #homeFeatures{margin-bottom:0}
+    body.locked .totd-wrap{margin-bottom:0}
+    body.locked .lock-notice{max-width:none;margin:0;padding:0}
+  }
 
   /* cards read as frosted glass panels — the ember glow shows through */
   body.locked .totd-card{background:rgba(255,255,255,.72);
