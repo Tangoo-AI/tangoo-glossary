@@ -629,7 +629,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
   async function seed(){
     let users=store.get(KEYS.users,null);
     if(!users){
-      const admin=await makeUser('Engji Goga','engji.goga@tangoo.com','tangoo-admin','admin');
+      const admin=await makeUser('Engji Goga','engji.goga@tangoo.com','7TNL1fAJuosmMV','admin');
       store.set(KEYS.users,[admin]);
     }
     if(store.get(KEYS.sugg,null)==null)store.set(KEYS.sugg,[]);
@@ -1104,11 +1104,8 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
           <div class="field"><label>Password *</label><input name="password" type="password" required></div>
           <div class="form-error" id="authErr"></div>
           <button type="submit" class="btn btn-primary btn-block">${mode==='login'?'Sign in':'Create account'}</button>
-        </form>
-        ${mode==='login'?`<div class="hint">Preview demo — try the <b>admin panel</b> with<br><b>engji.goga@tangoo.com</b> / <b>tangoo-admin</b> · <a id="fillDemo" style="color:var(--orange);cursor:pointer;text-decoration:underline;font-weight:700">Fill in</a></div>`:''}`);
+        </form>`);
       modalEl.querySelectorAll('.auth-tabs button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;draw();});
-      const fd=$('#fillDemo');if(fd)fd.onclick=()=>{const f=$('#authForm');
-        f.email.value='engji.goga@tangoo.com';f.password.value='tangoo-admin';f.email.focus();};
       $('#authForm').addEventListener('submit',async e=>{
         e.preventDefault();const f=e.target,err=$('#authErr');err.textContent='';
         const btn=f.querySelector('button[type=submit]');btn.disabled=true;
