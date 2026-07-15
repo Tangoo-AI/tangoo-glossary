@@ -331,6 +331,46 @@
     .az-pill{transition:opacity .2s ease}
   }
 
+  /* ===== Dark-glass widgets (logged-in glossary) — blend with the ember stage ===== */
+  .card{background:rgba(44,30,23,.88);border:1px solid rgba(255,255,255,.12);color:#fff;
+    box-shadow:0 12px 34px rgba(0,0,0,.4)}
+  .card:hover{box-shadow:0 18px 46px rgba(0,0,0,.5);border-color:rgba(255,255,255,.26)}
+  .card .term{color:rgba(255,255,255,.55)}
+  .card .quote{color:rgba(255,255,255,.92);opacity:1}
+  .card .definition{color:rgba(255,255,255,.82)}
+  .card .definition.tbd{color:rgba(255,255,255,.42)}
+  .card .badge.dept{background:rgba(255,255,255,.12);color:rgba(255,255,255,.65)}
+  .card .badge.cat{background:rgba(255,83,33,.22);color:#ff9370}
+  .card .badge.community{background:rgba(26,157,90,.24);color:#7fe0ad}
+  .card a.xref{color:#ff9370;text-decoration-color:rgba(255,147,112,.5)}
+  .card a.xref:hover{background:rgba(255,147,112,.15);text-decoration-color:#ff9370}
+  .card mark{background:rgba(255,140,90,.32)}
+
+  .search-box{background:rgba(44,30,23,.85);border-color:rgba(255,255,255,.14);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  .search-box svg{color:rgba(255,255,255,.55)}
+  #search{color:#fff}
+  #search::placeholder{color:rgba(255,255,255,.45)}
+  .clear-btn{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
+  .clear-btn:hover{background:rgba(255,255,255,.24);color:#fff}
+
+  select#catFilter{background:rgba(44,30,23,.9);color:#fff;border-color:rgba(255,255,255,.16)}
+  select#catFilter:hover{border-color:rgba(255,255,255,.34)}
+  select#catFilter option{background:#1d130d;color:#fff}
+  .select-wrap svg{color:rgba(255,255,255,.6)}
+
+  .az-nav{background:rgba(28,19,14,.72);border:1px solid rgba(255,255,255,.08);
+    backdrop-filter:none;-webkit-backdrop-filter:none}
+  .az-nav a{color:rgba(255,255,255,.55)}
+  .az-nav a:hover{color:#fff}
+  .az-nav a.disabled{color:rgba(255,255,255,.2)}
+
+  .search-suggest{background:rgba(26,18,13,.97);border-color:rgba(255,255,255,.14)}
+  .ss-item{border-bottom-color:rgba(255,255,255,.08)}
+  .ss-item:hover,.ss-item.active{background:rgba(255,255,255,.08)}
+  .ss-acr{color:#fff}
+  .ss-term{color:rgba(255,255,255,.55)}
+  .ss-hint{background:rgba(255,255,255,.05);color:rgba(255,255,255,.5)}
+
   /* ===== Empty ===== */
   .empty{text-align:center;padding:80px 24px;color:rgba(255,255,255,.6);display:none}
   .empty.show{display:block}
