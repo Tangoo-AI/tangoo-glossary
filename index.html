@@ -981,42 +981,8 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
   /* ---------- homepage: Term of the Day + Trending ---------- */
   function renderHomeFeatures(){
     const host=$('#homeFeatures');if(!host)return;
-    if(state.q.trim()||state.cat!=='All'){host.style.display='none';host.innerHTML='';return;}
-    host.style.display='block';
-    let html='';
-    const totd=todayTotd();
-    if(totd){
-      const same=totd.term.trim().toLowerCase()===totd.acronym.trim().toLowerCase(),tbd=isTBD(totd),self=selfSetFor(totd);
-      html+=`<div class="totd-wrap">
-        <div class="feature-label">★ Term of the Day</div>
-        <article class="totd-card" data-acr="${esc(totd.acronym)}">
-          <div class="card-top">
-            <div><div class="acronym"><span class="dc">${esc(totd.acronym)}</span></div>
-              <div class="term totd-seq${same?' same':''}">${esc(totd.term)}</div></div>
-            <div class="badges totd-seq">
-              ${totd.community?`<span class="badge community">Community</span>`:''}
-              ${totd.category?`<span class="badge cat">${esc(totd.category)}</span>`:''}
-              ${totd.department?`<span class="badge dept">${esc(totd.department)}</span>`:''}
-            </div>
-          </div>
-          ${totd.quote?`<p class="quote totd-seq">${esc(totd.quote)}</p>`:''}
-          <p class="definition totd-seq${tbd?' tbd':''}">${tbd?'Definition coming soon.':(currentUser()?linkify(totd.definition,'',self):esc(totd.definition))}</p>
-        </article></div>`;
-    }
-    host.innerHTML=html;
-    if(totd){
-      const dcEl=host.querySelector('.totd-card .dc');
-      const seq=[...host.querySelectorAll('.totd-seq')];
-      const revealSeq=()=>seq.forEach((el,i)=>setTimeout(()=>el.classList.add('in'),reduceMotion()?0:70+i*90));
-      cipherDecode(dcEl,totd.acronym,revealSeq);
-    }
+    host.innerHTML='';host.style.display='none';
   }
-  $('#homeFeatures').addEventListener('click',e=>{
-    const x=e.target.closest('a.xref');
-    if(x){e.preventDefault();jumpToTerm(x.dataset.ref);return;}
-    const it=e.target.closest('[data-acr]');if(!it)return;
-    const d=fullList().find(t=>t.acronym===it.dataset.acr);if(d)openDetail(d);
-  });
 
   /* ---------- auth area (header) ---------- */
   function renderAuthArea(){
