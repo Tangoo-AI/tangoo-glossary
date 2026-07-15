@@ -1,6 +1,8 @@
 # Tangoo Glossary
 
-A self-contained, searchable glossary of every acronym, term, and bit of jargon at Tangoo — with an A–Z browse, a daily "Term of the Day", term suggestions, and an admin panel.
+**Live:** https://engjigoga-stack.github.io/tangoo-glossary/
+
+A self-contained, searchable glossary of every acronym, term, and bit of jargon at Tangoo — with an A–Z browse, term suggestions, and an admin panel. Data is read live from a shared Google Sheet.
 
 ## Run it
 
