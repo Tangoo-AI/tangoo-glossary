@@ -23,10 +23,16 @@ No build step, no dependencies.
 - **Suggest a term** — anonymous by default; attributed to your name when signed in.
 - **Admin panel** (`#admin`) — Term of the Day overrides, analytics (most-searched, zero-result searches, most-viewed), suggestions queue (approve/reject/edit), full term CRUD, and user management.
 
-## Data
+## Data — connected to a Google Sheet
 
-- `glossary.json` — the source list of 105 terms (acronym, term, quote, definition, category, department). Source: `Company Glossary_V3.xlsx`.
-- `index.html` — the app, with the term data embedded inline. To regenerate after editing `glossary.json`, re-inject it into the `DATA = [...]` array in `index.html`.
+The glossary is driven by a shared Google Sheet. **Add or edit a row in the sheet, refresh the app, and the change appears** — no redeploy needed.
+
+- Sheet: `https://docs.google.com/spreadsheets/d/1OJfSO7H-y67WPcArYdztveqDJIEmzF3e0rhFwK5Vo10/edit`
+- The app reads it live on load via `.../gviz/tq?tqx=out:csv` and uses only these columns: **Acronym, Term, Quote, Definition, Category, Department** (other columns like Asset Link, Last Updated, Status, Rarity, Collection are ignored). Cells that contain a spreadsheet formula are treated as empty.
+- The sheet must stay **"anyone with the link can view"** for the live fetch to work.
+- **Fallback:** `glossary.json` / the `DATA = [...]` array embedded in `index.html` is a snapshot used when the live fetch is blocked (offline, `file://`, or a strict-CSP host like the claude.ai artifact preview). To refresh the snapshot, re-export the sheet and re-inject it into `DATA`.
+
+> Note: the live connection is a read-only, client-side fetch. Anyone who can open the app can read the sheet's shared data — for private, access-controlled data you'd move the fetch behind a backend.
 
 ## ⚠️ Current limitations (important)
 
