@@ -301,28 +301,36 @@
   @media (max-width:640px){body.locked .lock-notice{padding-left:18px;padding-right:18px}}
   /* logged-out: Term of the Day (left) + sign-in (right), side by side on wider screens */
   @media (min-width:781px){
-    body.locked main{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
-    body.locked #homeFeatures{margin-bottom:0}
-    body.locked .totd-wrap{margin-bottom:0}
-    body.locked .lock-notice{max-width:none;margin:0;padding:0}
+    body.locked main{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:stretch}
+    body.locked #homeFeatures{margin-bottom:0;display:flex}
+    body.locked #homeFeatures .totd-wrap{margin-bottom:0;flex:1;display:flex;flex-direction:column;width:100%}
+    body.locked #homeFeatures .totd-card{flex:1}
+    body.locked .lock-notice{max-width:none;margin:0;padding:0;display:flex;flex-direction:column}
+    body.locked .lock-card{flex:1;display:flex;flex-direction:column;justify-content:center}
   }
 
-  /* cards read as frosted glass panels — the ember glow shows through */
-  body.locked .totd-card{background:rgba(255,255,255,.72);
-    backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);
-    border:1px solid rgba(255,255,255,.3);box-shadow:0 24px 64px rgba(0,0,0,.5)}
-  body.locked .lock-card{background:rgba(255,255,255,.68);
-    backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);
-    border:1px solid rgba(255,255,255,.28);box-shadow:0 24px 64px rgba(0,0,0,.5)}
+  /* logged-out cards use the same warm-dark glass as the logged-in cards */
+  body.locked .totd-card,
+  body.locked .lock-card{background:rgba(44,30,23,.88);border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 14px 40px rgba(0,0,0,.42);color:#fff}
+  body.locked .totd-card .term{color:rgba(255,255,255,.55)}
+  body.locked .totd-card .quote{color:rgba(255,255,255,.9)}
+  body.locked .totd-card .definition{color:rgba(255,255,255,.82)}
+  body.locked .totd-card .badge.dept{background:rgba(255,255,255,.12);color:rgba(255,255,255,.65)}
+  body.locked .totd-card .badge.cat{background:rgba(255,83,33,.22);color:#ff9370}
+  body.locked .lock-card h3{color:#fff}
+  body.locked .lock-card p{color:rgba(255,255,255,.7)}
+  body.locked .stat-mono{color:rgba(255,255,255,.6)}
+  body.locked .stat-mono b{color:#fff}
 
   /* ----- sign-in teaser (fanned frosted preview cards) ----- */
   .teaser{position:relative;height:104px;max-width:300px;margin:0 auto 26px}
-  .teaser-card{position:absolute;top:20px;background:var(--white);border:1px solid var(--line);
-    border-radius:12px;padding:11px 16px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.18)}
-  .teaser-card .tc-acr{font-weight:800;font-size:15px;color:var(--ink);letter-spacing:-.2px;display:block}
-  .teaser-card .tc-sub{font-size:10px;color:var(--muted);white-space:nowrap}
-  .tc-l{left:2%;transform:rotate(-11deg);opacity:.45;filter:blur(1.3px)}
-  .tc-r{right:2%;transform:rotate(11deg);opacity:.45;filter:blur(1.3px)}
+  .teaser-card{position:absolute;top:20px;background:rgba(66,46,35,.96);border:1px solid rgba(255,255,255,.14);
+    border-radius:12px;padding:11px 16px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.4)}
+  .teaser-card .tc-acr{font-weight:800;font-size:15px;color:#fff;letter-spacing:-.2px;display:block}
+  .teaser-card .tc-sub{font-size:10px;color:rgba(255,255,255,.6);white-space:nowrap}
+  .tc-l{left:2%;transform:rotate(-11deg);opacity:.8;filter:blur(.5px)}
+  .tc-r{right:2%;transform:rotate(11deg);opacity:.8;filter:blur(.5px)}
   .tc-m{left:50%;top:8px;transform:translateX(-50%);z-index:2}
   /* mono stat row */
   .stat-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -1029,7 +1037,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
     if(currentUser()){host.innerHTML='';host.style.display='none';return;}
     const totd=todayTotd();
     if(!totd){host.innerHTML='';host.style.display='none';return;}
-    host.style.display='block';
+    host.style.display='';
     const same=totd.term.trim().toLowerCase()===totd.acronym.trim().toLowerCase(),tbd=isTBD(totd);
     host.innerHTML=`<div class="totd-wrap">
       <div class="feature-label">★ Term of the Day</div>
@@ -1521,7 +1529,8 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
     const list=fullList();
     const terms=list.length;
     const cats=new Set(list.map(d=>d.category).filter(Boolean)).size;
-    ln.innerHTML=`<div class="lock-card">
+    ln.innerHTML=`<div class="feature-label">🔒 Full access</div>
+    <div class="lock-card">
       <div class="teaser" aria-hidden="true">
         <div class="teaser-card tc-l"><span class="tc-acr">ADX</span></div>
         <div class="teaser-card tc-r"><span class="tc-acr">KPI</span></div>
