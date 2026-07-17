@@ -301,17 +301,21 @@
   @media (max-width:640px){body.locked .lock-notice{padding-left:18px;padding-right:18px}}
   /* logged-out: Term of the Day (left) + sign-in (right), side by side on wider screens */
   @media (min-width:781px){
-    body.locked main{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:stretch}
+    body.locked main{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch;max-width:880px}
     body.locked #homeFeatures{margin-bottom:0;display:flex}
     body.locked #homeFeatures .totd-wrap{margin-bottom:0;flex:1;display:flex;flex-direction:column;width:100%}
     body.locked #homeFeatures .totd-card{flex:1}
     body.locked .lock-notice{max-width:none;margin:0;padding:0;display:flex;flex-direction:column}
     body.locked .lock-card{flex:1;display:flex;flex-direction:column;justify-content:center}
   }
+  /* logged-out cards a touch more compact, and the Sign in button hugs its text */
+  body.locked .totd-card{padding:22px 22px 20px}
+  body.locked .lock-card{padding:30px 26px}
+  body.locked .lock-card .btn{align-self:center;width:auto}
 
   /* logged-out cards use the same warm-dark glass as the logged-in cards */
   body.locked .totd-card,
-  body.locked .lock-card{background:rgba(44,30,23,.88);border:1px solid rgba(255,255,255,.12);
+  body.locked .lock-card{background:rgba(86,65,53,.9);border:1px solid rgba(255,255,255,.16);
     box-shadow:0 14px 40px rgba(0,0,0,.42);color:#fff}
   body.locked .totd-card .term{color:rgba(255,255,255,.55)}
   body.locked .totd-card .quote{color:rgba(255,255,255,.9)}
@@ -325,12 +329,12 @@
 
   /* ----- sign-in teaser (fanned frosted preview cards) ----- */
   .teaser{position:relative;height:104px;max-width:300px;margin:0 auto 26px}
-  .teaser-card{position:absolute;top:20px;background:rgba(66,46,35,.96);border:1px solid rgba(255,255,255,.14);
+  .teaser-card{position:absolute;top:20px;background:rgba(120,93,76,.97);border:1px solid rgba(255,255,255,.22);
     border-radius:12px;padding:11px 16px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.4)}
   .teaser-card .tc-acr{font-weight:800;font-size:15px;color:#fff;letter-spacing:-.2px;display:block}
-  .teaser-card .tc-sub{font-size:10px;color:rgba(255,255,255,.6);white-space:nowrap}
-  .tc-l{left:2%;transform:rotate(-11deg);opacity:.8;filter:blur(.5px)}
-  .tc-r{right:2%;transform:rotate(11deg);opacity:.8;filter:blur(.5px)}
+  .teaser-card .tc-sub{font-size:10px;color:rgba(255,255,255,.7);white-space:nowrap}
+  .tc-l{left:2%;transform:rotate(-11deg);opacity:.92;filter:none}
+  .tc-r{right:2%;transform:rotate(11deg);opacity:.92;filter:none}
   .tc-m{left:50%;top:8px;transform:translateX(-50%);z-index:2}
   /* mono stat row */
   .stat-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -347,7 +351,7 @@
   }
 
   /* ===== Dark-glass widgets (logged-in glossary) — blend with the ember stage ===== */
-  .card{background:rgba(44,30,23,.88);border:1px solid rgba(255,255,255,.12);color:#fff;
+  .card{background:rgba(86,65,53,.9);border:1px solid rgba(255,255,255,.16);color:#fff;
     box-shadow:0 12px 34px rgba(0,0,0,.4)}
   .card:hover{box-shadow:0 18px 46px rgba(0,0,0,.5);border-color:rgba(255,255,255,.26)}
   .card .term{color:rgba(255,255,255,.55)}
@@ -361,19 +365,19 @@
   .card a.xref:hover{background:rgba(255,147,112,.15);text-decoration-color:#ff9370}
   .card mark{background:rgba(255,140,90,.32)}
 
-  .search-box{background:rgba(44,30,23,.85);border-color:rgba(255,255,255,.14);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  .search-box{background:rgba(86,65,53,.88);border-color:rgba(255,255,255,.18);box-shadow:0 10px 30px rgba(0,0,0,.3)}
   .search-box svg{color:rgba(255,255,255,.55)}
   #search{color:#fff}
   #search::placeholder{color:rgba(255,255,255,.45)}
   .clear-btn{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
   .clear-btn:hover{background:rgba(255,255,255,.24);color:#fff}
 
-  select#catFilter{background:rgba(44,30,23,.9);color:#fff;border-color:rgba(255,255,255,.16)}
+  select#catFilter{background:rgba(86,65,53,.92);color:#fff;border-color:rgba(255,255,255,.2)}
   select#catFilter:hover{border-color:rgba(255,255,255,.34)}
   select#catFilter option{background:#1d130d;color:#fff}
   .select-wrap svg{color:rgba(255,255,255,.6)}
 
-  .az-nav{background:rgba(28,19,14,.72);border:1px solid rgba(255,255,255,.08);
+  .az-nav{background:rgba(60,45,37,.8);border:1px solid rgba(255,255,255,.12);
     backdrop-filter:none;-webkit-backdrop-filter:none}
   .az-nav a{color:rgba(255,255,255,.55)}
   .az-nav a:hover{color:#fff}
@@ -812,9 +816,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
 
   /* ---------- helpers ---------- */
   function esc(s){return(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-  function hl(text,q){text=esc(text);if(!q)return text;
-    const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');
-    return text.replace(re,'<mark>$1</mark>')}
+  function hl(text,q){return esc(text);}
   function initials(name){return(name||'?').trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase()}
   function fmtDate(iso){if(!iso)return'—';const d=new Date(iso);
     return d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})+
@@ -1570,21 +1572,12 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
     const d=ssItems[+it.dataset.i];hideSuggest();jumpToTerm(d.acronym.toLowerCase());});
   searchEl.addEventListener('input',()=>{
     clearBtn.classList.toggle('show',searchEl.value.length>0);
-    showSuggest();
     clearTimeout(t);t=setTimeout(()=>{state.q=searchEl.value;renderGlossary();},160);
     clearTimeout(logT);logT=setTimeout(()=>{
       if(state.q.trim().length>=2)logSearch(state.q,current.length);},900);
   });
-  searchEl.addEventListener('keydown',e=>{
-    if(!ssEl.classList.contains('show'))return;
-    if(e.key==='ArrowDown'){e.preventDefault();selSuggest(ssSel+1);}
-    else if(e.key==='ArrowUp'){e.preventDefault();selSuggest(ssSel-1);}
-    else if(e.key==='Enter'&&ssSel>=0){e.preventDefault();const d=ssItems[ssSel];hideSuggest();jumpToTerm(d.acronym.toLowerCase());}
-    else if(e.key==='Escape'){hideSuggest();}});
-  searchEl.addEventListener('blur',()=>setTimeout(hideSuggest,140));
-  searchEl.addEventListener('focus',()=>{if(searchEl.value.trim())showSuggest();});
   clearBtn.addEventListener('click',()=>{searchEl.value='';state.q='';
-    clearBtn.classList.remove('show');hideSuggest();renderGlossary();searchEl.focus();});
+    clearBtn.classList.remove('show');renderGlossary();searchEl.focus();});
   $('#catFilter').addEventListener('change',e=>{state.cat=e.target.value;renderGlossary();});
   document.addEventListener('keydown',e=>{
     if(e.key==='/'&&document.activeElement!==searchEl&&!adminIsOpen()){e.preventDefault();searchEl.focus();}});
