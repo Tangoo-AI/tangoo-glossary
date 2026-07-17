@@ -315,8 +315,10 @@
 
   /* logged-out cards use the same warm-dark glass as the logged-in cards */
   body.locked .totd-card,
-  body.locked .lock-card{background:rgba(86,65,53,.9);border:1px solid rgba(255,255,255,.16);
-    box-shadow:0 14px 40px rgba(0,0,0,.42);color:#fff}
+  body.locked .lock-card{
+    background:linear-gradient(158deg,rgba(112,86,70,.94) 0%,rgba(78,58,47,.95) 100%);
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:0 22px 54px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.12);color:#fff}
   body.locked .totd-card .term{color:rgba(255,255,255,.55)}
   body.locked .totd-card .quote{color:rgba(255,255,255,.9)}
   body.locked .totd-card .definition{color:rgba(255,255,255,.82)}
@@ -328,14 +330,16 @@
   body.locked .stat-mono b{color:#fff}
 
   /* ----- sign-in teaser (fanned frosted preview cards) ----- */
-  .teaser{position:relative;height:104px;max-width:300px;margin:0 auto 26px}
-  .teaser-card{position:absolute;top:20px;background:rgba(120,93,76,.97);border:1px solid rgba(255,255,255,.22);
-    border-radius:12px;padding:11px 16px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.4)}
-  .teaser-card .tc-acr{font-weight:800;font-size:15px;color:#fff;letter-spacing:-.2px;display:block}
-  .teaser-card .tc-sub{font-size:10px;color:rgba(255,255,255,.7);white-space:nowrap}
-  .tc-l{left:2%;transform:rotate(-11deg);opacity:.92;filter:none}
-  .tc-r{right:2%;transform:rotate(11deg);opacity:.92;filter:none}
-  .tc-m{left:50%;top:8px;transform:translateX(-50%);z-index:2}
+  .teaser{position:relative;height:122px;max-width:330px;margin:0 auto 28px}
+  .teaser-card{position:absolute;top:28px;left:50%;
+    background:linear-gradient(160deg,rgba(130,101,83,.99),rgba(102,78,64,.99));
+    border:1px solid rgba(255,255,255,.24);border-radius:14px;padding:12px 16px;text-align:center;
+    box-shadow:0 16px 34px rgba(0,0,0,.46);transition:transform .18s}
+  .teaser-card .tc-acr{font-weight:800;font-size:16px;color:#fff;letter-spacing:-.2px;display:block}
+  .teaser-card .tc-sub{font-size:10px;color:rgba(255,255,255,.72);white-space:nowrap;margin-top:1px}
+  .tc-l{transform:translateX(-50%) translateX(-82px) rotate(-14deg);z-index:1}
+  .tc-r{transform:translateX(-50%) translateX(82px) rotate(14deg);z-index:1}
+  .tc-m{top:14px;transform:translateX(-50%) scale(1.06);z-index:3}
   /* mono stat row */
   .stat-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     font-size:12.5px;letter-spacing:.2px;color:var(--muted);margin-bottom:24px}
