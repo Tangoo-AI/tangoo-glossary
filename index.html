@@ -506,6 +506,56 @@
     color:var(--muted);margin-top:18px;text-align:left;line-height:1.5}
   .hint b{color:var(--ink)}
 
+  /* ===== Dark detail modal (matches the glossary theme) ===== */
+  .modal.dark{background:linear-gradient(158deg,#5b4537 0%,#38281f 100%);
+    border:1px solid rgba(255,255,255,.14);color:#fff}
+  .modal.dark .term{color:rgba(255,255,255,.6)}
+  .modal.dark .quote{color:rgba(255,255,255,.92)}
+  .modal.dark .definition{color:rgba(255,255,255,.85)}
+  .modal.dark .def-label{color:rgba(255,255,255,.5)}
+  .modal.dark .badge.dept{background:rgba(255,255,255,.12);color:rgba(255,255,255,.65)}
+  .modal.dark .badge.cat{background:rgba(255,83,33,.24);color:#ff9370}
+  .modal.dark a.xref{color:#ff9370;text-decoration-color:rgba(255,147,112,.5)}
+  .modal.dark .modal-close{background:rgba(255,255,255,.14);color:#fff}
+  .modal.dark .modal-close:hover{background:rgba(255,255,255,.26)}
+
+  /* ===== Admin panel — dark ember theme (matches main/home) ===== */
+  #adminView{background:
+    radial-gradient(85% 55% at 82% 4%, rgba(255,122,66,.15), transparent 55%),
+    radial-gradient(65% 55% at 4% 46%, rgba(150,55,28,.20), transparent 62%),
+    radial-gradient(55% 45% at 92% 72%, rgba(120,44,22,.16), transparent 60%),
+    radial-gradient(150% 118% at 6% -14%, #95422a 0%, #5c2a17 20%, #3a1a0f 38%, #1d130d 60%, #100d0b 92%)}
+  .admin-head{background:transparent}
+  .admin-tabs{border-bottom-color:rgba(255,255,255,.14)}
+  .admin-tabs button{color:rgba(255,255,255,.55)}
+  .admin-tabs button.active{color:#fff}
+  .panel{background:rgba(86,65,53,.9);border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 12px 34px rgba(0,0,0,.4);color:#fff}
+  th{color:rgba(255,255,255,.5);border-bottom-color:rgba(255,255,255,.14)}
+  td{border-bottom-color:rgba(255,255,255,.1)}
+  .u-name{color:#fff}.u-email{color:rgba(255,255,255,.55)}
+  .stat-card{background:rgba(86,65,53,.9);border:1px solid rgba(255,255,255,.12);box-shadow:0 12px 34px rgba(0,0,0,.4)}
+  .stat-num{color:#fff}.stat-lbl{color:rgba(255,255,255,.55)}
+  .an-panel .sub{color:rgba(255,255,255,.5)}
+  .sugg-card{border-bottom-color:rgba(255,255,255,.1)}
+  .sugg-term{color:#fff}.sugg-meta{color:rgba(255,255,255,.55)}.sugg-def{color:rgba(255,255,255,.8)}
+  .rank-row{border-top-color:rgba(255,255,255,.1)}
+  .rank-row .n{color:rgba(255,255,255,.5)}.rank-row .q{color:#fff}.rank-row .ct{color:#fff}
+  .icon-btn{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#fff}
+  .icon-btn:hover{border-color:rgba(255,255,255,.42)}
+  .seg button{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.16);color:rgba(255,255,255,.6)}
+  .seg button.active{background:var(--orange);border-color:var(--orange);color:#fff}
+  .totd-list-row{border-top-color:rgba(255,255,255,.1)}
+  .totd-date{color:#fff}.totd-pick{color:#fff}
+  .panel-empty{color:rgba(255,255,255,.55)}
+  .admin-gate h2{color:#fff}.admin-gate p{color:rgba(255,255,255,.65)}
+  .tm-toolbar input{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#fff}
+  .tm-toolbar input::placeholder{color:rgba(255,255,255,.4)}
+  .tm-count{color:rgba(255,255,255,.55)}
+  .pill-role{background:rgba(255,255,255,.12);color:rgba(255,255,255,.6)}
+  .status-dot.off{color:rgba(255,255,255,.5)}
+  .src-badge{background:rgba(255,255,255,.12);color:rgba(255,255,255,.6)}
+
   footer{max-width:1080px;margin:60px auto 0;padding:24px;text-align:center;
     color:rgba(255,255,255,.55);font-size:13px;border-top:1px solid rgba(255,255,255,.12)}
   footer b{color:var(--orange)}
@@ -1099,8 +1149,8 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
 
   /* ================= MODALS ================= */
   const overlay=$('#modalOverlay'),modalEl=$('#modal');
-  function openModal(html){modalEl.innerHTML=html;overlay.classList.add('show');
-    document.body.style.overflow='hidden';
+  function openModal(html,dark){modalEl.innerHTML=html;modalEl.classList.toggle('dark',!!dark);
+    overlay.classList.add('show');document.body.style.overflow='hidden';
     const c=modalEl.querySelector('.modal-close');if(c)c.onclick=closeModal;}
   function closeModal(){overlay.classList.remove('show');document.body.style.overflow='';}
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal()});
@@ -1121,7 +1171,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
       </div>
       ${d.quote?`<p class="quote">${esc(d.quote)}</p>`:''}
       <div class="def-label">Definition</div>
-      <p class="definition${tbd?' tbd':''}">${tbd?'Definition coming soon.':(currentUser()?linkify(d.definition,'',self):esc(d.definition))}</p>`);
+      <p class="definition${tbd?' tbd':''}">${tbd?'Definition coming soon.':(currentUser()?linkify(d.definition,'',self):esc(d.definition))}</p>`,true);
   }
   $('#results').addEventListener('click',e=>{
     const x=e.target.closest('a.xref');
