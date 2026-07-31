@@ -241,7 +241,7 @@
   .tm-toolbar input:focus{outline:0;border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,83,33,.10)}
   .tm-count{font-size:13px;color:var(--muted)}
   td .tm-acr{font-weight:800}
-  td .tm-term{color:var(--muted);font-size:12.5px}
+  td .tm-term{color:rgba(255,255,255,.5);font-size:12.5px}
   .src-badge{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;
     padding:2px 7px;border-radius:100px;background:var(--gray);color:var(--muted)}
   .src-badge.custom{background:rgba(26,157,90,.12);color:var(--green)}
@@ -249,9 +249,9 @@
   .totd-list-row{display:flex;align-items:center;gap:14px;padding:12px 18px;border-top:1px solid var(--line)}
   .totd-list-row:first-of-type{border-top:0}
   .totd-date{font-weight:700;font-size:13.5px;width:150px;flex:none}
-  .totd-date .dow{color:var(--muted);font-weight:500}
+  .totd-date .dow{color:rgba(255,255,255,.5);font-weight:500}
   .totd-pick{flex:1;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .totd-pick .auto{color:var(--muted);font-weight:500;font-size:12px;margin-left:6px}
+  .totd-pick .auto{color:rgba(255,255,255,.5);font-weight:500;font-size:12px;margin-left:6px}
   .totd-ovr{font-size:9.5px;font-weight:800;text-transform:uppercase;color:var(--orange);
     background:rgba(255,83,33,.12);padding:2px 7px;border-radius:100px}
 
@@ -405,37 +405,40 @@
     z-index:100;display:none;align-items:center;justify-content:center;padding:24px;
     opacity:0;transition:opacity .18s}
   .modal-overlay.show{display:flex;opacity:1}
-  .modal{background:var(--white);border-radius:20px;max-width:560px;width:100%;
+  .modal{background:linear-gradient(158deg,#5b4537 0%,#38281f 100%);color:#fff;
+    border:1px solid rgba(255,255,255,.14);border-radius:20px;max-width:560px;width:100%;
     max-height:88vh;overflow-y:auto;padding:32px;position:relative;
-    box-shadow:0 24px 80px rgba(0,0,0,.35);transform:translateY(12px);transition:transform .18s}
+    box-shadow:0 24px 80px rgba(0,0,0,.5);transform:translateY(12px);transition:transform .18s}
   .modal-overlay.show .modal{transform:translateY(0)}
   .modal-close{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;
-    border:0;background:var(--gray);color:var(--ink);font-size:18px;cursor:pointer;
+    border:0;background:rgba(255,255,255,.14);color:#fff;font-size:18px;cursor:pointer;
     display:grid;place-items:center;transition:background .12s;z-index:2}
-  .modal-close:hover{background:#e7e7e7}
+  .modal-close:hover{background:rgba(255,255,255,.26)}
   .modal .acronym{font-size:30px}
   .modal .badges{flex-direction:row;align-items:center;margin:14px 0 0}
   .modal .term{font-size:16px;margin-top:6px}
   .modal .quote{font-size:16px;margin-top:20px}
   .modal .definition{font-size:16px;margin-top:18px}
   .modal .def-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
-    color:var(--muted);margin-top:22px}
+    color:rgba(255,255,255,.5);margin-top:22px}
 
   /* forms */
-  .modal h2{font-size:24px;font-weight:800;letter-spacing:-.6px}
-  .modal .sub{color:var(--muted);font-size:14.5px;margin-top:6px;margin-bottom:22px}
+  .modal h2{font-size:24px;font-weight:800;letter-spacing:-.6px;color:#fff}
+  .modal .sub{color:rgba(255,255,255,.62);font-size:14.5px;margin-top:6px;margin-bottom:22px}
   .field{margin-bottom:16px}
-  .field label{display:block;font-size:12.5px;font-weight:700;margin-bottom:7px;color:var(--ink)}
-  .field label .opt{color:var(--muted);font-weight:500}
+  .field label{display:block;font-size:12.5px;font-weight:700;margin-bottom:7px;color:#fff}
+  .field label .opt{color:rgba(255,255,255,.5);font-weight:500}
   .field input,.field textarea,.field select{
-    width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;
-    font-size:15px;font-family:inherit;color:var(--ink);background:var(--white);transition:border-color .14s,box-shadow .14s}
+    width:100%;border:1.5px solid rgba(255,255,255,.18);border-radius:10px;padding:11px 13px;
+    font-size:15px;font-family:inherit;color:#fff;background:rgba(255,255,255,.08);transition:border-color .14s,box-shadow .14s}
+  .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.4)}
   .field textarea{resize:vertical;min-height:96px;line-height:1.5}
   .field input:focus,.field textarea:focus,.field select:focus{
-    outline:0;border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,83,33,.10)}
+    outline:0;border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,83,33,.18)}
   .field select{appearance:none;-webkit-appearance:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b6b6b' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23d6c3b8' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
     background-repeat:no-repeat;background-position:right 13px center;padding-right:38px}
+  .field select option{background:#3a2a22;color:#fff}
   .form-error{color:var(--red);font-size:13px;margin-top:-6px;margin-bottom:12px;min-height:0}
   .success-box{text-align:center;padding:14px 0 6px}
   .success-box .check{width:64px;height:64px;border-radius:50%;background:rgba(26,157,90,.12);
@@ -502,9 +505,11 @@
   .admin-gate .lock{font-size:44px;margin-bottom:16px}
   .admin-gate h2{font-size:24px;font-weight:800;margin-bottom:8px}
   .admin-gate p{color:var(--muted);margin-bottom:24px}
-  .hint{background:var(--gray);border-radius:10px;padding:11px 14px;font-size:12.5px;
-    color:var(--muted);margin-top:18px;text-align:left;line-height:1.5}
-  .hint b{color:var(--ink)}
+  .hint{background:rgba(255,255,255,.06);border-radius:10px;padding:11px 14px;font-size:12.5px;
+    color:rgba(255,255,255,.6);margin-top:18px;text-align:left;line-height:1.5}
+  .hint b{color:#fff}
+  .modal .btn-outline,#adminView .btn-outline{color:#fff;border-color:rgba(255,255,255,.28)}
+  .modal .btn-outline:hover,#adminView .btn-outline:hover{border-color:rgba(255,255,255,.55)}
 
   /* ===== Dark detail modal (matches the glossary theme) ===== */
   .modal.dark{background:linear-gradient(158deg,#5b4537 0%,#38281f 100%);
