@@ -1,6 +1,6 @@
 # Tangoo Glossary
 
-**Live:** https://engjigoga-stack.github.io/tangoo-glossary/
+**Live:** https://tangoo-ai.github.io/tangoo-glossary/ (custom domain https://glossary.tangoo.ai/ pending DNS)
 
 A self-contained, searchable glossary of every acronym, term, and bit of jargon at Tangoo — with an A–Z browse, term suggestions, and an admin panel. Data is read live from a shared Google Sheet.
 
