@@ -152,7 +152,16 @@ export default async function handler(req: any, res: any) {
   const action = actionOf(req);
   try {
     if (action === "metadata") {
-      const xml = saml().generateServiceProviderMetadata(null, null);
+      // Hand-written SP metadata so Rippling can read it before the IdP env vars
+      // are set (generateServiceProviderMetadata would need a full SAML config).
+      const xml =
+        `<?xml version="1.0" encoding="UTF-8"?>\n` +
+        `<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="${SP_ENTITY_ID}">\n` +
+        `  <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">\n` +
+        `    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>\n` +
+        `    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="${ACS_URL}" index="1" isDefault="true"/>\n` +
+        `  </md:SPSSODescriptor>\n` +
+        `</md:EntityDescriptor>`;
       res.setHeader("Content-Type", "application/xml");
       return res.status(200).send(xml);
     }
