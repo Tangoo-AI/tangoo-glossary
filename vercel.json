@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/api/scim/v2/:path*", "destination": "/api/scim/v2/[...path]" },
     { "source": "/api/auth/:action*", "destination": "/api/auth/[...action]" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
