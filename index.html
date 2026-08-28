@@ -311,31 +311,23 @@
   .lock-card .btn{padding:12px 28px}
   @media (max-width:640px){body.locked .lock-notice{padding-left:18px;padding-right:18px}}
   /* logged-out: Term of the Day (left) + sign-in (right), side by side on wider screens */
-  @media (min-width:781px){
-    body.locked main{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch;max-width:880px}
+  /* three cards in one row on wide screens, with the sign-in button spanning below */
+  @media (min-width:900px){
+    body.locked main{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;max-width:1120px}
     body.locked #homeFeatures{margin-bottom:0;display:flex}
     body.locked #homeFeatures .totd-wrap{margin-bottom:0;flex:1;display:flex;flex-direction:column;width:100%}
     body.locked #homeFeatures .totd-card{flex:1}
-    body.locked .lock-notice{max-width:none;margin:0;padding:0;display:flex;flex-direction:column}
-    body.locked .lock-card{flex:1;display:flex;flex-direction:column;justify-content:center}
-    /* dissolve the widgets wrapper so its two cards become grid items alongside the stage cards */
+    /* dissolve the widgets wrapper so its two cards become grid items in the same row */
     body.locked #homeWidgets{display:contents}
     body.locked .hw-card{margin:0}
-  }
-  @media (max-width:780px){body.locked #homeWidgets{margin-top:22px}body.locked .lock-notice{padding:0}}
-  /* all four cards in one line on wide screens, compact */
-  @media (min-width:1080px){
-    body.locked main{grid-template-columns:repeat(4,1fr);gap:16px;max-width:1260px}
-    body.locked .totd-card,body.locked .lock-card,body.locked .hw-card{padding:18px 18px 16px}
+    body.locked #lockNotice{grid-column:1/-1;margin:0;padding:0}
+    /* compact sizing for the one-row layout */
+    body.locked .totd-card,body.locked .hw-card{padding:18px 18px 16px}
     body.locked .feature-label{display:none}
     body.locked .totd-card .acronym{font-size:21px}
     body.locked .totd-card .quote{font-size:13px;margin-top:12px}
     body.locked .totd-card .definition{font-size:12.5px;margin-top:11px;
       display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
-    body.locked .lock-card .teaser{display:none}
-    body.locked .lock-card h3{font-size:16.5px}
-    body.locked .lock-card p{font-size:12.5px;margin-bottom:16px}
-    body.locked .lock-card .btn{padding:10px 22px;font-size:14px}
     body.locked .hw-title{font-size:16.5px}
     body.locked .hw-desc,body.locked .hw-usage{font-size:12.5px;line-height:1.5}
     body.locked .hw-eyebrow{font-size:10px;margin-bottom:9px}
@@ -346,6 +338,14 @@
     body.locked .hw-actions{padding-top:14px}
     body.locked .hw-btn{padding:9px 14px;font-size:13px}
   }
+  @media (max-width:899px){body.locked #homeWidgets{margin-top:22px}body.locked .lock-notice{padding:0}}
+  /* sign-in call-to-action shown below the cards */
+  .signin-cta{text-align:center;padding:8px 0 2px}
+  .signin-note{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0 auto 16px;max-width:520px}
+  .signin-note b{font-weight:800}
+  .signin-cta .btn{padding:12px 34px}
+  body.locked .signin-note{color:rgba(255,255,255,.72)}
+  body.locked .signin-note b{color:#fff}
   /* logged-out cards a touch more compact, and the Sign in button hugs its text */
   body.locked .totd-card{padding:22px 22px 20px}
   body.locked .lock-card{padding:30px 26px}
@@ -879,8 +879,8 @@
 
   <main>
     <div id="homeFeatures"></div>
-    <div id="lockNotice" class="lock-notice"></div>
     <div id="homeWidgets" class="home-widgets"></div>
+    <div id="lockNotice" class="lock-notice"></div>
     <div id="results"></div>
     <div class="empty" id="empty">
       <div class="big">🔍</div>
@@ -1991,16 +1991,8 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
     const list=fullList();
     const terms=list.length;
     const cats=new Set(list.map(d=>d.category).filter(Boolean)).size;
-    ln.innerHTML=`<div class="feature-label">🔒 Full access</div>
-    <div class="lock-card">
-      <div class="teaser" aria-hidden="true">
-        <div class="teaser-card tc-l"><span class="tc-acr">ADX</span></div>
-        <div class="teaser-card tc-r"><span class="tc-acr">KPI</span></div>
-        <div class="teaser-card tc-m"><span class="tc-acr">DSP</span><span class="tc-sub">Demand-Side Platform</span></div>
-      </div>
-      <h3>Every term, fully searchable — updated daily</h3>
-      <p>Unlock the complete Tangoo glossary: search across every acronym, browse A–Z, and open every definition.</p>
-      <div class="stat-mono"><b>${terms}</b> terms · <b>${cats}</b> categories</div>
+    ln.innerHTML=`<div class="signin-cta">
+      <p class="signin-note">Sign in with Rippling for full access — <b>${terms}</b> terms across <b>${cats}</b> categories.</p>
       <button class="btn btn-primary" id="lockSignIn">Sign in</button>
     </div>`;
     const b=$('#lockSignIn');if(b){b.onclick=()=>openAuthModal(()=>route());makeMagnetic(b);}
