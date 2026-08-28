@@ -135,6 +135,20 @@ async function lookupScim(email: string): Promise<ScimInfo> {
   }
 }
 
+// Record a login into the shared analytics list (best-effort; same KV the
+// /api/events endpoint reads). No-op when KV is not attached.
+async function recordLogin(email: string) {
+  if (!useKv) return;
+  try {
+    const { createClient } = await import("@vercel/kv");
+    const kv = createClient({ url: KV_URL as string, token: KV_TOKEN as string });
+    await kv.lpush("glossary:events", JSON.stringify({ ts: Date.now(), type: "login", email: email.toLowerCase() }));
+    await kv.ltrim("glossary:events", 0, 9999);
+  } catch {
+    /* ignore analytics failures */
+  }
+}
+
 function actionOf(req: any): string {
   const q = req.query?.action;
   if (Array.isArray(q) && q.length) return String(q[0]);
@@ -230,6 +244,7 @@ export default async function handler(req: any, res: any) {
 
       const name = samlFull || scim.displayName || p.displayName || String(email).split("@")[0];
       setCookie(res, signSession({ name, email, role, photo: scim.photo, title: scim.title, department: scim.department }), MAX_AGE);
+      await recordLogin(email);
       res.statusCode = 302;
       res.setHeader("Location", safePath(body.RelayState));
       return res.end();

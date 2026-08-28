@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tangoo Glossary</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
+<link rel="apple-touch-icon" href="/favicon.svg?v=2">
+<meta name="theme-color" content="#FF5321">
+<meta name="description" content="The Tangoo Glossary — every acronym, term and bit of jargon at Tangoo, decoded.">
+<meta property="og:title" content="Tangoo Glossary">
+<meta property="og:description" content="Every acronym, term and bit of jargon at Tangoo — decoded.">
+<meta property="og:type" content="website">
 <style>
   :root{
     --orange:#FF5321;
@@ -121,14 +128,15 @@
   .select-wrap{position:relative;display:inline-block}
   .select-wrap svg{position:absolute;right:14px;top:50%;transform:translateY(-50%);
     pointer-events:none;color:var(--muted)}
-  select#catFilter{
+  .filters{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+  select#catFilter,select#deptFilter{
     appearance:none;-webkit-appearance:none;background:var(--white);
     border:1.5px solid var(--line);border-radius:12px;padding:12px 42px 12px 16px;
     font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;font-family:inherit;
-    min-width:230px;transition:border-color .14s,box-shadow .14s}
-  select#catFilter:hover{border-color:var(--ink)}
-  select#catFilter:focus{outline:0;border-color:var(--orange);box-shadow:0 0 0 4px rgba(255,83,33,.10)}
-  select#catFilter.filtered{border-color:var(--orange);color:var(--orange)}
+    min-width:220px;transition:border-color .14s,box-shadow .14s}
+  select#catFilter:hover,select#deptFilter:hover{border-color:var(--ink)}
+  select#catFilter:focus,select#deptFilter:focus{outline:0;border-color:var(--orange);box-shadow:0 0 0 4px rgba(255,83,33,.10)}
+  select#catFilter.filtered,select#deptFilter.filtered{border-color:var(--orange);color:var(--orange)}
 
   /* ===== Content ===== */
   main{max-width:1080px;margin:0 auto;padding:26px 24px 0}
@@ -217,6 +225,9 @@
   .trend-meta{font-size:11.5px;color:var(--muted);margin-top:1px}
 
   /* ===== Analytics ===== */
+  .an-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .an-src{font-size:12px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+  .an-src.live{color:#1f9d55}
   .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px}
   .stat-card{background:var(--white);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px}
   .stat-num{font-size:30px;font-weight:800;letter-spacing:-1px;color:var(--ink)}
@@ -307,6 +318,33 @@
     body.locked #homeFeatures .totd-card{flex:1}
     body.locked .lock-notice{max-width:none;margin:0;padding:0;display:flex;flex-direction:column}
     body.locked .lock-card{flex:1;display:flex;flex-direction:column;justify-content:center}
+    /* dissolve the widgets wrapper so its two cards become grid items alongside the stage cards */
+    body.locked #homeWidgets{display:contents}
+    body.locked .hw-card{margin:0}
+  }
+  @media (max-width:780px){body.locked #homeWidgets{margin-top:22px}body.locked .lock-notice{padding:0}}
+  /* all four cards in one line on wide screens, compact */
+  @media (min-width:1080px){
+    body.locked main{grid-template-columns:repeat(4,1fr);gap:16px;max-width:1260px}
+    body.locked .totd-card,body.locked .lock-card,body.locked .hw-card{padding:18px 18px 16px}
+    body.locked .feature-label{display:none}
+    body.locked .totd-card .acronym{font-size:21px}
+    body.locked .totd-card .quote{font-size:13px;margin-top:12px}
+    body.locked .totd-card .definition{font-size:12.5px;margin-top:11px;
+      display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+    body.locked .lock-card .teaser{display:none}
+    body.locked .lock-card h3{font-size:16.5px}
+    body.locked .lock-card p{font-size:12.5px;margin-bottom:16px}
+    body.locked .lock-card .btn{padding:10px 22px;font-size:14px}
+    body.locked .hw-title{font-size:16.5px}
+    body.locked .hw-desc,body.locked .hw-usage{font-size:12.5px;line-height:1.5}
+    body.locked .hw-eyebrow{font-size:10px;margin-bottom:9px}
+    body.locked .hw-steps{margin-top:12px;gap:6px}
+    body.locked .hw-steps li{font-size:11.5px;gap:8px}
+    body.locked .hw-num{width:18px;height:18px;font-size:10px}
+    body.locked .hw-code{font-size:11px;padding:2px 6px}
+    body.locked .hw-actions{padding-top:14px}
+    body.locked .hw-btn{padding:9px 14px;font-size:13px}
   }
   /* logged-out cards a touch more compact, and the Sign in button hugs its text */
   body.locked .totd-card{padding:22px 22px 20px}
@@ -324,6 +362,15 @@
   body.locked .totd-card .definition{color:rgba(255,255,255,.82)}
   body.locked .totd-card .badge.dept{background:rgba(255,255,255,.12);color:rgba(255,255,255,.65)}
   body.locked .totd-card .badge.cat{background:rgba(255,83,33,.22);color:#ff9370}
+  body.locked .hw-card{background:linear-gradient(158deg,rgba(112,86,70,.94) 0%,rgba(78,58,47,.95) 100%);
+    border:1px solid rgba(255,255,255,.16);color:#fff;
+    box-shadow:0 22px 54px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.12)}
+  body.locked .hw-eyebrow{color:#ff9370}
+  body.locked .hw-desc,body.locked .hw-usage{color:rgba(255,255,255,.85)}
+  body.locked .hw-steps li{color:rgba(255,255,255,.9)}
+  body.locked .hw-steps li b{color:#fff}
+  body.locked .hw-code{background:rgba(0,0,0,.32);border-color:rgba(255,255,255,.14);color:#ffd9c9}
+  body.locked .hw-btn.ghost{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff}
   body.locked .lock-card h3{color:#fff}
   body.locked .lock-card p{color:rgba(255,255,255,.7)}
   body.locked .stat-mono{color:rgba(255,255,255,.6)}
@@ -354,6 +401,37 @@
     .az-pill{transition:opacity .2s ease}
   }
 
+  /* ===== Home widgets (game + bot) ===== */
+  .home-widgets{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:30px}
+  .hw-card{position:relative;overflow:hidden;display:flex;flex-direction:column;
+    background:rgba(86,65,53,.9);border:1px solid rgba(255,255,255,.16);color:#fff;
+    border-radius:var(--radius);padding:24px 24px 22px;box-shadow:0 12px 34px rgba(0,0,0,.4);
+    text-decoration:none;transition:transform .16s,box-shadow .16s,border-color .16s}
+  a.hw-card:hover{transform:translateY(-2px);box-shadow:0 18px 46px rgba(0,0,0,.5);border-color:rgba(255,255,255,.28)}
+  .hw-card::before{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;
+    background:radial-gradient(circle,rgba(255,83,33,.5),transparent 70%);pointer-events:none}
+  .hw-eyebrow{position:relative;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.1px;
+    color:#ff9370;display:inline-flex;align-items:center;gap:7px;margin-bottom:11px}
+  .hw-ico{font-size:18px;line-height:1}
+  .hw-title{position:relative;font-size:20px;font-weight:800;letter-spacing:-.3px;margin-bottom:8px}
+  .hw-desc{position:relative;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.82)}
+  .hw-steps{position:relative;margin:15px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+  .hw-steps li{font-size:13.5px;line-height:1.45;color:rgba(255,255,255,.9);display:flex;gap:10px;align-items:flex-start}
+  .hw-steps li b{color:#fff;font-weight:700}
+  .hw-num{flex:none;width:20px;height:20px;border-radius:50%;background:rgba(255,83,33,.9);color:#fff;
+    font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .hw-code{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:13px;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.14);color:#ffd9c9;
+    padding:3px 9px;border-radius:7px;white-space:nowrap}
+  .hw-usage{position:relative;margin-top:15px;font-size:13.5px;color:rgba(255,255,255,.88);line-height:1.9}
+  .hw-actions{position:relative;margin-top:auto;padding-top:18px}
+  .hw-btn{display:inline-flex;align-items:center;gap:8px;background:var(--orange);color:#fff;
+    font-weight:700;font-size:14px;border:0;border-radius:11px;padding:11px 18px;cursor:pointer;
+    text-decoration:none;transition:filter .14s,transform .14s}
+  .hw-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+  .hw-btn.ghost{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22)}
+  @media (max-width:760px){.home-widgets{grid-template-columns:1fr}}
+
   /* ===== Dark-glass widgets (logged-in glossary) — blend with the ember stage ===== */
   .card{background:rgba(86,65,53,.9);border:1px solid rgba(255,255,255,.16);color:#fff;
     box-shadow:0 12px 34px rgba(0,0,0,.4)}
@@ -376,9 +454,9 @@
   .clear-btn{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
   .clear-btn:hover{background:rgba(255,255,255,.24);color:#fff}
 
-  select#catFilter{background:rgba(86,65,53,.92);color:#fff;border-color:rgba(255,255,255,.2)}
-  select#catFilter:hover{border-color:rgba(255,255,255,.34)}
-  select#catFilter option{background:#1d130d;color:#fff}
+  select#catFilter,select#deptFilter{background:rgba(86,65,53,.92);color:#fff;border-color:rgba(255,255,255,.2)}
+  select#catFilter:hover,select#deptFilter:hover{border-color:rgba(255,255,255,.34)}
+  select#catFilter option,select#deptFilter option{background:#1d130d;color:#fff}
   .select-wrap svg{color:rgba(255,255,255,.6)}
 
   .az-nav{background:rgba(60,45,37,.8);border:1px solid rgba(255,255,255,.12);
@@ -577,7 +655,8 @@
     .search-wrap,.controls,main,.admin-body,.admin-head{padding-left:18px;padding-right:18px}
     .cards{grid-template-columns:1fr}
     .controls{flex-direction:column;align-items:stretch}
-    select#catFilter{width:100%}
+    .filters{flex-direction:column;align-items:stretch}
+    select#catFilter,select#deptFilter{width:100%}
     .modal{padding:26px 22px}
     .tagline{font-size:15px}
     table thead{display:none}
@@ -636,9 +715,9 @@
   body.theme-light #search::placeholder{color:#a5a5a5}
   body.theme-light .clear-btn{background:var(--gray);color:#6b6b6b}
   body.theme-light .filter-label{color:#6b6b6b}
-  body.theme-light select#catFilter{background:#fff;color:#1f1f1f;border-color:var(--line)}
+  body.theme-light select#catFilter,body.theme-light select#deptFilter{background:#fff;color:#1f1f1f;border-color:var(--line)}
   body.theme-light .select-wrap svg{color:#6b6b6b}
-  body.theme-light select#catFilter option{background:#fff;color:#1f1f1f}
+  body.theme-light select#catFilter option,body.theme-light select#deptFilter option{background:#fff;color:#1f1f1f}
   body.theme-light .letter-head::after{background:var(--line)}
   body.theme-light footer{color:#6b6b6b;border-top-color:var(--line)}
   body.theme-light footer a{color:#6b6b6b}
@@ -653,6 +732,15 @@
   body.theme-light .card .badge.dept{background:var(--gray);color:#6b6b6b}
   body.theme-light .card .badge.cat{background:rgba(255,83,33,.10);color:var(--orange)}
   body.theme-light .card a.xref{color:var(--orange);text-decoration-color:rgba(255,83,33,.45)}
+  body.theme-light .hw-card{background:#fff;border:1px solid rgba(0,0,0,.06);color:#1f1f1f;box-shadow:var(--shadow)}
+  body.theme-light .hw-card::before{background:radial-gradient(circle,rgba(255,83,33,.16),transparent 70%)}
+  body.theme-light .hw-eyebrow{color:var(--orange)}
+  body.theme-light .hw-desc{color:#555}
+  body.theme-light .hw-steps li{color:#333}
+  body.theme-light .hw-steps li b{color:#1f1f1f}
+  body.theme-light .hw-usage{color:#333}
+  body.theme-light .hw-code{background:#f4f4f4;border-color:var(--line);color:#b23c17}
+  body.theme-light .hw-btn.ghost{background:var(--gray);border-color:var(--line);color:#1f1f1f}
   body.theme-light .az-nav{background:rgba(255,255,255,.82);border-color:rgba(0,0,0,.05)}
   body.theme-light .az-nav a{color:#6b6b6b}
   body.theme-light .az-nav a:hover{color:#1f1f1f}
@@ -771,11 +859,20 @@
   </div>
 
   <div class="controls">
-    <div>
-      <span class="filter-label">Filter by category</span>
-      <div class="select-wrap">
-        <select id="catFilter"></select>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+    <div class="filters">
+      <div>
+        <span class="filter-label">Filter by category</span>
+        <div class="select-wrap">
+          <select id="catFilter"></select>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div>
+        <span class="filter-label">Filter by department</span>
+        <div class="select-wrap">
+          <select id="deptFilter"></select>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
       </div>
     </div>
   </div>
@@ -783,6 +880,7 @@
   <main>
     <div id="homeFeatures"></div>
     <div id="lockNotice" class="lock-notice"></div>
+    <div id="homeWidgets" class="home-widgets"></div>
     <div id="results"></div>
     <div class="empty" id="empty">
       <div class="big">🔍</div>
@@ -1001,13 +1099,27 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
   /* ---------- analytics events (anonymised) ---------- */
   const getEvents=()=>store.get(KEYS.events,[]);
   function logEvent(e){const evs=getEvents();evs.push({ts:Date.now(),...e});
-    if(evs.length>6000)evs.splice(0,evs.length-6000);store.set(KEYS.events,evs);}
+    if(evs.length>6000)evs.splice(0,evs.length-6000);store.set(KEYS.events,evs);
+    if(SSO){try{fetch('/api/events',{method:'POST',credentials:'include',keepalive:true,
+      headers:{'Content-Type':'application/json'},body:JSON.stringify(e)});}catch(_){}}}
+  /* live (server-wide) events for the admin Analytics tab; null until fetched */
+  let LIVE_EVENTS=null,liveLoaded=false,liveLoading=false;
+  const analyticsEvents=()=>Array.isArray(LIVE_EVENTS)?LIVE_EVENTS:getEvents();
+  async function loadLiveEvents(force){
+    if(!SSO||liveLoading||(liveLoaded&&!force))return;
+    liveLoading=true;
+    try{const r=await fetch('/api/events?days=90',{credentials:'include'});
+      if(r.ok){const j=await r.json();if(Array.isArray(j.events))LIVE_EVENTS=j.events;}}catch(_){}
+    liveLoading=false;liveLoaded=true;
+    const av=$('#adminView');
+    if(av&&av.style.display!=='none'&&adminTab==='analytics')renderAdmin();
+  }
   let lastSearchLogged='';
   function logSearch(q,n){q=(q||'').trim();if(q.length<2)return;
     if(q.toLowerCase()===lastSearchLogged)return;lastSearchLogged=q.toLowerCase();
     logEvent({type:'search',q,n});}
   function logView(acr){if(acr)logEvent({type:'view',acr});}
-  function evInRange(days){const cut=Date.now()-days*86400000;return getEvents().filter(e=>e.ts>=cut);}
+  function evInRange(days){const cut=Date.now()-days*86400000;return analyticsEvents().filter(e=>e.ts>=cut);}
   function topSearches(days,onlyZero){
     const m={};evInRange(days).filter(e=>e.type==='search'&&(onlyZero?e.n===0:true)).forEach(e=>{
       const k=e.q.toLowerCase();(m[k]||(m[k]={q:e.q,count:0})).count++;});
@@ -1205,18 +1317,30 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
 
   /* ---------- category dropdown ---------- */
   function buildCatFilter(){
-    const list=fullList();
+    const list=fullList().filter(d=>state.dept==='All'||d.department===state.dept);
     const cats=[...new Set(list.map(d=>d.category).filter(Boolean))].sort();
     const sel=$('#catFilter');
     const cur=sel.value||'All';
     sel.innerHTML=`<option value="All">All categories (${list.length})</option>`+
       cats.map(c=>`<option value="${esc(c)}">${esc(c)} (${list.filter(d=>d.category===c).length})</option>`).join('');
     sel.value=[...sel.options].some(o=>o.value===cur)?cur:'All';
+    if(sel.value!==state.cat)state.cat=sel.value;
+    sel.classList.toggle('filtered',sel.value!=='All');
+  }
+  function buildDeptFilter(){
+    const list=fullList().filter(d=>state.cat==='All'||d.category===state.cat);
+    const depts=[...new Set(list.map(d=>d.department).filter(Boolean))].sort();
+    const sel=$('#deptFilter');
+    const cur=sel.value||'All';
+    sel.innerHTML=`<option value="All">All departments (${list.length})</option>`+
+      depts.map(c=>`<option value="${esc(c)}">${esc(c)} (${list.filter(d=>d.department===c).length})</option>`).join('');
+    sel.value=[...sel.options].some(o=>o.value===cur)?cur:'All';
+    if(sel.value!==state.dept)state.dept=sel.value;
     sel.classList.toggle('filtered',sel.value!=='All');
   }
 
   /* ---------- glossary render ---------- */
-  let state={q:'',cat:'All'};
+  let state={q:'',cat:'All',dept:'All'};
   function firstLetter(d){const c=(d.acronym||d.term||'#').trim().charAt(0).toUpperCase();
     return/[A-Z]/.test(c)?c:'#'}
   function matches(d,q){if(!q)return true;
@@ -1248,10 +1372,11 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
   let current=[];
   function renderGlossary(){
     buildCatFilter();
+    buildDeptFilter();
     const q=state.q.trim().toLowerCase();
     const list=fullList();
     buildXref(list);
-    current=list.filter(d=>(state.cat==='All'||d.category===state.cat)&&matches(d,q))
+    current=list.filter(d=>(state.cat==='All'||d.category===state.cat)&&(state.dept==='All'||d.department===state.dept)&&matches(d,q))
       .sort((a,b)=>a.acronym.toLowerCase().localeCompare(b.acronym.toLowerCase()));
     const groups={};
     current.forEach(d=>{const L=firstLetter(d);(groups[L]=groups[L]||[]).push(d)});
@@ -1265,6 +1390,36 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
     buildAZ(new Set(letters));
     if(cardIO&&!reduceMotion())$('#results').querySelectorAll('.card.reveal-card').forEach(c=>cardIO.observe(c));
     renderHomeFeatures();
+    renderHomeWidgets();
+  }
+
+  /* ---------- homepage: Game + Bot widgets ---------- */
+  function renderHomeWidgets(){
+    const host=$('#homeWidgets');if(!host)return;
+    // Shown on the signed-out landing page only — not on the logged-in terms view.
+    if(currentUser()){host.style.display='none';host.innerHTML='';return;}
+    host.style.display='';
+    host.innerHTML=`
+      <a class="hw-card" href="https://glossarygame.tangoo.ai/" target="_blank" rel="noopener noreferrer">
+        <span class="hw-eyebrow"><span class="hw-ico">🎮</span> Play &amp; learn</span>
+        <div class="hw-title">Tangoo Glossary Game</div>
+        <p class="hw-desc">Think you know your Tangoo lingo? Race the clock and test yourself on acronyms, terms and internal language — a fun way to sharpen up.</p>
+        <div class="hw-usage">No sign-in needed — jump straight in, beat your best score, and challenge the team.</div>
+        <div class="hw-actions"><span class="hw-btn">Play the game <span aria-hidden="true">↗</span></span></div>
+      </a>
+      <div class="hw-card">
+        <span class="hw-eyebrow"><span class="hw-ico">✨</span> New</span>
+        <div class="hw-title">Tangoo Glossary Bot</div>
+        <p class="hw-desc">Instant, 24/7 access to Tangoo terminology, internal language and industry acronyms — right inside Google Chat.</p>
+        <ul class="hw-steps">
+          <li><span class="hw-num">1</span><span>Open <b>Google Chat</b></span></li>
+          <li><span class="hw-num">2</span><span>Click the <b>“+”</b> (New chat) button</span></li>
+          <li><span class="hw-num">3</span><span>Search for <b>Tangoo Glossary</b></span></li>
+          <li><span class="hw-num">4</span><span>Click <b>Add / Install</b> — you’re ready to go</span></li>
+        </ul>
+        <div class="hw-usage">Then just type <span class="hw-code">/define [Term]</span><br>e.g. <span class="hw-code">/define CPM</span> &nbsp; <span class="hw-code">/define Elevate</span></div>
+        <div class="hw-actions"><a class="hw-btn ghost" href="https://chat.google.com/" target="_blank" rel="noopener noreferrer">Open Google Chat <span aria-hidden="true">↗</span></a></div>
+      </div>`;
   }
 
   /* ---------- homepage: Term of the Day + Trending ---------- */
@@ -1550,7 +1705,22 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
   }
 
   /* ---------- admin: Analytics ---------- */
+  function fmtAgo(ts){
+    const s=Math.floor((Date.now()-ts)/1000);
+    if(s<45)return'just now';
+    const m=Math.floor(s/60);if(m<60)return m+'m ago';
+    const h=Math.floor(m/60);if(h<24)return h+'h ago';
+    const d=Math.floor(h/24);if(d<7)return d+'d ago';
+    const dt=new Date(ts);
+    return dt.toLocaleDateString(undefined,{month:'short',day:'numeric'})+', '+dt.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+  }
   function analyticsPanel(){
+    loadLiveEvents();
+    const live=Array.isArray(LIVE_EVENTS);
+    const cut=Date.now()-anRange*86400000;
+    const loginEvents=live?LIVE_EVENTS.filter(e=>e.type==='login'&&e.ts>=cut).sort((a,b)=>b.ts-a.ts):[];
+    const logins=loginEvents.length;
+    const uniqUsers=new Set(loginEvents.map(e=>(e.email||'unknown'))).size;
     const sum=analyticsSummary(anRange);
     const searches=topSearches(anRange,false).slice(0,15);
     const zeros=topSearches(anRange,true).slice(0,15);
@@ -1573,13 +1743,25 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
         <span class="bar" style="width:${Math.round(v.count/maxV*90)+10}px"></span>
         <span class="ct">${v.count}</span></div>`).join('')
       :`<div class="panel-empty" style="padding:34px"><p>No term views recorded yet in this range.</p></div>`;
-    return`${rangeBtns}
+    const loginRows=loginEvents.length?loginEvents.slice(0,30).map(e=>`<div class="rank-row">
+        <span class="n" style="width:auto;flex:none"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#1f9d55"></span></span>
+        <span class="q" style="cursor:default">${esc(e.email||'Unknown user')}</span>
+        <span class="ct" style="width:auto;color:var(--muted);font-weight:600;font-size:12.5px;white-space:nowrap">${esc(fmtAgo(e.ts))}</span></div>`).join('')
+      :`<div class="panel-empty" style="padding:34px"><p>No logins recorded yet in this range.</p></div>`;
+    const srcBadge=live
+      ?`<span class="an-src live">● Live · all users</span>`
+      :(SSO?`<span class="an-src">Loading live data…</span>`:`<span class="an-src">This device only</span>`);
+    return`<div class="an-top">${rangeBtns}${srcBadge}</div>
       <div class="stat-row">
+        ${live?`<div class="stat-card"><div class="stat-num">${logins}</div><div class="stat-lbl">Logins</div></div>`:''}
+        ${live?`<div class="stat-card"><div class="stat-num">${uniqUsers}</div><div class="stat-lbl">Unique users</div></div>`:''}
         <div class="stat-card"><div class="stat-num">${sum.totalSearches}</div><div class="stat-lbl">Total searches</div></div>
         <div class="stat-card"><div class="stat-num">${sum.uniqTerms}</div><div class="stat-lbl">Unique terms viewed</div></div>
         <div class="stat-card"><div class="stat-num">${sum.zeroCount}</div><div class="stat-lbl">Zero-result searches</div></div>
-        <div class="stat-card"><div class="stat-num" style="font-size:20px;padding-top:8px">${esc(sum.topCat)}</div><div class="stat-lbl">Most active category</div></div>
       </div>
+      ${live?`<div class="an-grid" style="margin-bottom:18px">
+        <div class="panel an-panel"><h3>Recent logins</h3><div class="sub">Who signed in with Rippling, most recent first.</div>${loginRows}</div>
+      </div>`:''}
       <div class="an-grid">
         <div class="panel an-panel"><h3>Most-searched queries</h3><div class="sub">Top terms people are looking for.</div>${searchRows}</div>
         <div class="panel an-panel"><h3>Zero-result searches</h3><div class="sub">Queries that found nothing — candidates for new terms.</div>${zeroRows}</div>
@@ -1857,6 +2039,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
   clearBtn.addEventListener('click',()=>{searchEl.value='';state.q='';
     clearBtn.classList.remove('show');renderGlossary();searchEl.focus();});
   $('#catFilter').addEventListener('change',e=>{state.cat=e.target.value;renderGlossary();});
+  $('#deptFilter').addEventListener('change',e=>{state.dept=e.target.value;renderGlossary();});
   document.addEventListener('keydown',e=>{
     if(e.key==='/'&&document.activeElement!==searchEl&&!adminIsOpen()){e.preventDefault();searchEl.focus();}});
   makeMagnetic($('#suggestBtn'));
