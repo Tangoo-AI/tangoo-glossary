@@ -293,6 +293,7 @@
   .reveal-card.in{opacity:1;transform:none}
 
   /* ===== Signed-out gate (only branding + Term of the Day visible) ===== */
+  body.locked #homeFeatures,body.locked #homeWidgets,
   body.locked .search-wrap,
   body.locked .controls,
   body.locked #azNav,
@@ -301,80 +302,69 @@
   body.locked #suggestBtn,
   body.locked #authArea{display:none!important}
   .lock-notice{display:none}
-  body.locked .lock-notice{display:block;max-width:1080px;margin:0 auto;padding:10px 24px 0}
-  .lock-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
-    box-shadow:var(--shadow);padding:44px 32px;text-align:center}
-  .lock-card .lock-ic{width:60px;height:60px;border-radius:50%;background:rgba(255,83,33,.10);
-    color:var(--orange);display:grid;place-items:center;margin:0 auto 18px}
-  .lock-card h3{font-size:21px;font-weight:800;letter-spacing:-.4px;margin-bottom:8px}
-  .lock-card p{color:var(--muted);font-size:15px;max-width:430px;margin:0 auto 22px;line-height:1.55}
-  .lock-card .btn{padding:12px 28px}
-  @media (max-width:640px){body.locked .lock-notice{padding-left:18px;padding-right:18px}}
-  /* logged-out: Term of the Day (left) + sign-in (right), side by side on wider screens */
-  /* three cards in one row on wide screens, with the sign-in button spanning below */
-  @media (min-width:900px){
-    body.locked main{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;max-width:1120px}
-    body.locked #homeFeatures{margin-bottom:0;display:flex}
-    body.locked #homeFeatures .totd-wrap{margin-bottom:0;flex:1;display:flex;flex-direction:column;width:100%}
-    body.locked #homeFeatures .totd-card{flex:1}
-    /* dissolve the widgets wrapper so its two cards become grid items in the same row */
-    body.locked #homeWidgets{display:contents}
-    body.locked .hw-card{margin:0}
-    body.locked #lockNotice{grid-column:1/-1;margin:0;padding:0}
-    /* compact sizing for the one-row layout */
-    body.locked .totd-card,body.locked .hw-card{padding:18px 18px 16px}
-    body.locked .feature-label{display:none}
-    body.locked .totd-card .acronym{font-size:21px}
-    body.locked .totd-card .quote{font-size:13px;margin-top:12px}
-    body.locked .totd-card .definition{font-size:12.5px;margin-top:11px;
-      display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
-    body.locked .hw-title{font-size:16.5px}
-    body.locked .hw-desc,body.locked .hw-usage{font-size:12.5px;line-height:1.5}
-    body.locked .hw-eyebrow{font-size:10px;margin-bottom:9px}
-    body.locked .hw-steps{margin-top:12px;gap:6px}
-    body.locked .hw-steps li{font-size:11.5px;gap:8px}
-    body.locked .hw-num{width:18px;height:18px;font-size:10px}
-    body.locked .hw-code{font-size:11px;padding:2px 6px}
-    body.locked .hw-actions{padding-top:14px}
-    body.locked .hw-btn{padding:9px 14px;font-size:13px}
-  }
-  @media (max-width:899px){body.locked #homeWidgets{margin-top:22px}body.locked .lock-notice{padding:0}}
-  /* sign-in call-to-action shown below the cards */
-  .signin-cta{text-align:center;padding:8px 0 2px}
-  .signin-note{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0 auto 16px;max-width:520px}
-  .signin-note b{font-weight:800}
-  .signin-cta .btn{padding:12px 34px}
-  body.locked .signin-note{color:rgba(255,255,255,.72)}
-  body.locked .signin-note b{color:#fff}
-  /* logged-out cards a touch more compact, and the Sign in button hugs its text */
-  body.locked .totd-card{padding:22px 22px 20px}
-  body.locked .lock-card{padding:30px 26px}
-  body.locked .lock-card .btn{align-self:center;width:auto}
-
-  /* logged-out cards use the same warm-dark glass as the logged-in cards */
-  body.locked .totd-card,
-  body.locked .lock-card{
-    background:linear-gradient(158deg,rgba(112,86,70,.94) 0%,rgba(78,58,47,.95) 100%);
-    border:1px solid rgba(255,255,255,.16);
+  body.locked .lock-notice{display:block;max-width:520px;margin:6vh auto 0;padding:0 24px}
+  .login-card{background:linear-gradient(158deg,rgba(112,86,70,.94),rgba(78,58,47,.95));
+    border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:44px 36px 40px;text-align:center;
     box-shadow:0 22px 54px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.12);color:#fff}
-  body.locked .totd-card .term{color:rgba(255,255,255,.55)}
-  body.locked .totd-card .quote{color:rgba(255,255,255,.9)}
-  body.locked .totd-card .definition{color:rgba(255,255,255,.82)}
-  body.locked .totd-card .badge.dept{background:rgba(255,255,255,.12);color:rgba(255,255,255,.65)}
-  body.locked .totd-card .badge.cat{background:rgba(255,83,33,.22);color:#ff9370}
-  body.locked .hw-card{background:linear-gradient(158deg,rgba(112,86,70,.94) 0%,rgba(78,58,47,.95) 100%);
+  .login-badge{width:58px;height:58px;border-radius:16px;margin:0 auto 20px;
+    background:linear-gradient(135deg,#FF9159,#FF5A2C 55%,#E2380F);
+    display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:700;font-size:32px;color:#fff}
+  .login-card h2{font-size:23px;font-weight:800;letter-spacing:-.4px;margin-bottom:10px}
+  .login-card p{color:rgba(255,255,255,.72);font-size:14.5px;line-height:1.6;max-width:400px;margin:0 auto 24px}
+  .login-card p b{color:#fff;font-weight:700}
+  .login-card .btn{padding:13px 30px;font-size:15px}
+  body.theme-light .login-card{background:#fff;border-color:rgba(0,0,0,.06);color:#1f1f1f;box-shadow:var(--shadow)}
+  body.theme-light .login-card p{color:#6b6b6b}
+  body.theme-light .login-card p b{color:#1f1f1f}
+  @media (max-width:640px){body.locked .lock-notice{padding-left:18px;padding-right:18px}}
+  /* ===== Logged-in HOME: Term of the Day + Game + Bot cards ===== */
+  body.home .search-wrap,body.home .controls,body.home #azNav,
+  body.home #results,body.home #empty,body.home #suggestBtn,body.home #lockNotice{display:none!important}
+  #homeFeatures,#homeWidgets{display:none}
+  body.home #homeFeatures{display:block}
+  body.home #homeWidgets{display:grid}
+  body.home .totd-card,body.home .hw-card{
+    background:linear-gradient(158deg,rgba(112,86,70,.94) 0%,rgba(78,58,47,.95) 100%);
     border:1px solid rgba(255,255,255,.16);color:#fff;
     box-shadow:0 22px 54px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.12)}
-  body.locked .hw-eyebrow{color:#ff9370}
-  body.locked .hw-desc,body.locked .hw-usage{color:rgba(255,255,255,.85)}
-  body.locked .hw-steps li{color:rgba(255,255,255,.9)}
-  body.locked .hw-steps li b{color:#fff}
-  body.locked .hw-code{background:rgba(0,0,0,.32);border-color:rgba(255,255,255,.14);color:#ffd9c9}
-  body.locked .hw-btn.ghost{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff}
-  body.locked .lock-card h3{color:#fff}
-  body.locked .lock-card p{color:rgba(255,255,255,.7)}
-  body.locked .stat-mono{color:rgba(255,255,255,.6)}
-  body.locked .stat-mono b{color:#fff}
+  body.home .totd-card{display:flex;flex-direction:column}
+  body.home .totd-card .term{color:rgba(255,255,255,.55)}
+  body.home .totd-card .quote{color:rgba(255,255,255,.9)}
+  body.home .totd-card .definition{color:rgba(255,255,255,.82)}
+  body.home .totd-card .badge.dept{background:rgba(255,255,255,.12);color:rgba(255,255,255,.65)}
+  body.home .totd-card .badge.cat{background:rgba(255,83,33,.22);color:#ff9370}
+  body.home .hw-eyebrow{color:#ff9370}
+  body.home .hw-desc,body.home .hw-usage{color:rgba(255,255,255,.85)}
+  body.home .hw-steps li{color:rgba(255,255,255,.9)}
+  body.home .hw-steps li b{color:#fff}
+  body.home .hw-code{background:rgba(0,0,0,.32);border-color:rgba(255,255,255,.14);color:#ffd9c9}
+  body.home .hw-btn.ghost{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff}
+  /* Go-to-glossary button sits at the bottom of the Term-of-the-Day card */
+  .totd-go{margin-top:auto;padding-top:16px}
+  @media (min-width:900px){
+    body.home main{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;max-width:1120px}
+    body.home #homeFeatures{margin-bottom:0;display:flex}
+    body.home #homeFeatures .totd-wrap{margin-bottom:0;flex:1;display:flex;flex-direction:column;width:100%}
+    body.home #homeFeatures .totd-card{flex:1}
+    body.home #homeWidgets{display:contents}
+    body.home .hw-card{margin:0}
+    body.home .totd-card,body.home .hw-card{padding:18px 18px 16px}
+    body.home .feature-label{display:none}
+    body.home .totd-card .acronym{font-size:21px}
+    body.home .totd-card .quote{font-size:13px;margin-top:12px}
+    body.home .totd-card .definition{font-size:12.5px;margin-top:11px;
+      display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+    body.home .hw-title{font-size:16.5px}
+    body.home .hw-desc,body.home .hw-usage{font-size:12.5px;line-height:1.5}
+    body.home .hw-eyebrow{font-size:10px;margin-bottom:9px}
+    body.home .hw-steps{margin-top:12px;gap:6px}
+    body.home .hw-steps li{font-size:11.5px;gap:8px}
+    body.home .hw-num{width:18px;height:18px;font-size:10px}
+    body.home .hw-code{font-size:11px;padding:2px 6px}
+    body.home .hw-actions,body.home .totd-go{padding-top:14px}
+    body.home .hw-btn{padding:9px 14px;font-size:13px}
+  }
+  @media (max-width:899px){body.home #homeWidgets{margin-top:22px}}
 
   /* ----- sign-in teaser (fanned frosted preview cards) ----- */
   .teaser{position:relative;height:122px;max-width:330px;margin:0 auto 28px}
@@ -1396,9 +1386,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
   /* ---------- homepage: Game + Bot widgets ---------- */
   function renderHomeWidgets(){
     const host=$('#homeWidgets');if(!host)return;
-    // Shown on the signed-out landing page only — not on the logged-in terms view.
-    if(currentUser()){host.style.display='none';host.innerHTML='';return;}
-    host.style.display='';
+    // Shown on the logged-in home page; visibility is handled by the body.home CSS.
     host.innerHTML=`
       <a class="hw-card" href="https://glossarygame.tangoo.ai/" target="_blank" rel="noopener noreferrer">
         <span class="hw-eyebrow"><span class="hw-ico">🎮</span> Play &amp; learn</span>
@@ -1425,11 +1413,8 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
   /* ---------- homepage: Term of the Day + Trending ---------- */
   function renderHomeFeatures(){
     const host=$('#homeFeatures');if(!host)return;
-    // Term of the Day is a free preview shown ONLY on the logged-out homepage.
-    if(currentUser()){host.innerHTML='';host.style.display='none';return;}
     const totd=todayTotd();
-    if(!totd){host.innerHTML='';host.style.display='none';return;}
-    host.style.display='';
+    if(!totd){host.innerHTML='';return;}
     const same=totd.term.trim().toLowerCase()===totd.acronym.trim().toLowerCase(),tbd=isTBD(totd);
     host.innerHTML=`<div class="totd-wrap">
       <div class="feature-label">★ Term of the Day</div>
@@ -1445,6 +1430,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
         </div>
         ${totd.quote?`<p class="quote totd-seq">${esc(totd.quote)}</p>`:''}
         <p class="definition totd-seq${tbd?' tbd':''}">${tbd?'Definition coming soon.':esc(totd.definition)}</p>
+        <div class="hw-actions totd-go"><button class="hw-btn" onclick="event.stopPropagation();location.hash='glossary'">Go to glossary <span aria-hidden="true">→</span></button></div>
       </article></div>`;
     const dcEl=host.querySelector('.totd-card .dc');
     const seq=[...host.querySelectorAll('.totd-seq')];
@@ -1632,13 +1618,13 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
     const u=currentUser();
     const top=$('#adminTopActions');
     if(!u||u.role!=='admin'){
-      top.innerHTML=`<button class="btn btn-ghost-light" onclick="location.hash=''">← Back to glossary</button>`;
+      top.innerHTML=`<button class="btn btn-ghost-light" onclick="location.hash='glossary'">← Back to glossary</button>`;
       $('#adminContent').innerHTML=`<div class="admin-gate">
         <div class="lock">🔒</div>
         <h2>Admin access required</h2>
         <p>${u?'Your account does not have admin permissions. Contact an existing admin to be upgraded.':'Please sign in with an admin account to continue.'}</p>
         ${u?'':`<button class="btn btn-primary btn-block" id="gateSignIn">Sign in</button>`}
-        <button class="btn btn-outline btn-block" style="margin-top:10px" onclick="location.hash=''">Back to glossary</button>
+        <button class="btn btn-outline btn-block" style="margin-top:10px" onclick="location.hash='glossary'">Back to glossary</button>
       </div>`;
       const g=$('#gateSignIn');if(g)g.onclick=()=>openAuthModal(()=>route());
       return;
@@ -1646,7 +1632,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
     top.innerHTML=`
       <span class="user-pill"><span class="avatar">${initials(u.name)}</span>
         <span>${esc(u.name.split(' ')[0])}</span><span class="role-tag">Admin</span></span>
-      <button class="btn btn-ghost-light btn-sm" onclick="location.hash=''">← Glossary</button>
+      <button class="btn btn-ghost-light btn-sm" onclick="location.hash='glossary'">← Glossary</button>
       <button class="btn btn-ghost-light btn-sm" id="adminSignOut">Sign out</button>`;
     $('#adminSignOut').onclick=signOut;
 
@@ -1911,8 +1897,8 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
     root.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>{
       const key=b.dataset.jump.toLowerCase();
       const d=fullList().find(x=>x.acronym.toLowerCase()===key);
-      if(d){location.hash='';setTimeout(()=>openDetail(d),60);}
-      else{location.hash='';setTimeout(()=>{const s=$('#search');s.value=b.dataset.jump;
+      if(d){location.hash='glossary';setTimeout(()=>openDetail(d),60);}
+      else{location.hash='glossary';setTimeout(()=>{const s=$('#search');s.value=b.dataset.jump;
         s.dispatchEvent(new Event('input'));s.scrollIntoView({block:'center'});},60);}});
     /* term of the day */
     root.querySelectorAll('[data-totdnav]').forEach(b=>b.onclick=()=>{
@@ -1967,33 +1953,39 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
 
   /* ================= ROUTING ================= */
   function route(){
-    if(adminIsOpen()){
+    const authed=!!currentUser();
+    if(authed&&adminIsOpen()){
       $('#glossaryView').style.display='none';
       $('#adminView').style.display='block';
       window.scrollTo(0,0);
       renderAdmin();
-    }else{
-      $('#adminView').style.display='none';
-      $('#glossaryView').style.display='block';
-      renderAuthArea();
-      renderGlossary();
-      applyAccessGate();
+      return;
     }
+    $('#adminView').style.display='none';
+    $('#glossaryView').style.display='block';
+    const r=location.hash.replace(/^#\/?/,'');
+    // logged out -> login screen; logged in -> home (cards) unless #glossary is requested
+    const homeMode=authed&&r!=='glossary';
+    document.body.classList.toggle('locked',!authed);
+    document.body.classList.toggle('home',homeMode);
+    renderAuthArea();
+    renderGlossary();
+    applyAccessGate();
   }
   window.addEventListener('hashchange',route);
 
   /* signed-out visitors see only branding + Term of the Day; login unlocks the rest */
   function applyAccessGate(){
     const authed=!!currentUser();
-    document.body.classList.toggle('locked',!authed);
     const ln=$('#lockNotice');if(!ln)return;
     if(authed){ln.innerHTML='';return;}
     const list=fullList();
     const terms=list.length;
-    const cats=new Set(list.map(d=>d.category).filter(Boolean)).size;
-    ln.innerHTML=`<div class="signin-cta">
-      <p class="signin-note">Sign in with Rippling for full access — <b>${terms}</b> terms across <b>${cats}</b> categories.</p>
-      <button class="btn btn-primary" id="lockSignIn">Sign in</button>
+    ln.innerHTML=`<div class="login-card">
+      <div class="login-badge">T</div>
+      <h2>Sign in to the Glossary</h2>
+      <p>Every acronym, term and bit of jargon at Tangoo — decoded. Sign in with Rippling to browse all <b>${terms}</b> terms.</p>
+      <button class="btn btn-primary" id="lockSignIn">Sign in with Rippling</button>
     </div>`;
     const b=$('#lockSignIn');if(b){b.onclick=()=>openAuthModal(()=>route());makeMagnetic(b);}
   }
