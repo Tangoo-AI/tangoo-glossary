@@ -83,7 +83,18 @@ async function readEvents(): Promise<any[]> {
 }
 
 const str = (v: any, max: number) => (typeof v === "string" ? v.slice(0, max) : "");
-const TYPES = new Set(["search", "view", "login"]);
+const TYPES = new Set(["search", "view", "login", "open"]);
+
+// Device is derived server-side from the request's user-agent so every event
+// (login/open/search/view) is tagged consistently — mirrors the store's buckets.
+function deviceFromUA(ua: string): "mac" | "ios" | "windows" | "android" | "other" {
+  ua = String(ua || "");
+  if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+  if (/Android/i.test(ua)) return "android";
+  if (/Macintosh|Mac OS X/i.test(ua)) return "mac";
+  if (/Windows/i.test(ua)) return "windows";
+  return "other";
+}
 
 export default async function handler(req: any, res: any) {
   try {
@@ -111,6 +122,8 @@ export default async function handler(req: any, res: any) {
         if (!ev.acr) return res.status(204).end();
       }
       if (sess?.email) ev.email = sess.email.toLowerCase();
+      if (sess?.name) ev.name = str(sess.name, 80);
+      ev.device = deviceFromUA(req.headers["user-agent"]);
       await pushEvent(ev);
       return res.status(202).json({ ok: true });
     }

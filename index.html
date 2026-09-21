@@ -239,6 +239,34 @@
   @media (max-width:760px){.an-grid{grid-template-columns:1fr}}
   .an-panel h3{font-size:15px;font-weight:800;padding:16px 18px 0}
   .an-panel .sub{font-size:12.5px;color:var(--muted);padding:2px 18px 10px}
+  /* ===== Analytics viz (store-style dashboard) ===== */
+  #adminView{--viz-signin:#9b8cf0;--viz-open:#ff7a45;--viz-mac:#4f9bff;--viz-ios:#2bbd88;
+    --viz-win:#e0a02a;--viz-other:#9aa0a6;--viz-bar:#ff7a45;--viz-track:rgba(255,255,255,.12);
+    --viz-axis:rgba(255,255,255,.5);--viz-grid:rgba(255,255,255,.09)}
+  .an-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 18px 0}
+  .an-head h3{padding:0}
+  .viz-legend{display:flex;gap:14px}
+  .vl{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);font-weight:600}
+  .vl-dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .viz-scroll{overflow-x:auto;padding:6px 18px 14px}
+  .viz-svg{width:100%;min-width:520px;height:auto;display:block}
+  .viz-axis{font-size:10px;fill:var(--viz-axis)}
+  .donut-wrap{display:flex;align-items:center;gap:22px;padding:6px 18px 18px;flex-wrap:wrap}
+  .donut{width:150px;height:150px;flex:none}
+  .donut-n{font-size:30px;font-weight:800;fill:var(--stat-num,#fff)}
+  .donut-l{font-size:11px;fill:var(--viz-axis)}
+  #adminView .donut-n{fill:#fff}
+  .dv-legend{display:flex;flex-direction:column;gap:9px;min-width:130px}
+  .dv-leg{display:grid;grid-template-columns:14px 1fr auto;align-items:center;gap:9px;font-size:13px}
+  .dv-dot{width:11px;height:11px;border-radius:3px}
+  .dv-lbl{color:var(--muted);font-weight:600}
+  .dv-val{font-weight:800;color:#fff}
+  .hbars{display:flex;flex-direction:column;gap:11px;padding:6px 18px 18px}
+  .hbar-row{display:grid;grid-template-columns:120px 1fr 34px;align-items:center;gap:10px;font-size:13px}
+  .hbar-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:#fff}
+  .hbar-track{height:10px;border-radius:6px;background:var(--viz-track);overflow:hidden}
+  .hbar-fill{display:block;height:100%;border-radius:6px;background:var(--viz-bar)}
+  .hbar-val{text-align:right;font-weight:800;color:#fff}
   .rank-row{display:flex;align-items:center;gap:12px;padding:10px 18px;border-top:1px solid var(--line);font-size:14px}
   .rank-row .n{color:var(--muted);font-weight:700;width:22px;flex:none}
   .rank-row .q{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;cursor:pointer}
@@ -784,6 +812,11 @@
   body.theme-light td .tm-term{color:#6b6b6b}
   body.theme-light .stat-card{background:#fff;border-color:rgba(0,0,0,.04)}
   body.theme-light .stat-num{color:#1f1f1f}body.theme-light .stat-lbl{color:#6b6b6b}
+  body.theme-light #adminView{--viz-signin:#5a49c8;--viz-open:#e2531f;--viz-mac:#2a78d6;--viz-ios:#1baf7a;
+    --viz-win:#c98500;--viz-other:#8a8f94;--viz-bar:#e2531f;--viz-track:#ececec;
+    --viz-axis:#8a8f94;--viz-grid:#eee}
+  body.theme-light #adminView .donut-n{fill:#1f1f1f}
+  body.theme-light .dv-val,body.theme-light .hbar-name,body.theme-light .hbar-val{color:#1f1f1f}
   body.theme-light .an-panel .sub{color:#6b6b6b}
   body.theme-light .sugg-card{border-bottom-color:var(--line)}
   body.theme-light .sugg-term{color:#1f1f1f}body.theme-light .sugg-meta{color:#6b6b6b}body.theme-light .sugg-def{color:#333}
@@ -1102,7 +1135,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
   async function loadLiveEvents(force){
     if(!SSO||liveLoading||(liveLoaded&&!force))return;
     liveLoading=true;
-    try{const r=await fetch('/api/events?days=90',{credentials:'include'});
+    try{const r=await fetch('/api/events?days=365',{credentials:'include'});
       if(r.ok){const j=await r.json();if(Array.isArray(j.events))LIVE_EVENTS=j.events;}}catch(_){}
     liveLoading=false;liveLoaded=true;
     const av=$('#adminView');
@@ -1113,6 +1146,8 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
     if(q.toLowerCase()===lastSearchLogged)return;lastSearchLogged=q.toLowerCase();
     logEvent({type:'search',q,n});}
   function logView(acr){if(acr)logEvent({type:'view',acr});}
+  let openLogged=false;
+  function logOpen(){if(openLogged||!SSO||!currentUser())return;openLogged=true;logEvent({type:'open'});}
   function evInRange(days){const cut=Date.now()-days*86400000;return analyticsEvents().filter(e=>e.ts>=cut);}
   function topSearches(days,onlyZero){
     const m={};evInRange(days).filter(e=>e.type==='search'&&(onlyZero?e.n===0:true)).forEach(e=>{
@@ -1616,7 +1651,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
 
   /* ================= ADMIN ================= */
   function adminIsOpen(){return location.hash.replace(/^#\/?/,'')==='admin'}
-  let adminTab='suggestions',suggFilter='pending',anRange=7,tmQuery='',totdOffset=0;
+  let adminTab='suggestions',suggFilter='pending',anRange=3650,tmQuery='',totdOffset=0;
 
   function renderAdmin(){
     const u=currentUser();
@@ -1704,26 +1739,84 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
     const dt=new Date(ts);
     return dt.toLocaleDateString(undefined,{month:'short',day:'numeric'})+', '+dt.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
   }
+  /* ---------- store-style insights ---------- */
+  const VIZMONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const dayKeyV=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  function niceMax(v){if(v<=5)return 5;const step=Math.pow(10,Math.floor(Math.log10(v)));return Math.ceil(v/step)*step;}
+  function computeInsights(events){
+    const now=Date.now(),weekAgo=now-7*864e5;
+    const users=new Set(),active=new Set(),perUser=new Map();
+    const devices={mac:0,ios:0,windows:0,other:0};
+    const byHour=new Array(24).fill(0);const dayMap=new Map();
+    let signIns=0,appOpens=0;
+    for(const e of events){
+      const email=(e.email||'').toLowerCase();
+      const d=new Date(e.ts);const valid=!isNaN(d.getTime());
+      if(email)users.add(email);
+      if(email&&valid&&e.ts>=weekAgo)active.add(email);
+      if(e.type==='login')signIns++;else if(e.type==='open')appOpens++;
+      const dev=(e.device==='mac'||e.device==='ios'||e.device==='windows')?e.device:'other';
+      devices[dev]++;
+      if(email){const cur=perUser.get(email)||{name:e.name||email,count:0};cur.count++;if(e.name)cur.name=e.name;perUser.set(email,cur);}
+      if(valid){byHour[d.getHours()]++;const k=dayKeyV(d);const b=dayMap.get(k)||{signins:0,opens:0};if(e.type==='login')b.signins++;else if(e.type==='open')b.opens++;dayMap.set(k,b);}
+    }
+    const daily=[];for(let i=29;i>=0;i--){const d=new Date(now-i*864e5);const b=dayMap.get(dayKeyV(d))||{signins:0,opens:0};daily.push({label:VIZMONTHS[d.getMonth()]+' '+d.getDate(),signins:b.signins,opens:b.opens});}
+    const mostActive=[...perUser.entries()].map(([email,v])=>({email,name:v.name,count:v.count})).sort((a,b)=>b.count-a.count).slice(0,8);
+    return{total:events.length,uniqueUsers:users.size,signIns,appOpens,active:active.size,devices,byHour,daily,mostActive};
+  }
+  function dailyChartSVG(daily){
+    const W=760,H=240,padL=30,padR=8,padT=12,padB=26,plotW=W-padL-padR,plotH=H-padT-padB;
+    const max=niceMax(Math.max(1,...daily.map(d=>d.signins+d.opens)));
+    const n=daily.length,slot=plotW/n,bw=Math.max(3,slot-4),y=v=>padT+plotH-(v/max)*plotH;
+    let g='';[0,.25,.5,.75,1].map(f=>Math.round(max*f)).forEach(t=>{const yy=y(t);
+      g+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="var(--viz-grid)" stroke-width="1"/><text x="${padL-6}" y="${yy+3}" text-anchor="end" class="viz-axis">${t}</text>`;});
+    daily.forEach((d,i)=>{const x=padL+i*slot+(slot-bw)/2,total=d.signins+d.opens,hSign=(d.signins/max)*plotH,hOpen=(d.opens/max)*plotH,showLabel=i%3===0||i===n-1;
+      g+=`<g><title>${d.label} — ${d.signins} sign-ins, ${d.opens} app opens</title>`;
+      if(d.signins>0)g+=`<rect x="${x}" y="${y(d.signins)}" width="${bw}" height="${Math.max(0,hSign)}" rx="${hOpen>0?0:3}" fill="var(--viz-signin)"/>`;
+      if(d.opens>0)g+=`<rect x="${x}" y="${y(total)}" width="${bw}" height="${Math.max(0,hOpen-(d.signins>0?2:0))}" rx="3" fill="var(--viz-open)"/>`;
+      if(showLabel)g+=`<text x="${x+bw/2}" y="${H-8}" class="viz-axis" text-anchor="middle">${d.label}</text>`;
+      g+='</g>';});
+    return`<div class="viz-scroll"><svg viewBox="0 0 ${W} ${H}" class="viz-svg" preserveAspectRatio="xMidYMid meet">${g}</svg></div>`;
+  }
+  function donutSVG(devices){
+    const META=[['mac','Mac','--viz-mac'],['ios','iOS','--viz-ios'],['windows','Windows','--viz-win'],['other','Other','--viz-other']];
+    const total=META.reduce((s,d)=>s+(devices[d[0]]||0),0),R=60,C=2*Math.PI*R,gap=total>1?2:0;let off=0,segs='';
+    META.forEach(m=>{const val=devices[m[0]]||0,frac=total?val/total:0,len=Math.max(0,frac*C-gap);
+      if(val>0)segs+=`<circle cx="80" cy="80" r="${R}" fill="none" stroke="var(${m[2]})" stroke-width="18" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}"><title>${m[1]}: ${val} (${Math.round(frac*100)}%)</title></circle>`;
+      off+=frac*C;});
+    const legend=META.map(m=>`<div class="dv-leg"><span class="dv-dot" style="background:var(${m[2]})"></span><span class="dv-lbl">${m[1]}</span><span class="dv-val">${devices[m[0]]||0}</span></div>`).join('');
+    return`<div class="donut-wrap"><svg viewBox="0 0 160 160" class="donut"><g transform="rotate(-90 80 80)"><circle cx="80" cy="80" r="${R}" fill="none" stroke="var(--viz-track)" stroke-width="18"/>${segs}</g><text x="80" y="76" text-anchor="middle" class="donut-n">${total}</text><text x="80" y="95" text-anchor="middle" class="donut-l">events</text></svg><div class="dv-legend">${legend}</div></div>`;
+  }
+  function hourlyChartSVG(byHour){
+    const W=760,H=170,padL=26,padR=8,padT=10,padB=22,plotW=W-padL-padR,plotH=H-padT-padB;
+    const max=niceMax(Math.max(1,...byHour)),slot=plotW/24,bw=Math.max(4,slot-5),y=v=>padT+plotH-(v/max)*plotH;
+    const lab=h=>h===0?'12a':h<12?h+'a':h===12?'12p':(h-12)+'p';let g='';
+    byHour.forEach((v,h)=>{const x=padL+h*slot+(slot-bw)/2,hh=Math.max(0,plotH*(v/max));
+      g+=`<g><title>${lab(h)} — ${v} event${v===1?'':'s'}</title>`;
+      if(v>0)g+=`<rect x="${x}" y="${y(v)}" width="${bw}" height="${hh}" rx="3" fill="var(--viz-bar)"/>`;
+      if(h%3===0)g+=`<text x="${x+bw/2}" y="${H-6}" class="viz-axis" text-anchor="middle">${lab(h)}</text>`;
+      g+='</g>';});
+    return`<div class="viz-scroll"><svg viewBox="0 0 ${W} ${H}" class="viz-svg" preserveAspectRatio="xMidYMid meet">${g}</svg></div>`;
+  }
+  function hbarsHTML(people){
+    if(!people.length)return`<div class="panel-empty" style="padding:34px"><p>No activity yet.</p></div>`;
+    const max=Math.max(1,...people.map(p=>p.count));
+    return`<div class="hbars">${people.map(p=>`<div class="hbar-row" title="${esc(p.name)} — ${p.count} events"><span class="hbar-name">${esc(p.name)}</span><span class="hbar-track"><span class="hbar-fill" style="width:${Math.round(p.count/max*100)}%"></span></span><span class="hbar-val">${p.count}</span></div>`).join('')}</div>`;
+  }
   function analyticsPanel(){
     loadLiveEvents();
     const live=Array.isArray(LIVE_EVENTS);
-    const cut=Date.now()-anRange*86400000;
-    const loginEvents=live?LIVE_EVENTS.filter(e=>e.type==='login'&&e.ts>=cut).sort((a,b)=>b.ts-a.ts):[];
-    const logins=loginEvents.length;
-    const uniqUsers=new Set(loginEvents.map(e=>(e.email||'unknown'))).size;
-    const sum=analyticsSummary(anRange);
+    const ins=computeInsights(live?LIVE_EVENTS:getEvents());
     const searches=topSearches(anRange,false).slice(0,15);
     const zeros=topSearches(anRange,true).slice(0,15);
     const views=topViews(anRange).slice(0,15);
     const maxS=searches.length?searches[0].count:1;
     const maxV=views.length?views[0].count:1;
-    const rangeBtns=`<div class="seg">${[7,30,90].map(r=>
-      `<button data-anr="${r}" class="${anRange===r?'active':''}">Last ${r} days</button>`).join('')}</div>`;
     const searchRows=searches.length?searches.map((s,i)=>`<div class="rank-row">
         <span class="n">${i+1}</span><span class="q" data-jump="${esc(s.q)}">${esc(s.q)}</span>
         <span class="bar" style="width:${Math.round(s.count/maxS*90)+10}px"></span>
         <span class="ct">${s.count}</span></div>`).join('')
-      :`<div class="panel-empty" style="padding:34px"><p>No searches recorded yet in this range.</p></div>`;
+      :`<div class="panel-empty" style="padding:34px"><p>No searches recorded yet.</p></div>`;
     const zeroRows=zeros.length?zeros.map((s,i)=>`<div class="rank-row zero zero-q">
         <span class="n">${i+1}</span><span class="q" data-jump="${esc(s.q)}">${esc(s.q)}</span>
         <span class="ct">${s.count}</span></div>`).join('')
@@ -1732,26 +1825,30 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
         <span class="n">${i+1}</span><span class="q" data-jump="${esc(v.acr)}">${esc(v.acr)}</span>
         <span class="bar" style="width:${Math.round(v.count/maxV*90)+10}px"></span>
         <span class="ct">${v.count}</span></div>`).join('')
-      :`<div class="panel-empty" style="padding:34px"><p>No term views recorded yet in this range.</p></div>`;
-    const loginRows=loginEvents.length?loginEvents.slice(0,30).map(e=>`<div class="rank-row">
-        <span class="n" style="width:auto;flex:none"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#1f9d55"></span></span>
-        <span class="q" style="cursor:default">${esc(e.email||'Unknown user')}</span>
-        <span class="ct" style="width:auto;color:var(--muted);font-weight:600;font-size:12.5px;white-space:nowrap">${esc(fmtAgo(e.ts))}</span></div>`).join('')
-      :`<div class="panel-empty" style="padding:34px"><p>No logins recorded yet in this range.</p></div>`;
+      :`<div class="panel-empty" style="padding:34px"><p>No term views recorded yet.</p></div>`;
     const srcBadge=live
       ?`<span class="an-src live">● Live · all users</span>`
       :(SSO?`<span class="an-src">Loading live data…</span>`:`<span class="an-src">This device only</span>`);
-    return`<div class="an-top">${rangeBtns}${srcBadge}</div>
-      <div class="stat-row">
-        ${live?`<div class="stat-card"><div class="stat-num">${logins}</div><div class="stat-lbl">Logins</div></div>`:''}
-        ${live?`<div class="stat-card"><div class="stat-num">${uniqUsers}</div><div class="stat-lbl">Unique users</div></div>`:''}
-        <div class="stat-card"><div class="stat-num">${sum.totalSearches}</div><div class="stat-lbl">Total searches</div></div>
-        <div class="stat-card"><div class="stat-num">${sum.uniqTerms}</div><div class="stat-lbl">Unique terms viewed</div></div>
-        <div class="stat-card"><div class="stat-num">${sum.zeroCount}</div><div class="stat-lbl">Zero-result searches</div></div>
+    return`<div class="an-top">
+        <div><h3 style="font-size:18px;font-weight:800;margin:0">Overview</h3><div class="sub" style="padding:2px 0 0">Usage insights drawn from the activity log.</div></div>
+        <div style="display:flex;align-items:center;gap:14px">${srcBadge}<button class="btn btn-outline btn-sm" id="anRefresh">Refresh</button></div>
       </div>
-      ${live?`<div class="an-grid" style="margin-bottom:18px">
-        <div class="panel an-panel"><h3>Recent logins</h3><div class="sub">Who signed in with Rippling, most recent first.</div>${loginRows}</div>
-      </div>`:''}
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-num">${ins.uniqueUsers}</div><div class="stat-lbl">Unique users</div></div>
+        <div class="stat-card"><div class="stat-num">${ins.signIns}</div><div class="stat-lbl">Sign-ins</div></div>
+        <div class="stat-card"><div class="stat-num">${ins.appOpens}</div><div class="stat-lbl">App opens</div></div>
+        <div class="stat-card"><div class="stat-num">${ins.active}</div><div class="stat-lbl">Active (7 days)</div></div>
+      </div>
+      <div class="panel an-panel" style="margin-bottom:18px">
+        <div class="an-head"><h3>Daily activity — last 30 days</h3>
+          <div class="viz-legend"><span class="vl"><span class="vl-dot" style="background:var(--viz-signin)"></span>Sign-ins</span><span class="vl"><span class="vl-dot" style="background:var(--viz-open)"></span>App opens</span></div></div>
+        ${dailyChartSVG(ins.daily)}
+      </div>
+      <div class="an-grid" style="margin-bottom:18px">
+        <div class="panel an-panel"><h3>Most active people</h3><div class="sub">By total activity.</div>${hbarsHTML(ins.mostActive)}</div>
+        <div class="panel an-panel"><h3>Devices</h3><div class="sub">Across all recorded events.</div>${donutSVG(ins.devices)}</div>
+      </div>
+      <div class="panel an-panel" style="margin-bottom:18px"><h3>Activity by hour of day</h3><div class="sub">When people use the glossary (your local time).</div>${hourlyChartSVG(ins.byHour)}</div>
       <div class="an-grid">
         <div class="panel an-panel"><h3>Most-searched queries</h3><div class="sub">Top terms people are looking for.</div>${searchRows}</div>
         <div class="panel an-panel"><h3>Zero-result searches</h3><div class="sub">Queries that found nothing — candidates for new terms.</div>${zeroRows}</div>
@@ -1898,6 +1995,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
           closeModal();toast('Suggestion updated');renderAdmin();}});});
     /* analytics */
     root.querySelectorAll('[data-anr]').forEach(b=>b.onclick=()=>{anRange=+b.dataset.anr;renderAdmin()});
+    {const rf=root.querySelector('#anRefresh');if(rf)rf.onclick=()=>{rf.textContent='Refreshing…';loadLiveEvents(true);};}
     root.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>{
       const key=b.dataset.jump.toLowerCase();
       const d=fullList().find(x=>x.acronym.toLowerCase()===key);
@@ -2036,6 +2134,7 @@ const DATA = [{"acronym":"ADX","term":"Ad Exchange","quote":"The invisible hand 
   applyTheme();
   seed().then(()=>ssoBootstrap()).then(()=>{
     route();
+    logOpen();
     syncFromSheet().then(ok=>{ if(!ok)return;
       if(adminIsOpen())renderAdmin();
       else{renderGlossary();applyAccessGate();}
