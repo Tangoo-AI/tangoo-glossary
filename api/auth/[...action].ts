@@ -135,6 +135,30 @@ async function lookupScim(email: string): Promise<ScimInfo> {
   }
 }
 
+// Record a login into the shared analytics list (best-effort; same KV the
+// /api/events endpoint reads). No-op when KV is not attached.
+function deviceFromUA(ua: string): "mac" | "ios" | "windows" | "android" | "other" {
+  ua = String(ua || "");
+  if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+  if (/Android/i.test(ua)) return "android";
+  if (/Macintosh|Mac OS X/i.test(ua)) return "mac";
+  if (/Windows/i.test(ua)) return "windows";
+  return "other";
+}
+async function recordLogin(email: string, name?: string, ua?: string) {
+  if (!useKv) return;
+  try {
+    const { createClient } = await import("@vercel/kv");
+    const kv = createClient({ url: KV_URL as string, token: KV_TOKEN as string });
+    const ev: any = { ts: Date.now(), type: "login", email: email.toLowerCase(), device: deviceFromUA(ua || "") };
+    if (name) ev.name = String(name).slice(0, 80);
+    await kv.lpush("glossary:events", JSON.stringify(ev));
+    await kv.ltrim("glossary:events", 0, 9999);
+  } catch {
+    /* ignore analytics failures */
+  }
+}
+
 function actionOf(req: any): string {
   const q = req.query?.action;
   if (Array.isArray(q) && q.length) return String(q[0]);
@@ -230,6 +254,7 @@ export default async function handler(req: any, res: any) {
 
       const name = samlFull || scim.displayName || p.displayName || String(email).split("@")[0];
       setCookie(res, signSession({ name, email, role, photo: scim.photo, title: scim.title, department: scim.department }), MAX_AGE);
+      await recordLogin(email, name, req.headers["user-agent"]);
       res.statusCode = 302;
       res.setHeader("Location", safePath(body.RelayState));
       return res.end();

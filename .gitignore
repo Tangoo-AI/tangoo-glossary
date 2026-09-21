@@ -5,3 +5,5 @@ tangoo-glossary-preview.html
 .DS_Store
 *.log
 node_modules/
+.vercel
+.env*
